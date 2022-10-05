@@ -1,0 +1,85 @@
+name: Node Build, Test And Lint CI
+
+on:
+  pull_request:
+    paths-ignore:
+      - '**.md'
+      - '**.sql'
+      - '**.zip'
+      - '.gitignore'
+
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+    steps: 
+    - name: Checkout Github Repo
+      uses: actions/checkout@v3
+      with:
+        persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
+        fetch-depth: 0
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3.5.0
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    # - name: Get npm cache directory
+    #   id: npm-cache
+    #   run: |
+    #     echo "::set-output name=dir::$(npm config get cache)"
+        
+    # - name: Cache dependencies
+    #   uses: actions/cache@v2.1.7
+    #   with:
+    #     path: ${{ steps.npm-cache.outputs.dir }}
+    #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-node-
+    - name: Setup MariaDB MySQL
+      uses: getong/mariadb-action@v1.1
+      with:
+        mysql database: ${{ secrets.DB_TEST_DATABASE }}
+        mysql root password: ${{ secrets.DB_PASS }}
+    - name: Wait for MySQL
+      env:
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_PASS: ${{ secrets.DB_PASS }}
+      run: |
+        while ! mysqladmin ping -h $DB_HOST -p$DB_PASS --silent; do
+          sleep 1
+        done
+    - name: Prepare MySQL
+      env:
+        DB_PORT: 3306
+        DB_SCRIPT: './backups/unipal_test_db.sql'
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASS: ${{ secrets.DB_PASS }}
+        DB_DATABASE: ${{ secrets.DB_TEST_DATABASE }}
+      run: |
+        mysql -h $DB_HOST -u $DB_USER -p$DB_PASS -D $DB_DATABASE -e 'SELECT VERSION()'
+        mysql --host=$DB_HOST --port=$DB_PORT --database=$DB_DATABASE --user=$DB_USER --password=$DB_PASS < $DB_SCRIPT
+      # run: |
+      #   sudo /etc/init.d/mysql start
+      #   mysql -u $DB_USER -p$DB_PASS -e "CREATE DATABASE $DB_DATABASE;"
+      #   mysql --host=$DB_HOST --port=$DB_PORT --database=$DB_DATABASE --user=$DB_USER --password=$DB_PASS < $DB_SCRIPT
+    - name: Installing npm
+      run: npm ci
+    - name: Code linting
+      run: npm run lint
+    - name: Running tests
+      run: npm test
+      env:
+        CI: true
+        PORT: 3000
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASS: ${{ secrets.DB_PASS }}
+        DB_DATABASE: ${{ secrets.DB_TEST_DATABASE }}
+        SECRET_JWT: ${{ secrets.SECRET_JWT }}
+        SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+        SENDGRID_SENDER: ${{ secrets.SENDGRID_SENDER }}

@@ -1,0 +1,10 @@
+node_modules
+
+#env configs
+envs
+
+#bash scripts
+*.bat
+
+#coverage raw outputs
+.nyc_output
