@@ -11,7 +11,7 @@ class MiddlewareLoader {
             next(err);
         });
 
-        if (Config.NODE_ENV === 'production') {
+        if (Config.isProduction) {
             // Sentry error loggin middleware
             // This must be after routes loader and before error middleware
             app.use(Sentry.Handlers.errorHandler());

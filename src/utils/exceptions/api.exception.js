@@ -4,7 +4,7 @@ const { ErrorStatusCodes } = require("../errorStatusCodes.utils");
 class ApiException extends Error {
     constructor(message, data, status = ErrorStatusCodes.Unauthorized) {
         super(message);
-        if (Config.NODE_ENV === "dev") this.message = "Api Error: " + message;
+        if (Config.isDev) this.message = "Api Error: " + message;
         else this.message = message;
         this.name = "Api Error";
         this.code = this.constructor.name;

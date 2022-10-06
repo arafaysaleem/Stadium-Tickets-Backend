@@ -4,7 +4,7 @@ const { Config } = require("../../configs/config");
 class DatabaseException extends Error {
     constructor(message, data, isOperational = false, status = ErrorStatusCodes.InternalServerError) {
         super(message);
-        if (Config.NODE_ENV === "dev") this.message = "Database Error: " + message;
+        if (Config.isDev) this.message = "Database Error: " + message;
         else this.message = message;
         this.name = "Database Error";
         this.isOperational = isOperational;

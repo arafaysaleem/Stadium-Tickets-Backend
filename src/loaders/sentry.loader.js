@@ -8,7 +8,7 @@ class SentryLoader {
             dsn: Config.SENTRY_DSN,
             environment: Config.NODE_ENV,
             sampleRate: 0.5,
-            tracesSampleRate: Config.NODE_ENV === "production" ? 0.6 : 1.0,
+            tracesSampleRate: Config.isProduction ? 0.6 : 1.0,
             integrations: [
                 // enable HTTP calls tracing
                 new Sentry.Integrations.Http({ tracing: true }),

@@ -8,7 +8,7 @@ class ExpressLoader {
     static init() {
         const app = express();
 
-        if (Config.NODE_ENV === 'production') {
+        if (Config.isProduction) {
             // init Sentry SDK for error logging
             SentryLoader.init(app);
 

@@ -4,7 +4,7 @@ const { Config } = require("../../configs/config");
 class AuthException extends Error {
     constructor(message, data, status = ErrorStatusCodes.Unauthorized) {
         super(message);
-        if (Config.NODE_ENV === "dev") this.message = "Auth Error: " + message;
+        if (Config.isDev) this.message = "Auth Error: " + message;
         else this.message = message;
         this.name = "Auth Error";
         this.code = this.constructor.name;
