@@ -37,7 +37,9 @@ class ZoneModel extends Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.ZoneTypeModel, { foreignKey: 'z_type_id'});
+        this.belongsTo(models.ZoneTypeModel, { foreignKey: 'z_type_id' });
+        this.hasMany(models.ZoneResourceModel, { foreignKey: 'zone_id' });
+        this.hasMany(models.ZoneSeatModel, { foreignKey: 'zone_id' });
     }
 }
 
