@@ -36,4 +36,4 @@ class ZoneSeatModel extends Model {
     }
 }
 
-module.exports = new ZoneSeatModel;
+module.exports = ZoneSeatModel;

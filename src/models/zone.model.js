@@ -43,4 +43,4 @@ class ZoneModel extends Model {
     }
 }
 
-module.exports = new ZoneModel;
+module.exports = ZoneModel;

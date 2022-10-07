@@ -27,4 +27,4 @@ class ZoneResourceModel extends Model {
     }
 }
 
-module.exports = new ZoneResourceModel;
+module.exports = ZoneResourceModel;

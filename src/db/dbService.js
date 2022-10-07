@@ -22,10 +22,7 @@ class DatabaseService {
 
     async checkConnection() {
         try {
-            let conn = await this.sequelize.connectionManager.getConnection();
-            if (conn){
-                this.sequelize.connectionManager.releaseConnection();
-            }
+            await this.sequelize.authenticate();
         } catch (err) {
             if (err){
                 if (err.code === 'PROTOCOL_CONNECTION_LOST') {

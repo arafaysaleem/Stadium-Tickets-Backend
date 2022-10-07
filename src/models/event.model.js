@@ -44,4 +44,4 @@ class EventModel extends Model {
     }
 }
 
-module.exports = new EventModel;
+module.exports = EventModel;
