@@ -1,4 +1,5 @@
 const { Model } = require('sequelize');
+const { SeatTypes } = require('../utils/enums/seatTypes.enum');
 
 class ZoneSeatModel extends Model {
     static init(sequelize, DataTypes) {
@@ -20,7 +21,7 @@ class ZoneSeatModel extends Model {
                 },
                 type: {
                     type: DataTypes.ENUM,
-                    values: ['missing', 'enabled', 'disabled']
+                    values: [...Object.values(SeatTypes)]
                 },
                 zone_id: {
                     type: DataTypes.INTEGER,
@@ -32,7 +33,7 @@ class ZoneSeatModel extends Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.ZoneModel, { foreignKey: 'zone_id'});
+        this.belongsTo(models.ZoneModel, { foreignKey: 'zone_id' });
     }
 }
 

@@ -1,4 +1,5 @@
 const { Model } = require('sequelize');
+const { EventTypes } = require('../utils/enums/eventTypes.enum');
 
 class EventModel extends Model {
     static init(sequelize, DataTypes) {
@@ -32,15 +33,11 @@ class EventModel extends Model {
                 },
                 event_status: {
                     type: DataTypes.ENUM,
-                    values: ['open', 'closed']
+                    values: [...Object.values(EventTypes)]
                 }
             },
             { sequelize, tableName: "events" }
         );
-    }
-
-    static associate(models) {
-        
     }
 }
 

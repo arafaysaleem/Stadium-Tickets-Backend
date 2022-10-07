@@ -1,6 +1,5 @@
 const { Config } = require("../configs/config");
 const { DBService } = require("../db/db-service");
-const { ModelManager } = require("../models/modelManager");
 
 class DatabaseLoader {
     static init(){
@@ -18,9 +17,6 @@ class DatabaseLoader {
 
         // verify connection
         DBService.checkConnection();
-
-        // load ORM models
-        ModelManager.init();
     }
 }
 

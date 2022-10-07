@@ -1,4 +1,5 @@
 const { Model } = require('sequelize');
+const { ResourceTypes } = require('../utils/enums/resourceType.enum');
 
 class ZoneResourceModel extends Model {
     static init(sequelize, DataTypes) {
@@ -16,6 +17,10 @@ class ZoneResourceModel extends Model {
                 zone_id: {
                     type: DataTypes.INTEGER,
                     allowNull: false
+                },
+                type: {
+                    type: DataTypes.ENUM,
+                    values: [...Object.values(ResourceTypes)]
                 }
             },
             { sequelize, tableName: "zone_resources" }
