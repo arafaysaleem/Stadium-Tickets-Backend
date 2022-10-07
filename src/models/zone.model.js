@@ -1,10 +1,10 @@
 const { Model } = require('sequelize');
 
-class EventModel extends Model {
+class ZoneModel extends Model {
     static init(sequelize, DataTypes) {
         return super.init(
             {
-                event_id: {
+                zone_id: {
                     type: DataTypes.INTEGER,
                     autoIncrement: true,
                     primaryKey: true
@@ -14,34 +14,31 @@ class EventModel extends Model {
                     length: 50,
                     allowNull: false
                 },
-                poster_url: {
-                    type: DataTypes.TEXT,
+                num_of_seats: {
+                    type: DataTypes.INTEGER,
                     allowNull: false
                 },
-                date: {
-                    type: DataTypes.DATEONLY,
+                num_of_rows: {
+                    type: DataTypes.INTEGER,
                     allowNull: false
                 },
-                start_time: {
-                    type: DataTypes.TIME,
-                    allowNull: false
+                color_hex_code: {
+                    type: DataTypes.STRING,
+                    allowNull: false,
+                    length: 7
                 },
-                end_time: {
-                    type: DataTypes.TIME,
+                z_type_id: {
+                    type: DataTypes.INTEGER,
                     allowNull: false
-                },
-                event_status: {
-                    type: DataTypes.ENUM,
-                    values: ['open', 'closed']
                 }
             },
-            { sequelize, tableName: "events" }
+            { sequelize, tableName: "zones" }
         );
     }
 
     static associate(models) {
-        
+        this.belongsTo(models.ZoneTypeModel, { foreignKey: 'z_type_id'});
     }
 }
 
-module.exports = new EventModel;
+module.exports = new ZoneModel;
