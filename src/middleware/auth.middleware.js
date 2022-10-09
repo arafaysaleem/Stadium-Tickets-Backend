@@ -4,11 +4,11 @@ const {
     TokenExpiredException,
     ForbiddenException
 } = require('../utils/exceptions/auth.exception');
-const StudentModel = require('../models/student.model');
+const UserModel = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const { Config } = require('../configs/config');
 
-exports.auth = (...allowedRoles) => {
+exports.JwtUserAuth = (...allowedRoles) => {
     return async function(req, res, next) {
         try {
             const authHeader = req.headers.authorization;
@@ -22,7 +22,7 @@ exports.auth = (...allowedRoles) => {
             const secretKey = Config.SECRET_JWT;
 
             // Verify Token
-            let decoded_erp;
+            let decodedUserId;
             jwt.verify(token, secretKey, (err, decoded) => {
                 if (err) {
                     if (err.name === 'TokenExpiredError') {
@@ -30,22 +30,22 @@ exports.auth = (...allowedRoles) => {
                     } else if (err.name === 'JsonWebTokenError') {
                         throw new TokenVerificationException();
                     }
-                } else decoded_erp = decoded.erp;
+                } else decodedUserId = decoded.user_id;
             });
-            const student = await StudentModel.findOne(decoded_erp);
+            const user = await UserModel.findByPk(decodedUserId);
 
-            if (!student) {
+            if (!user) {
                 throw new TokenVerificationException();
             }
 
-            // if the student role don't have the permission to do this action.
-            // the student will get this error
-            if (allowedRoles.length && !allowedRoles.includes(student.role)) {
+            // if the user role don't have the permission to do this action.
+            // the user will get this error
+            if (allowedRoles.length && !allowedRoles.includes(user.role)) {
                 throw new ForbiddenException();
             }
 
-            // if the student has permissions
-            req.currentStudent = student;
+            // if the user has permissions
+            req.currentUser = user;
             next();
 
         } catch (e) {
@@ -57,26 +57,45 @@ exports.auth = (...allowedRoles) => {
 exports.ownerAuth = (checkedRoles = [], customOwnerCheck = null) => {
     return async function(req, res, next) {
         try {
-            const student = req.currentStudent;
+            const user = req.currentUser;
 
-            if (!student) {
+            if (!user) {
                 throw new TokenVerificationException();
             }
 
-            // if the current student role has to be checked for ownership
-            const isChecked = checkedRoles.includes(student.role);
+            // if the current user role has to be checked for ownership
+            const isChecked = checkedRoles.includes(user.role);
 
             if (isChecked){ // if needs owner check
-                // check if the current student is the owner student
+                // check if the current user is the owner user
                 let isOwner;
                 if (customOwnerCheck) isOwner = await customOwnerCheck(req);
-                else isOwner = req.params.erp === student.erp; // can update self
+                else isOwner = req.params.user_id === user.user_id; // can update self
     
                 // if not the owner
-                // the student will get this error
+                // the user will get this error
                 if (!isOwner) throw new ForbiddenException();
             }
             
+            next();
+
+        } catch (e) {
+            next(e);
+        }
+    };
+};
+
+exports.ApiKeyAuth = () => {
+    return async function(req, res, next) {
+        try {
+            const apiKey = req.header('api-key');
+            
+            if (!apiKey) {
+                throw new TokenMissingException('Access denied. No API Key found.');
+            } else if (!apiKey === Config.API_KEY){
+                throw new TokenVerificationException('Access denied. API Key is invalid.');
+            }
+
             next();
 
         } catch (e) {

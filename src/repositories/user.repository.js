@@ -8,7 +8,7 @@ const {
 } = require('../utils/exceptions/database.exception');
 
 class UserRepository {
-    findAll = async(filters = {}, myERP) => {
+    findAll = async(filters = {}) => {
         
         let userList = await ModelManager.Users.findAll({
             where: {...filters}

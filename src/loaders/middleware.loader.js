@@ -1,5 +1,6 @@
 const { InvalidEndpointException } = require('../utils/exceptions/api.exception');
 const errorMiddleware = require('../middleware/error.middleware');
+const { ApiKeyAuth } = require('../middleware/auth.middleware');
 const Sentry = require("@sentry/node");
 const { Config } = require('../configs/config');
 
@@ -10,6 +11,9 @@ class MiddlewareLoader {
             const err = new InvalidEndpointException();
             next(err);
         });
+
+        // Check api key on all routes
+        app.use(`/api/${Config.API_VERSION}/*`, ApiKeyAuth);
 
         if (Config.isProduction) {
             // Sentry error loggin middleware
