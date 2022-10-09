@@ -1,5 +1,5 @@
 const { body } = require('express-validator');
-const { Roles } = require('../../utils/enums/roles.utils');
+const { Roles } = require('../../utils/enums/roles.enum');
 const EmailValidator = require('deep-email-validator');
 
 exports.createUserSchema = [

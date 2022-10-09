@@ -1,4 +1,5 @@
 const { Sequelize } = require('sequelize');
+const { ModelLoader } = require('../models/modelManager');
 const { DatabaseException } = require('../utils/exceptions/database.exception');
 
 class DatabaseService {
@@ -17,6 +18,8 @@ class DatabaseService {
                     acquire: 30 * 1000
                 }
             });
+
+            ModelLoader.init(this.sequelize);
         }
     }
 

@@ -23,7 +23,7 @@ class ZoneTypeModel extends Model {
         );
     }
 
-    static associate(models) {
+    associate(models) {
         this.hasMany(models.ZoneModel, { foreignKey: 'z_type_id' });
     }
 }

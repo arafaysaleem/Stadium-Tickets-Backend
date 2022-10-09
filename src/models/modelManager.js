@@ -1,23 +1,17 @@
-const { DBService } = require("../db/dbService");
 const { DataTypes } = require('sequelize');
 
 class ModelManager {
-    constructor(){
-        var models = this.#initModels();
-        models = this.#initAssociations(models);
-        
-        this.models = models;
+    init(sequelize){
+        this.models = this.#initModels(sequelize);
     }
 
-    #initModels = () => {
+    #initModels = (sequelize) => {
         const EventModel = require("./event.model");
         const UserModel = require("./user.model");
         const ZoneModel = require("./zone.model");
         const ZoneSeatModel = require("./zoneSeat.model");
         const ZoneResourceModel = require("./zoneResource.model");
         const ZoneTypeModel = require("./zoneType.model");
-
-        const sequelize = DBService.sequelize;
 
         const models = {
             Events: EventModel.init(sequelize, DataTypes),
@@ -28,7 +22,7 @@ class ModelManager {
             ZoneTypes: ZoneTypeModel.init(sequelize, DataTypes)
         };
 
-        return models;
+        return this.#initAssociations(models);
     };
 
     #initAssociations = (models) => {
@@ -44,4 +38,5 @@ class ModelManager {
     };
 }
 
-module.exports.ModelManager = {...(new ModelManager()).models};
+module.exports.ModelLoader = new ModelManager;
+module.exports.Models = {...this.ModelLoader.models};
