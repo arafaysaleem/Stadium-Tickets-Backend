@@ -4,7 +4,8 @@
   "description": "[![BadgeNodeJS](https://img.shields.io/badge/MADE%20WITH-NODEJS-brightgreen?style=for-the-badge&logo=Node.js)](https://shields.io/) [![BadgeExpress](https://img.shields.io/badge/USES-EXPRESS-red?style=for-the-badge)](https://shields.io/) [![BadgeMySQL](https://img.shields.io/badge/USES-MYSQL-4479A1?style=for-the-badge&logo=MySQL)](https://shields.io/) [![BadgeAzure](https://img.shields.io/badge/DATABASE-AZURE-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=007FFF)](https://shields.io/) [![BadgeAzureAppService](https://img.shields.io/badge/DEPLOYED-AZURE%20APP%20SERVICE-2560E0?style=for-the-badge&logo=azurepipelines&logoColor=007FFF)](https://shields.io/) [![BadgeHeroku](https://img.shields.io/badge/STAGING-HEROKU-430098?style=for-the-badge&logo=Heroku)](https://shields.io/)",
   "main": "src/index.js",
   "engines": {
-    "node": ">=12"
+    "node": ">=16.17.1",
+    "npm": ">=8.19.2"
   },
   "scripts": {
     "start": "node -r dotenv-flow/config src/index.js -- --dotenv-flow-path=envs",
@@ -14,6 +15,8 @@
     "test": "npm run test:unit && npm run test:intg",
     "test:unit": "cross-env NODE_ENV=test DOTENV_FLOW_PATH=envs mocha test/unit/**/*.test.js --reporter-options reportDir=test/unit/report,reportFilename=unit-tests-report,json=false,autoOpen=true -r dotenv-flow/config",
     "test:intg": "cross-env NODE_ENV=test DOTENV_FLOW_PATH=envs mocha --timeout 20000 test/integration --reporter-options reportDir=test/integration/report,reportFilename=integration-tests-report,json=false,autoOpen=true -r dotenv-flow/config",
+    "db:make-mgn": "cross-env NODE_ENV=dev npx -r dotenv-flow/config sequelize-cli migration:create -- --dotenv-flow-path=envs",
+    "db:run-mgn": "cross-env NODE_ENV=dev npx -r dotenv-flow/config sequelize-cli db:migrate -- --dotenv-flow-path=envs",
     "lint": "eslint src/",
     "fixlint": "eslint src/ --fix"
   },
