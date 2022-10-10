@@ -4,7 +4,7 @@ const { RoutesLoader } = require('./loaders/routes.loader');
 const { MiddlewareLoader } = require('./loaders/middleware.loader');
 const { Config } = require('../src/configs/config');
 
-const setup = () => {
+const setup = async() => {
     // load express and sentry
     const app = ExpressLoader.init();
 
@@ -15,10 +15,10 @@ const setup = () => {
     // init middleware
     MiddlewareLoader.init(app);
 
+    // load database
+    await DatabaseLoader.init();
+    
     return app;
 };
-
-// load database
-DatabaseLoader.init();
 
 module.exports = {setup};

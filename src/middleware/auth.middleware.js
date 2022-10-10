@@ -86,7 +86,7 @@ exports.ownerAuth = (checkedRoles = [], customOwnerCheck = null) => {
 };
 
 exports.ApiKeyAuth = () => {
-    return async function(req, res, next) {
+    return function(req, res, next) {
         try {
             const apiKey = req.header('api-key');
             

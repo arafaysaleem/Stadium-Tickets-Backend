@@ -33,7 +33,7 @@ class AuthRepository {
     };
 
     login = async(email, pass, is_register = false) => {
-        const user = await ModelManager.Users.findOne({ where: { email } });
+        const user = await ModelManager.Users.findOne({ where: { email }, benchmark: true });
         if (!user) {
             throw new InvalidCredentialsException('User not registered');
         }

@@ -15,8 +15,6 @@
     "test": "npm run test:unit && npm run test:intg",
     "test:unit": "cross-env NODE_ENV=test DOTENV_FLOW_PATH=envs mocha test/unit/**/*.test.js --reporter-options reportDir=test/unit/report,reportFilename=unit-tests-report,json=false,autoOpen=true -r dotenv-flow/config",
     "test:intg": "cross-env NODE_ENV=test DOTENV_FLOW_PATH=envs mocha --timeout 20000 test/integration --reporter-options reportDir=test/integration/report,reportFilename=integration-tests-report,json=false,autoOpen=true -r dotenv-flow/config",
-    "db:make-mgn": "cross-env NODE_ENV=dev npx -r dotenv-flow/config sequelize-cli migration:create -- --dotenv-flow-path=envs",
-    "db:run-mgn": "cross-env NODE_ENV=dev npx -r dotenv-flow/config sequelize-cli db:migrate -- --dotenv-flow-path=envs",
     "lint": "eslint src/",
     "fixlint": "eslint src/ --fix"
   },

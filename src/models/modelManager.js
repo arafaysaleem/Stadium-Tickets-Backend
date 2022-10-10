@@ -1,8 +1,17 @@
 const { DataTypes } = require('sequelize');
 
 class ModelManager {
+    get Users(){ return this.models.Users; }
+    get Events(){ return this.models.Events; }
+    get Zones(){ return this.models.Zones; }
+    get ZoneResources(){ return this.models.ZoneResources; }
+    get ZoneSeats(){ return this.models.ZoneSeats; }
+    get ZoneTypes(){ return this.models.ZoneTypes; }
+
     init(sequelize){
-        this.models = this.#initModels(sequelize);
+        let models = this.#initModels(sequelize);
+        models = this.#initAssociations(models);
+        this.models = models;
     }
 
     #initModels = (sequelize) => {
@@ -22,7 +31,7 @@ class ModelManager {
             ZoneTypes: ZoneTypeModel.init(sequelize, DataTypes)
         };
 
-        return this.#initAssociations(models);
+        return models;
     };
 
     #initAssociations = (models) => {
@@ -38,5 +47,4 @@ class ModelManager {
     };
 }
 
-module.exports.ModelLoader = new ModelManager;
-module.exports.Models = {...this.ModelLoader.models};
+module.exports.ModelManager = new ModelManager();
