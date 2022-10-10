@@ -1,5 +1,4 @@
 const { body } = require('express-validator');
-const EmailValidator = require('deep-email-validator');
 
 exports.changePWSchema = [
     body('email')
@@ -8,11 +7,6 @@ exports.changePWSchema = [
         .withMessage('User email is required.')
         .isEmail()
         .withMessage('Must be a valid email')
-        .custom(async(email) => {
-            const {valid} = await EmailValidator.validate(email);
-            return valid;
-        })
-        .withMessage('Email unrecognized')
         .normalizeEmail(),
     body('old_password')
         .trim()
@@ -37,11 +31,6 @@ exports.validateLogin = [
         .withMessage('User email is required.')
         .isEmail()
         .withMessage('Must be a valid email')
-        .custom(async(email) => {
-            const {valid} = await EmailValidator.validate(email);
-            return valid;
-        })
-        .withMessage('Email unrecognized')
         .normalizeEmail(),
     body('password')
         .trim()
@@ -58,11 +47,6 @@ exports.validateRefresh = [
         .withMessage('User email is required.')
         .isEmail()
         .withMessage('Must be a valid email')
-        .custom(async(email) => {
-            const {valid} = await EmailValidator.validate(email);
-            return valid;
-        })
-        .withMessage('Email unrecognized')
         .normalizeEmail(),
     body('password')
         .trim()

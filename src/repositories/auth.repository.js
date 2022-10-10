@@ -24,16 +24,16 @@ class AuthRepository {
         body.password = await hashPassword(body.password);
 
         const result = await ModelManager.Users.create(body);
-
+        
         if (!result) {
             throw new RegistrationFailedException();
         }
 
-        return this.login(body.user_id, pass, true);
+        return this.login(body.email, pass, true);
     };
 
     login = async(email, pass, is_register = false) => {
-        const user = await ModelManager.Users.findOne({ where: { email }, benchmark: true });
+        const user = await ModelManager.Users.findOne({ where: { email }, raw: true });
         if (!user) {
             throw new InvalidCredentialsException('User not registered');
         }

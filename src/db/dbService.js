@@ -13,6 +13,8 @@ class DatabaseService {
                 password: password,
                 dialect: dialect,
                 logQueryParameters: paramLogging,
+                logging: (...msg) => console.log(msg),
+                benchmark: true,
                 pool: {
                     max: connLimit,
                     acquire: 30 * 1000

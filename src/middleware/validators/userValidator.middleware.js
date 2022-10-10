@@ -49,11 +49,6 @@ exports.updateUserSchema = [
         .trim()
         .isEmail()
         .withMessage('Must be a valid email')
-        .custom(async(email) => {
-            const {valid} = await EmailValidator.validate(email);
-            return valid;
-        })
-        .withMessage('Email unrecognized')
         .normalizeEmail(),
     body()
         .custom(value => {
