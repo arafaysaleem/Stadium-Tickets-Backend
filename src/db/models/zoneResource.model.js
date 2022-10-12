@@ -1,34 +1,29 @@
 const { Model } = require('sequelize');
-const { SeatTypes } = require('../utils/enums/seatTypes.enum');
+const { ResourceTypes } = require('../../utils/enums/resourceType.enum');
 
-class ZoneSeatModel extends Model {
+class ZoneResourceModel extends Model {
     static init(sequelize, DataTypes) {
         return super.init(
             {
-                z_seat_id: {
+                resource_id: {
                     type: DataTypes.INTEGER,
                     autoIncrement: true,
                     primaryKey: true
                 },
-                seat_number: {
-                    type: DataTypes.INTEGER,
+                resource_url: {
+                    type: DataTypes.TEXT,
                     allowNull: false
-                },
-                seat_row: {
-                    type: DataTypes.STRING,
-                    length: 2,
-                    allowNull: false
-                },
-                type: {
-                    type: DataTypes.ENUM,
-                    values: [...Object.values(SeatTypes)]
                 },
                 zone_id: {
                     type: DataTypes.INTEGER,
                     allowNull: false
+                },
+                type: {
+                    type: DataTypes.ENUM,
+                    values: [...Object.values(ResourceTypes)]
                 }
             },
-            { sequelize, tableName: "zone_seats" }
+            { sequelize, tableName: "zone_resources" }
         );
     }
 
@@ -37,4 +32,4 @@ class ZoneSeatModel extends Model {
     }
 }
 
-module.exports = ZoneSeatModel;
+module.exports = ZoneResourceModel;

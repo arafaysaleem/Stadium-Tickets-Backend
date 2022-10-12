@@ -1,5 +1,5 @@
 const { successResponse } = require('../utils/responses.utils');
-const { ModelManager } = require('../models/modelManager');
+const { DbContext } = require('../db/dbContext');
 
 const {
     NotFoundException,
@@ -9,11 +9,7 @@ const {
 
 class UserRepository {
     findAll = async(filters = {}) => {
-        
-        let userList = await ModelManager.Users.findAll({
-            where: {...filters},
-            raw: true
-        });
+        let userList = await DbContext.Users.findAllByFilters(filters);
 
         userList = userList.map(user => {
             const {
@@ -28,7 +24,7 @@ class UserRepository {
     };
 
     findOne = async(id) => {
-        let user = await ModelManager.Users.findByPk(id, {raw: true});
+        let user = await DbContext.Users.findById(id);
         
         if (!user) {
             throw new NotFoundException('User not found');
@@ -40,11 +36,7 @@ class UserRepository {
     };
 
     update = async(body, id) => {
-        const result = await ModelManager.Users.update(body, {
-            where: {
-                user_id: id
-            }
-        });
+        const result = await DbContext.Users.updateById(body, id);
 
         if (!result) {
             throw new UnexpectedException('Something went wrong');
@@ -62,9 +54,7 @@ class UserRepository {
     };
 
     delete = async(id) => {
-        const result = await ModelManager.Users.destroy({
-            where: { user_id: id }
-        });
+        const result = await DbContext.Users.deleteById(id);
         if (!result) {
             throw new NotFoundException('User not found');
         }

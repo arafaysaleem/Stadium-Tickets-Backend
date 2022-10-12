@@ -1,11 +1,11 @@
 const { Config } = require("../configs/config");
-const { DBService } = require("../db/dbService");
+const { DbContext } = require("../db/dbContext");
 
 class DatabaseLoader {
     static async init(){
 
         // create sequelize pool
-        DBService.init({
+        DbContext.init({
             host: Config.DB_HOST,
             port: Config.DB_PORT,
             paramLogging: Config.isDev,
@@ -17,7 +17,7 @@ class DatabaseLoader {
         });
 
         // verify connection
-        await DBService.checkConnection();
+        await DbContext.checkConnection();
     }
 }
 

@@ -4,11 +4,11 @@ const {
     TokenExpiredException,
     ForbiddenException
 } = require('../utils/exceptions/auth.exception');
-const UserModel = require('../models/user.model');
+const UserModel = require('../db/models/user.model');
 const jwt = require('jsonwebtoken');
 const { Config } = require('../configs/config');
 
-exports.JwtUserAuth = (...allowedRoles) => {
+exports.jwtUserAuth = (...allowedRoles) => {
     return async function(req, res, next) {
         try {
             const authHeader = req.headers.authorization;
@@ -32,7 +32,7 @@ exports.JwtUserAuth = (...allowedRoles) => {
                     }
                 } else decodedUserId = decoded.user_id;
             });
-            const user = await UserModel.findByPk(decodedUserId);
+            const user = await UserModel.findById(decodedUserId);
 
             if (!user) {
                 throw new TokenVerificationException();
@@ -85,7 +85,7 @@ exports.ownerAuth = (checkedRoles = [], customOwnerCheck = null) => {
     };
 };
 
-exports.ApiKeyAuth = () => {
+exports.apiKeyAuth = () => {
     return function(req, res, next) {
         try {
             const apiKey = req.header('api-key');

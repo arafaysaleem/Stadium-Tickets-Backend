@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const { EventTypes } = require('../utils/enums/eventTypes.enum');
+const { EventTypes } = require('../../utils/enums/eventTypes.enum');
 
 class EventModel extends Model {
     static init(sequelize, DataTypes) {

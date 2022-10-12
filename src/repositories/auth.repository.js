@@ -14,7 +14,7 @@ const { hashPassword } = require('../utils/common.utils');
 const { successResponse } = require('../utils/responses.utils');
 const { Config } = require('../configs/config');
 
-const { ModelManager } = require('../models/modelManager');
+const { DbContext } = require('../db/dbContext');
 
 class AuthRepository {
 
@@ -23,7 +23,7 @@ class AuthRepository {
 
         body.password = await hashPassword(body.password);
 
-        const result = await ModelManager.Users.create(body);
+        const result = await DbContext.Users.createNew(body);
         
         if (!result) {
             throw new RegistrationFailedException();
@@ -33,7 +33,7 @@ class AuthRepository {
     };
 
     login = async(email, pass, is_register = false) => {
-        const user = await ModelManager.Users.findOne({ where: { email }, raw: true });
+        const user = await DbContext.Users.findByEmail(email);
         if (!user) {
             throw new InvalidCredentialsException('User not registered');
         }
@@ -68,7 +68,7 @@ class AuthRepository {
     };
 
     refreshToken = async(email, pass, old_token) => {
-        const user = await ModelManager.Users.findOne({ where: { email } });
+        const user = await DbContext.Users.findByEmail(email);
         if (!user) {
             throw new InvalidCredentialsException('User not registered');
         }
@@ -107,7 +107,7 @@ class AuthRepository {
     };
 
     changePassword = async(email, new_password, old_password) => {
-        const user = await ModelManager.Users.findOne({ where: { email } });
+        const user = await DbContext.Users.findByEmail(email);
 
         if (!user) {
             throw new InvalidCredentialsException('User not registered');
@@ -121,7 +121,7 @@ class AuthRepository {
 
         let newPassword = await hashPassword(new_password);
     
-        const result = await ModelManager.Users.update({password: newPassword}, { where: { user_id: user.user_id } });
+        const result = await DbContext.Users.updateById({password: newPassword}, user.user_id);
     
         if (!result) {
             throw new UnexpectedException('Something went wrong');
