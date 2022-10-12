@@ -47,7 +47,7 @@ class UserRepository {
         if (!affectedRows) throw new UpdateFailedException('User update failed');
         
         const responseBody = {
-            rows_matched: affectedRows
+            rows_changed: affectedRows
         };
 
         return successResponse(responseBody, 'User updated successfully');

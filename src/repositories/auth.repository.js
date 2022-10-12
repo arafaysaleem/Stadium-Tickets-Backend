@@ -131,7 +131,7 @@ class AuthRepository {
         if (!affectedRows) throw new UpdateFailedException('Password reset failed');
         
         const responseBody = {
-            rows_matched: affectedRows
+            rows_changed: affectedRows
         };
     
         return successResponse(responseBody, 'Password reset successfully');
