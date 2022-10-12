@@ -23,8 +23,28 @@ class ZoneTypeModel extends Model {
         );
     }
 
-    associate(models) {
+    static associate(models) {
         this.hasMany(models.ZoneModel, { foreignKey: 'z_type_id' });
+    }
+
+    static findAllByFilters(filters){
+        return this.findAll({ where: {...filters}, raw: true });
+    }
+
+    static findById(id){
+        return this.findByPk(id, { raw: true });
+    }
+
+    static updateById(body, id){
+        return this.update(body, { where: { z_type_id: id }, raw: true });
+    }
+
+    static createNew(body){
+        return this.create(body, { raw: true });
+    }
+
+    static deleteById(id){
+        return this.destroy({ where: { z_type_id: id }, raw: true });
     }
 }
 

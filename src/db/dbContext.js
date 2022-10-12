@@ -69,7 +69,7 @@ class DbContext {
         Object.values(models)
             .filter(model => typeof model.associate === "function")
             .forEach(model => {
-                model.associate(models);
+                model.associate(this.sequelize.models);
             });
 
         return models;

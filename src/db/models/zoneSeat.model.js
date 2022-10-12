@@ -32,7 +32,7 @@ class ZoneSeatModel extends Model {
         );
     }
 
-    associate(models) {
+    static associate(models) {
         this.belongsTo(models.ZoneModel, { foreignKey: 'zone_id' });
     }
 }

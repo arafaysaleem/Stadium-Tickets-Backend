@@ -32,28 +32,28 @@ class UserModel extends Model {
         );
     }
 
-    static async findAllByFilters(filters = {}){
-        return await this.findAll({ where: {...filters}, raw: true });
+    static findAllByFilters(filters){
+        return this.findAll({ where: {...filters}, raw: true });
     }
 
-    static async findById(id){
-        return await this.findByPk(id, { raw: true });
+    static findById(id){
+        return this.findByPk(id, { raw: true });
     }
 
-    static async findByEmail(email){
-        return await this.findOne({ where: { email }, raw: true });
+    static findByEmail(email){
+        return this.findOne({ where: { email }, raw: true });
     }
 
-    static async updateById(body, id){
-        return await this.update(body, { where: { user_id: id }, raw: true });
+    static updateById(body, id){
+        return this.update(body, { where: { user_id: id }, raw: true });
     }
 
-    static async createNew(body){
-        return await this.create(body, { isNewRecord: true, raw: true });
+    static createNew(body){
+        return this.create(body, { raw: true });
     }
 
-    static async deleteById(id){
-        return await this.destroy({ where: { user_id: id }, raw: true });
+    static deleteById(id){
+        return this.destroy({ where: { user_id: id }, raw: true });
     }
 }
 
