@@ -14,7 +14,7 @@ class ZoneModel extends Model {
                     length: 50,
                     allowNull: false
                 },
-                num_of_seats: {
+                seats_per_row: {
                     type: DataTypes.INTEGER,
                     allowNull: false
                 },
@@ -37,9 +37,80 @@ class ZoneModel extends Model {
     }
 
     static associate(models) {
-        this.belongsTo(models.ZoneTypeModel, { foreignKey: 'z_type_id' });
-        this.hasMany(models.ZoneResourceModel, { foreignKey: 'zone_id' });
-        this.hasMany(models.ZoneSeatModel, { foreignKey: 'zone_id' });
+        this.Type = this.belongsTo(models.ZoneTypeModel, { foreignKey: 'z_type_id', as: 'type' });
+        this.Resources = this.hasMany(models.ZoneResourceModel, { foreignKey: 'zone_id', as: 'resources', onDelete: 'CASCASE' });
+        this.Seats = this.hasMany(models.ZoneSeatModel, { foreignKey: 'zone_id', as: 'seats', onDelete: 'CASCASE' });
+    }
+
+    static findAllByFilters(filters){
+        return this.findAll({
+            where: {...filters},
+            raw: true,
+            // include: { all: true, nested: true }, // includes all association for this model and their nested models (recursively)
+            include: [
+                {
+                    association: this.Type,
+                    as: this.Type.as,
+                    required: true,
+                    attributes: ['z_type_id', 'type', 'price']
+                },
+                {
+                    association: this.Seats,
+                    as: this.Seats.as,
+                    required: true,
+                    attributes: ['z_seat_id', 'seat_number', 'seat_row', 'type']
+                }
+            ]
+        });
+    }
+
+    static findById(id){
+        return this.findByPk(id,
+            {
+                raw: true,
+                // include: { all: true, nested: true }, // includes all association for this model and their nested models (recursively)
+                include: [
+                    {
+                        association: this.Type,
+                        as: this.Type.as,
+                        required: true,
+                        attributes: ['z_type_id', 'type', 'price']
+                    },
+                    {
+                        association: this.Seats,
+                        as: this.Seats.as,
+                        required: true,
+                        attributes: ['z_seat_id', 'seat_number', 'seat_row', 'type']
+                    }
+                ]
+            }
+        );
+    }
+
+    static updateById(body, id){
+        return this.update(body, { where: { zone_id: id }, raw: true });
+    }
+
+    static createNew(body){
+        return this.create(body,
+            {
+                raw: true,
+                include: [
+                    {
+                        association: this.Seats,
+                        as: this.Seats.as
+                    },
+                    {
+                        association: this.Resources,
+                        as: this.Resources.as
+                    }
+                ]
+            }
+        );
+    }
+
+    static deleteById(id){
+        return this.destroy({ where: { zone_id: id }, raw: true });
     }
 }
 

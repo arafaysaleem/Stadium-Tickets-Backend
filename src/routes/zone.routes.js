@@ -6,7 +6,38 @@ const { Roles } = require('../utils/enums/roles.enum');
 const { checkValidation } = require('../middleware/validation.middleware');
 
 const zoneResourceController = require('../controllers/zoneResource.controller');
+const zoneController = require('../controllers/zone.controller');
 const { createZoneResourceSchema, updateZoneResourceSchema } = require('../middleware/validators/zoneResourceValidator.middleware');
+const { createZoneSchema, updateZoneSchema, getZonesQuerySchema } = require('../middleware/validators/zoneValidator.middleware');
+
+router.get('/',
+    getZonesQuerySchema,
+    checkValidation,
+    awaitHandlerFactory(zoneController.getAllZones)
+); // localhost:3000/api/API_VERSION/zones
+
+router.get('/:id',
+    awaitHandlerFactory(zoneController.getZoneById)
+); // localhost:3000/api/API_VERSION/zones/1
+
+router.post('/',
+    jwtUserAuth(Roles.Admin),
+    createZoneSchema,
+    checkValidation,
+    awaitHandlerFactory(zoneController.createZone)
+); // localhost:3000/api/API_VERSION/zones
+
+router.patch('/:id',
+    jwtUserAuth(Roles.Admin),
+    updateZoneSchema,
+    checkValidation,
+    awaitHandlerFactory(zoneController.updateZone)
+); // localhost:3000/api/API_VERSION/zones/1 , using patch for partial update
+
+router.delete('/:id',
+    jwtUserAuth(Roles.Admin),
+    awaitHandlerFactory(zoneController.deleteZone)
+); // localhost:3000/api/API_VERSION/zones/1
 
 router.get('/:zone_id/resources',
     awaitHandlerFactory(zoneResourceController.getAllZoneResourcesByZoneId)

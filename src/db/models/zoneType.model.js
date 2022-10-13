@@ -24,7 +24,7 @@ class ZoneTypeModel extends Model {
     }
 
     static associate(models) {
-        this.hasMany(models.ZoneModel, { foreignKey: 'z_type_id' });
+        this.hasMany(models.ZoneModel, { foreignKey: 'z_type_id', onDelete: 'RESTRICT' });
     }
 
     static findAllByFilters(filters){
