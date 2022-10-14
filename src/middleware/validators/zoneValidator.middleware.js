@@ -9,7 +9,7 @@ exports.createZoneSchema = [
         .withMessage('Zone name is required')
         .isLength({min: 1, max: 50})
         .withMessage('Length must be between 1 and 50')
-        .isAlpha()
+        .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic')
         .toUpperCase(),
     body('seats_per_row')
@@ -28,7 +28,7 @@ exports.createZoneSchema = [
         .trim()
         .exists()
         .withMessage('Zone color is required')
-        .isHexColor({ length: 7 })
+        .isHexColor()
         .withMessage('Should be a 7-digit hex code'),
     body('z_type_id')
         .exists()
@@ -94,7 +94,7 @@ exports.updateZoneSchema = [
         .trim()
         .isLength({min: 1, max: 50})
         .withMessage('Length must be between 1 and 50')
-        .isAlpha()
+        .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic')
         .toUpperCase(),
     body('seats_per_row')
@@ -110,7 +110,7 @@ exports.updateZoneSchema = [
     body('color_hex_code')
         .optional()
         .trim()
-        .isHexColor({ length: 7 })
+        .isHexColor()
         .withMessage('Should be a 7-digit hex code'),
     body('z_type_id')
         .optional()

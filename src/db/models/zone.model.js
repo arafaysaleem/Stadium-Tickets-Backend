@@ -38,14 +38,13 @@ class ZoneModel extends Model {
 
     static associate(models) {
         this.Type = this.belongsTo(models.ZoneTypeModel, { foreignKey: 'z_type_id', as: 'type' });
-        this.Resources = this.hasMany(models.ZoneResourceModel, { foreignKey: 'zone_id', as: 'resources', onDelete: 'CASCASE' });
-        this.Seats = this.hasMany(models.ZoneSeatModel, { foreignKey: 'zone_id', as: 'seats', onDelete: 'CASCASE' });
+        this.Resources = this.hasMany(models.ZoneResourceModel, { foreignKey: 'zone_id', as: 'resources' });
+        this.Seats = this.hasMany(models.ZoneSeatModel, { foreignKey: 'zone_id', as: 'seats' });
     }
 
     static findAllByFilters(filters){
         return this.findAll({
             where: {...filters},
-            raw: true,
             // include: { all: true, nested: true }, // includes all association for this model and their nested models (recursively)
             include: [
                 {
@@ -57,7 +56,6 @@ class ZoneModel extends Model {
                 {
                     association: this.Seats,
                     as: this.Seats.as,
-                    required: true,
                     attributes: ['z_seat_id', 'seat_number', 'seat_row', 'type']
                 }
             ]
@@ -67,7 +65,6 @@ class ZoneModel extends Model {
     static findById(id){
         return this.findByPk(id,
             {
-                raw: true,
                 // include: { all: true, nested: true }, // includes all association for this model and their nested models (recursively)
                 include: [
                     {
@@ -79,7 +76,6 @@ class ZoneModel extends Model {
                     {
                         association: this.Seats,
                         as: this.Seats.as,
-                        required: true,
                         attributes: ['z_seat_id', 'seat_number', 'seat_row', 'type']
                     }
                 ]

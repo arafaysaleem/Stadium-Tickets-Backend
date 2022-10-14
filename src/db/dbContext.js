@@ -20,7 +20,7 @@ class DbContext {
                 password: password,
                 dialect: dialect,
                 logQueryParameters: paramLogging,
-                logging: (msg) => console.log(msg),
+                logging: (msg) => console.log(`\n${msg}`),
                 benchmark: true,
                 pool: {
                     max: connLimit,
