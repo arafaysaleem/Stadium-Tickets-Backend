@@ -6,18 +6,21 @@ const { Roles } = require('../utils/enums/roles.enum');
 const { checkValidation } = require('../middleware/validation.middleware');
 
 const zoneTypeController = require('../controllers/zoneType.controller');
-const { createZoneTypeSchema, updateZoneTypeSchema } = require('../middleware/validators/zoneTypeValidator.middleware');
+const { createZoneTypeSchema, updateZoneTypeSchema, getZoneTypeParamSchema } = require('../middleware/validators/zoneTypeValidator.middleware');
 
 router.get('/',
     awaitHandlerFactory(zoneTypeController.getAllZoneTypes)
 ); // localhost:3000/api/API_VERSION/zone-types
 
 router.get('/:id',
+    getZoneTypeParamSchema,
+    checkValidation,
     awaitHandlerFactory(zoneTypeController.getZoneTypeById)
 ); // localhost:3000/api/API_VERSION/zone-types/1
 
 router.post('/',
     jwtUserAuth(Roles.Admin),
+    getZoneTypeParamSchema,
     createZoneTypeSchema,
     checkValidation,
     awaitHandlerFactory(zoneTypeController.createZoneType)
@@ -25,6 +28,7 @@ router.post('/',
 
 router.patch('/:id',
     jwtUserAuth(Roles.Admin),
+    getZoneTypeParamSchema,
     updateZoneTypeSchema,
     checkValidation,
     awaitHandlerFactory(zoneTypeController.updateZoneType)
@@ -32,6 +36,8 @@ router.patch('/:id',
 
 router.delete('/:id',
     jwtUserAuth(Roles.Admin),
+    getZoneTypeParamSchema,
+    checkValidation,
     awaitHandlerFactory(zoneTypeController.deleteZoneType)
 ); // localhost:3000/api/API_VERSION/zone-types/1
 

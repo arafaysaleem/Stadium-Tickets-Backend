@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 
 exports.createZoneTypeSchema = [
     body('type')
@@ -41,4 +41,12 @@ exports.updateZoneTypeSchema = [
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')
+];
+
+exports.getZoneTypeParamSchema = [
+    param('id')
+        .exists()
+        .withMessage('Zone type id is required for the endpoint')
+        .isInt({ min: 1 })
+        .withMessage('Zone type id must be an integer >= 1')
 ];
