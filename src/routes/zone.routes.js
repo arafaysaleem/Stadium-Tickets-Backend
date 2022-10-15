@@ -7,8 +7,8 @@ const { checkValidation } = require('../middleware/validation.middleware');
 
 const zoneResourceController = require('../controllers/zoneResource.controller');
 const zoneController = require('../controllers/zone.controller');
-const { createZoneResourceSchema, updateZoneResourceSchema } = require('../middleware/validators/zoneResourceValidator.middleware');
-const { createZoneSchema, updateZoneSchema, getZonesQuerySchema } = require('../middleware/validators/zoneValidator.middleware');
+const { createZoneResourceSchema, updateZoneResourceSchema, getZoneResourceParamSchema } = require('../middleware/validators/zoneResourceValidator.middleware');
+const { createZoneSchema, updateZoneSchema, getZonesQuerySchema, getZoneParamSchema } = require('../middleware/validators/zoneValidator.middleware');
 
 router.get('/',
     getZonesQuerySchema,
@@ -17,6 +17,8 @@ router.get('/',
 ); // localhost:3000/api/API_VERSION/zones
 
 router.get('/:id',
+    getZoneParamSchema,
+    checkValidation,
     awaitHandlerFactory(zoneController.getZoneById)
 ); // localhost:3000/api/API_VERSION/zones/1
 
@@ -29,6 +31,7 @@ router.post('/',
 
 router.patch('/:id',
     jwtUserAuth(Roles.Admin),
+    getZoneParamSchema,
     updateZoneSchema,
     checkValidation,
     awaitHandlerFactory(zoneController.updateZone)
@@ -36,19 +39,26 @@ router.patch('/:id',
 
 router.delete('/:id',
     jwtUserAuth(Roles.Admin),
+    getZoneParamSchema,
+    checkValidation,
     awaitHandlerFactory(zoneController.deleteZone)
 ); // localhost:3000/api/API_VERSION/zones/1
 
 router.get('/:zone_id/resources',
+    getZoneResourceParamSchema,
+    checkValidation,
     awaitHandlerFactory(zoneResourceController.getAllZoneResourcesByZoneId)
 ); // localhost:3000/api/API_VERSION/zones/1/resources
 
 router.get('/:zone_id/resources/:id',
+    getZoneResourceParamSchema,
+    checkValidation,
     awaitHandlerFactory(zoneResourceController.getZoneResourceById)
 ); // localhost:3000/api/API_VERSION/zones/1/resources/2
 
 router.post('/:zone_id/resources/',
     jwtUserAuth(Roles.Admin),
+    getZoneResourceParamSchema,
     createZoneResourceSchema,
     checkValidation,
     awaitHandlerFactory(zoneResourceController.createZoneResource)
@@ -56,6 +66,7 @@ router.post('/:zone_id/resources/',
 
 router.patch('/:zone_id/resources/:id',
     jwtUserAuth(Roles.Admin),
+    getZoneResourceParamSchema,
     updateZoneResourceSchema,
     checkValidation,
     awaitHandlerFactory(zoneResourceController.updateZoneResource)
@@ -63,6 +74,8 @@ router.patch('/:zone_id/resources/:id',
 
 router.delete('/:zone_id/resources/:id',
     jwtUserAuth(Roles.Admin),
+    getZoneResourceParamSchema,
+    checkValidation,
     awaitHandlerFactory(zoneResourceController.deleteZoneResource)
 ); // localhost:3000/api/API_VERSION/zones/1/resources/2
 

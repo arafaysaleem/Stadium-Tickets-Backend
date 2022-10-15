@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 const { ResourceTypes } = require('../../utils/enums/resourceType.enum');
 
 exports.createZoneResourceSchema = [
@@ -15,12 +15,7 @@ exports.createZoneResourceSchema = [
         .withMessage('Type is required for each resource')
         .bail()
         .isIn([...Object.values(ResourceTypes)])
-        .withMessage('Invalid resource type'),
-    body('zone_id')
-        .exists()
-        .withMessage('Zone ID is required for the resource')
-        .isInt({ min: 1 })
-        .withMessage('Invalid Zone ID found')
+        .withMessage('Invalid resource type')
 ];
 
 exports.updateZoneResourceSchema = [
@@ -36,10 +31,6 @@ exports.updateZoneResourceSchema = [
         .bail()
         .isIn([...Object.values(ResourceTypes)])
         .withMessage('Invalid resource type'),
-    body('zone_id')
-        .optional()
-        .isInt({ min: 1 })
-        .withMessage('Invalid Zone ID found'),
     body()
         .custom(value => {
             return Object.keys(value).length !== 0;
@@ -47,8 +38,20 @@ exports.updateZoneResourceSchema = [
         .withMessage('Please provide required fields to update')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['resource_url', 'type', 'zone_id'];
+            const allowUpdates = ['resource_url', 'type'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')
+];
+
+exports.getZoneResourceParamSchema = [
+    param('zone_id')
+        .exists()
+        .withMessage('Zone id is required for the endpoint')
+        .isInt({ min: 1 })
+        .withMessage('Zone id must be an integer >= 1'),
+    param('id')
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage('ZoneResource id must be an integer >= 1')
 ];

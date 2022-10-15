@@ -2,7 +2,7 @@ const ZoneResourceRepository = require('../repositories/zoneResource.repository'
 
 class ZoneResourceController {
     getAllZoneResourcesByZoneId = async(req, res, next) => {
-        const response = await ZoneResourceRepository.findAll(req.params.zone_id);
+        const response = await ZoneResourceRepository.findAllForZone(req.params.zone_id);
         res.send(response);
     };
 
@@ -12,7 +12,7 @@ class ZoneResourceController {
     };
 
     createZoneResource = async(req, res, next) => {
-        const response = await ZoneResourceRepository.create(req.body);
+        const response = await ZoneResourceRepository.create(req.body, req.params.zone_id);
         res.status(201).send(response);
     };
 

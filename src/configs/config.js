@@ -11,7 +11,7 @@ module.exports.Config = {
     DB_DIALECT: process.env.DB_DIALECT || 'postgres',
     DB_CONN_LIMIT: process.env.DB_CONN_LIMIT || 5,
     SECRET_JWT: process.env.SECRET_JWT || "SECRET_JWT",
-    EXPIRY_JWT: '1h',
+    EXPIRY_JWT: process.env.EXPIRY_JWT || '1h',
     EXPIRY_HOURS_OTP: 1,
     SENDGRID_API_KEY: process.env.SENDGRID_API_KEY || "SENDGRID_API_KEY",
     SENDGRID_SENDER: process.env.SENDGRID_SENDER || "SENDGRID_FROM_EMAIL",

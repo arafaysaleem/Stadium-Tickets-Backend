@@ -1,4 +1,4 @@
-const { body } = require('express-validator');
+const { body, param } = require('express-validator');
 const { Roles } = require('../../utils/enums/roles.enum');
 const EmailValidator = require('deep-email-validator');
 
@@ -61,4 +61,12 @@ exports.updateUserSchema = [
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')
+];
+
+exports.getUserParamSchema = [
+    param('id')
+        .exists()
+        .withMessage('User id is required for the endpoint')
+        .isInt({ min: 1 })
+        .withMessage('User id must be an integer >= 1')
 ];

@@ -26,7 +26,8 @@ class ZoneResourceRepository {
     };
 
     
-    create = async(body) => {
+    create = async(body, zone_id) => {
+        body.zone_id = zone_id;
         const result = await DbContext.ZoneResources.createNew(body);
         
         if (!result) {

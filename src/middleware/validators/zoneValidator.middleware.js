@@ -1,4 +1,4 @@
-const { body, query } = require('express-validator');
+const { body, query, param } = require('express-validator');
 const { ResourceTypes } = require('../../utils/enums/resourceType.enum');
 const { SeatTypes } = require('../../utils/enums/seatTypes.enum');
 
@@ -142,4 +142,12 @@ exports.getZonesQuerySchema = [
             return queryParams.every(param => allowParams.includes(param));
         })
         .withMessage('Invalid query params!')
+];
+
+exports.getZoneParamSchema = [
+    param('id')
+        .exists()
+        .withMessage('Zone id is required for the endpoint')
+        .isInt({ min: 1 })
+        .withMessage('Zone id must be an integer >= 1')
 ];
