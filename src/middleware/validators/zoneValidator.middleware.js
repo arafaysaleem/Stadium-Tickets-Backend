@@ -13,13 +13,11 @@ exports.createZoneSchema = [
         .withMessage('Must be alphabetic')
         .toUpperCase(),
     body('seats_per_row')
-        .trim()
         .exists()
         .withMessage('Max number of seats for the longest row is required')
         .isInt({min: 1})
         .withMessage('Should be a whole number >= 1'),
     body('num_of_rows')
-        .trim()
         .exists()
         .withMessage('Total number of seat rows is required')
         .isInt({min: 1})
@@ -62,7 +60,6 @@ exports.createZoneSchema = [
         .notEmpty()
         .withMessage('Blocked\\Missing can\'t be empty'),
     body('seats.*.seat_number')
-        .trim()
         .exists()
         .withMessage('Seat number is required for each seat')
         .bail()
@@ -99,12 +96,10 @@ exports.updateZoneSchema = [
         .toUpperCase(),
     body('seats_per_row')
         .optional()
-        .trim()
         .isInt({min: 1})
         .withMessage('Should be a whole number >= 1'),
     body('num_of_rows')
         .optional()
-        .trim()
         .isInt({min: 1})
         .withMessage('Should be a whole number >= 1'),
     body('color_hex_code')
@@ -132,7 +127,6 @@ exports.updateZoneSchema = [
 exports.getZonesQuerySchema = [
     query('z_type_id')
         .optional()
-        .trim()
         .isInt({ min: 1 })
         .withMessage('Invalid Zone type ID found'),
     query()
@@ -146,8 +140,7 @@ exports.getZonesQuerySchema = [
 
 exports.getZoneParamSchema = [
     param('id')
-        .exists()
-        .withMessage('Zone id is required for the endpoint')
+        .optional()
         .isInt({ min: 1 })
         .withMessage('Zone id must be an integer >= 1')
 ];

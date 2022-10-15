@@ -5,78 +5,40 @@ const awaitHandlerFactory = require('../middleware/awaitHandlerFactory.middlewar
 const { Roles } = require('../utils/enums/roles.enum');
 const { checkValidation } = require('../middleware/validation.middleware');
 
-const zoneResourceController = require('../controllers/zoneResource.controller');
 const zoneController = require('../controllers/zone.controller');
-const { createZoneResourceSchema, updateZoneResourceSchema, getZoneResourceParamSchema } = require('../middleware/validators/zoneResourceValidator.middleware');
 const { createZoneSchema, updateZoneSchema, getZonesQuerySchema, getZoneParamSchema } = require('../middleware/validators/zoneValidator.middleware');
 
-router.get('/',
-    getZonesQuerySchema,
-    checkValidation,
-    awaitHandlerFactory(zoneController.getAllZones)
-); // localhost:3000/api/API_VERSION/zones
+router.route('/zones')
+    .get( // localhost:3000/api/API_VERSION/zones
+        getZonesQuerySchema,
+        checkValidation,
+        awaitHandlerFactory(zoneController.getAllZones)
+    )
+    .post( // localhost:3000/api/API_VERSION/zones
+        jwtUserAuth(Roles.Admin),
+        createZoneSchema,
+        checkValidation,
+        awaitHandlerFactory(zoneController.createZone)
+    );
 
-router.get('/:id',
-    getZoneParamSchema,
-    checkValidation,
-    awaitHandlerFactory(zoneController.getZoneById)
-); // localhost:3000/api/API_VERSION/zones/1
-
-router.post('/',
-    jwtUserAuth(Roles.Admin),
-    createZoneSchema,
-    checkValidation,
-    awaitHandlerFactory(zoneController.createZone)
-); // localhost:3000/api/API_VERSION/zones
-
-router.patch('/:id',
-    jwtUserAuth(Roles.Admin),
-    getZoneParamSchema,
-    updateZoneSchema,
-    checkValidation,
-    awaitHandlerFactory(zoneController.updateZone)
-); // localhost:3000/api/API_VERSION/zones/1 , using patch for partial update
-
-router.delete('/:id',
-    jwtUserAuth(Roles.Admin),
-    getZoneParamSchema,
-    checkValidation,
-    awaitHandlerFactory(zoneController.deleteZone)
-); // localhost:3000/api/API_VERSION/zones/1
-
-router.get('/:zone_id/resources',
-    getZoneResourceParamSchema,
-    checkValidation,
-    awaitHandlerFactory(zoneResourceController.getAllZoneResourcesByZoneId)
-); // localhost:3000/api/API_VERSION/zones/1/resources
-
-router.get('/:zone_id/resources/:id',
-    getZoneResourceParamSchema,
-    checkValidation,
-    awaitHandlerFactory(zoneResourceController.getZoneResourceById)
-); // localhost:3000/api/API_VERSION/zones/1/resources/2
-
-router.post('/:zone_id/resources/',
-    jwtUserAuth(Roles.Admin),
-    getZoneResourceParamSchema,
-    createZoneResourceSchema,
-    checkValidation,
-    awaitHandlerFactory(zoneResourceController.createZoneResource)
-); // localhost:3000/api/API_VERSION/zones/1/resources
-
-router.patch('/:zone_id/resources/:id',
-    jwtUserAuth(Roles.Admin),
-    getZoneResourceParamSchema,
-    updateZoneResourceSchema,
-    checkValidation,
-    awaitHandlerFactory(zoneResourceController.updateZoneResource)
-); // localhost:3000/api/API_VERSION/zones/1/resources/2 , using patch for partial update
-
-router.delete('/:zone_id/resources/:id',
-    jwtUserAuth(Roles.Admin),
-    getZoneResourceParamSchema,
-    checkValidation,
-    awaitHandlerFactory(zoneResourceController.deleteZoneResource)
-); // localhost:3000/api/API_VERSION/zones/1/resources/2
+router.route('/zones/:id')
+    .get( // localhost:3000/api/API_VERSION/zones/1
+        getZoneParamSchema,
+        checkValidation,
+        awaitHandlerFactory(zoneController.getZoneById)
+    )
+    .patch( // localhost:3000/api/API_VERSION/zones/1 , using patch for partial update
+        jwtUserAuth(Roles.Admin),
+        getZoneParamSchema,
+        updateZoneSchema,
+        checkValidation,
+        awaitHandlerFactory(zoneController.updateZone)
+    )
+    .delete( // localhost:3000/api/API_VERSION/zones/1
+        jwtUserAuth(Roles.Admin),
+        getZoneParamSchema,
+        checkValidation,
+        awaitHandlerFactory(zoneController.deleteZone)
+    );
 
 module.exports = router;

@@ -65,8 +65,7 @@ exports.updateUserSchema = [
 
 exports.getUserParamSchema = [
     param('id')
-        .exists()
-        .withMessage('User id is required for the endpoint')
+        .optional()
         .isInt({ min: 1 })
         .withMessage('User id must be an integer >= 1')
 ];

@@ -22,13 +22,11 @@ exports.updateZoneResourceSchema = [
     body('resource_url')
         .optional()
         .trim()
-        .bail()
         .isURL()
         .withMessage('Invalid Resource URL found'),
     body('type')
         .optional()
         .trim()
-        .bail()
         .isIn([...Object.values(ResourceTypes)])
         .withMessage('Invalid resource type'),
     body()

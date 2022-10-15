@@ -7,17 +7,17 @@ class UserController {
     };
 
     getUserById = async(req, res, next) => {
-        const response = await UserRepository.findOne(req.params.user_id);
+        const response = await UserRepository.findOne(req.params.id);
         res.send(response);
     };
 
     updateUser = async(req, res, next) => {
-        const response = await UserRepository.update(req.body, req.params.user_id);
+        const response = await UserRepository.update(req.body, req.params.id);
         res.send(response);
     };
 
     deleteUser = async(req, res, next) => {
-        const response = await UserRepository.delete(req.params.user_id);
+        const response = await UserRepository.delete(req.params.id);
         res.send(response);
     };
 }

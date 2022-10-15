@@ -45,8 +45,7 @@ exports.updateZoneTypeSchema = [
 
 exports.getZoneTypeParamSchema = [
     param('id')
-        .exists()
-        .withMessage('Zone type id is required for the endpoint')
+        .optional()
         .isInt({ min: 1 })
         .withMessage('Zone type id must be an integer >= 1')
 ];

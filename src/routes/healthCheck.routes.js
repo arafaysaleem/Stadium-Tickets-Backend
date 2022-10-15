@@ -4,8 +4,9 @@ const awaitHandlerFactory = require('../middleware/awaitHandlerFactory.middlewar
 
 const healthCheckController = require('../controllers/healthCheck.controller');
 
-router.get('/',
-    awaitHandlerFactory(healthCheckController.getHealthStatus)
-); // localhost:3000/api/API_VERSION/health
+router.route('/health')
+    .get( // localhost:3000/api/API_VERSION/health
+        awaitHandlerFactory(healthCheckController.getHealthStatus)
+    );
 
 module.exports = router;
