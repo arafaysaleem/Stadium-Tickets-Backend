@@ -55,10 +55,10 @@ exports.createZoneSchema = [
     body('seats')
         .optional()
         .isArray()
-        .withMessage('Blocked\\Missing seats must be an array like [{seat_number : 1, seat_row: \'A\', type: \'missing\'\\\'blocked\'},{...}]')
+        .withMessage('Disabled\\Missing seats must be an array like [{seat_number : 1, seat_row: \'A\', type: \'missing\'\\\'disabled\'},{...}]')
         .bail()
         .notEmpty()
-        .withMessage('Blocked\\Missing can\'t be empty'),
+        .withMessage('Disabled\\Missing can\'t be empty'),
     body('seats.*.seat_number')
         .exists()
         .withMessage('Seat number is required for each seat')

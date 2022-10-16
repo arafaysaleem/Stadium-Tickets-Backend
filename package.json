@@ -16,7 +16,7 @@
     "test:unit": "cross-env NODE_ENV=test DOTENV_FLOW_PATH=envs mocha test/unit/**/*.test.js --reporter-options reportDir=test/unit/report,reportFilename=unit-tests-report,json=false,autoOpen=true -r dotenv-flow/config",
     "test:intg": "cross-env NODE_ENV=test DOTENV_FLOW_PATH=envs mocha --timeout 20000 test/integration --reporter-options reportDir=test/integration/report,reportFilename=integration-tests-report,json=false,autoOpen=true -r dotenv-flow/config",
     "lint": "eslint src/",
-    "fixlint": "eslint src/ --fix"
+    "lint:fix": "eslint src/ --fix"
   },
   "nyc": {
     "exclude": "test",

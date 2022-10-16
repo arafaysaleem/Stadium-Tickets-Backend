@@ -69,5 +69,5 @@ exports.getZoneSeatParamSchema = [
     param('id')
         .optional()
         .isInt({ min: 1 })
-        .withMessage('ZoneSeat id must be an integer >= 1')
+        .withMessage('Zone seat id must be an integer >= 1')
 ];
