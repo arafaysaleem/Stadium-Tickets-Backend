@@ -28,7 +28,7 @@ class ParkingDisabledSpaceModel extends Model {
                     allowNull: false
                 }
             },
-            { sequelize, tableName: "zone_disabled_seats" }
+            { sequelize, tableName: "parking_disabled_spaces" }
         );
     }
 

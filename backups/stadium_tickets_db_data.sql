@@ -25,22 +25,6 @@ COPY public.event_bookings (booking_id, datetime, zone_id, event_id, total_amoun
 
 
 --
--- Data for Name: parking_floors; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.parking_floors (p_floor_id, floor_number_1, spaces_per_row, num_of_rows) FROM stdin;
-\.
-
-
---
--- Data for Name: parking_spaces; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.parking_spaces (p_space_id, space_number, p_floor_id, space_row, type) FROM stdin;
-\.
-
-
---
 -- Data for Name: booking_parking_spaces; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -61,6 +45,22 @@ COPY public.booking_seats (z_seat_id, booking_id, person_name, identification_nu
 --
 
 COPY public.events (event_id, name, poster_url, date, start_time, end_time, event_status, "createdAt", "updatedAt") FROM stdin;
+\.
+
+
+--
+-- Data for Name: parking_floors; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.parking_floors (p_floor_id, floor_number, spaces_per_row, num_of_rows, "createdAt", "updatedAt") FROM stdin;
+\.
+
+
+--
+-- Data for Name: parking_disabled_spaces; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.parking_disabled_spaces (p_space_id, space_number, space_row, type, p_floor_id, "createdAt", "updatedAt") FROM stdin;
 \.
 
 
@@ -96,6 +96,27 @@ COPY public.zones (zone_id, name, seats_per_row, num_of_rows, color_hex_code, z_
 
 
 --
+-- Data for Name: zone_disabled_seats; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.zone_disabled_seats (z_seat_id, seat_number, seat_row, type, zone_id, "createdAt", "updatedAt") FROM stdin;
+9	3	B	missing	6	2022-10-15 04:04:05.101+05	2022-10-15 04:04:05.101+05
+10	4	B	missing	6	2022-10-15 04:04:05.102+05	2022-10-15 04:04:05.102+05
+11	5	B	missing	6	2022-10-15 04:04:05.102+05	2022-10-15 04:04:05.102+05
+12	1	B	blocked	6	2022-10-15 04:04:05.103+05	2022-10-15 04:04:05.103+05
+13	6	D	blocked	6	2022-10-15 04:04:05.103+05	2022-10-15 04:04:05.103+05
+19	3	A	missing	8	2022-10-15 04:07:55.857+05	2022-10-15 04:07:55.857+05
+20	4	A	missing	8	2022-10-15 04:07:55.858+05	2022-10-15 04:07:55.858+05
+21	5	A	missing	8	2022-10-15 04:07:55.858+05	2022-10-15 04:07:55.858+05
+22	3	C	missing	8	2022-10-15 04:07:55.858+05	2022-10-15 04:07:55.858+05
+23	4	C	missing	8	2022-10-15 04:07:55.858+05	2022-10-15 04:07:55.858+05
+24	5	C	missing	8	2022-10-15 04:07:55.859+05	2022-10-15 04:07:55.859+05
+25	1	B	blocked	8	2022-10-15 04:07:55.859+05	2022-10-15 04:07:55.859+05
+26	6	D	blocked	8	2022-10-15 04:07:55.859+05	2022-10-15 04:07:55.859+05
+\.
+
+
+--
 -- Data for Name: zone_resources; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -108,31 +129,24 @@ COPY public.zone_resources (resource_id, resource_url, zone_id, type, "createdAt
 
 
 --
--- Data for Name: zone_seats; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.zone_seats (z_seat_id, seat_number, seat_row, type, zone_id, "createdAt", "updatedAt") FROM stdin;
-9	3	B	missing	6	2022-10-15 04:04:05.101+05	2022-10-15 04:04:05.101+05
-10	4	B	missing	6	2022-10-15 04:04:05.102+05	2022-10-15 04:04:05.102+05
-11	5	B	missing	6	2022-10-15 04:04:05.102+05	2022-10-15 04:04:05.102+05
-12	1	B	disabled	6	2022-10-15 04:04:05.103+05	2022-10-15 04:04:05.103+05
-13	6	D	disabled	6	2022-10-15 04:04:05.103+05	2022-10-15 04:04:05.103+05
-19	3	A	missing	8	2022-10-15 04:07:55.857+05	2022-10-15 04:07:55.857+05
-20	4	A	missing	8	2022-10-15 04:07:55.858+05	2022-10-15 04:07:55.858+05
-21	5	A	missing	8	2022-10-15 04:07:55.858+05	2022-10-15 04:07:55.858+05
-22	3	C	missing	8	2022-10-15 04:07:55.858+05	2022-10-15 04:07:55.858+05
-23	4	C	missing	8	2022-10-15 04:07:55.858+05	2022-10-15 04:07:55.858+05
-24	5	C	missing	8	2022-10-15 04:07:55.859+05	2022-10-15 04:07:55.859+05
-25	1	B	disabled	8	2022-10-15 04:07:55.859+05	2022-10-15 04:07:55.859+05
-26	6	D	disabled	8	2022-10-15 04:07:55.859+05	2022-10-15 04:07:55.859+05
-\.
-
-
---
 -- Name: events_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.events_event_id_seq', 1, false);
+
+
+--
+-- Name: parking_disabled_spaces_p_space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.parking_disabled_spaces_p_space_id_seq', 1, false);
+
+
+--
+-- Name: parking_floors_p_floor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.parking_floors_p_floor_id_seq', 1, false);
 
 
 --
@@ -143,17 +157,17 @@ SELECT pg_catalog.setval('public.users_user_id_seq', 1, true);
 
 
 --
+-- Name: zone_disabled_seats_z_seat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.zone_disabled_seats_z_seat_id_seq', 27, true);
+
+
+--
 -- Name: zone_resources_resource_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('public.zone_resources_resource_id_seq', 5, true);
-
-
---
--- Name: zone_seats_z_seat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.zone_seats_z_seat_id_seq', 27, true);
 
 
 --

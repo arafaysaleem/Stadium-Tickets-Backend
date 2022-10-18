@@ -35,6 +35,7 @@ class DbContext {
             this.models = models;
 
             // this.sequelize.sync({ force: true, alter: true, schema: "public" });
+            // this.sequelize.sync({ alter: true, schema: "public" });
         }
     }
 

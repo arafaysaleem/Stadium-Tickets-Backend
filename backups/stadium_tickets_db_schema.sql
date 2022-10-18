@@ -42,6 +42,18 @@ CREATE TYPE public.enum_events_event_status AS ENUM (
 ALTER TYPE public.enum_events_event_status OWNER TO postgres;
 
 --
+-- Name: enum_parking_disabled_spaces_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.enum_parking_disabled_spaces_type AS ENUM (
+    'missing',
+    'blocked'
+);
+
+
+ALTER TYPE public.enum_parking_disabled_spaces_type OWNER TO postgres;
+
+--
 -- Name: enum_users_role; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -54,6 +66,18 @@ CREATE TYPE public.enum_users_role AS ENUM (
 ALTER TYPE public.enum_users_role OWNER TO postgres;
 
 --
+-- Name: enum_zone_disabled_seats_type; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.enum_zone_disabled_seats_type AS ENUM (
+    'missing',
+    'blocked'
+);
+
+
+ALTER TYPE public.enum_zone_disabled_seats_type OWNER TO postgres;
+
+--
 -- Name: enum_zone_resources_type; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -64,80 +88,6 @@ CREATE TYPE public.enum_zone_resources_type AS ENUM (
 
 
 ALTER TYPE public.enum_zone_resources_type OWNER TO postgres;
-
---
--- Name: enum_zone_seats_type; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE public.enum_zone_seats_type AS ENUM (
-    'missing',
-    'disabled'
-);
-
-
-ALTER TYPE public.enum_zone_seats_type OWNER TO postgres;
-
---
--- Name: event_status; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE public.event_status AS ENUM (
-    'open',
-    'closed'
-);
-
-
-ALTER TYPE public.event_status OWNER TO postgres;
-
---
--- Name: parking_space_type; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE public.parking_space_type AS ENUM (
-    'missing',
-    'enabled',
-    'disabled'
-);
-
-
-ALTER TYPE public.parking_space_type OWNER TO postgres;
-
---
--- Name: resource_type; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE public.resource_type AS ENUM (
-    'video',
-    'image'
-);
-
-
-ALTER TYPE public.resource_type OWNER TO postgres;
-
---
--- Name: user_role; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE public.user_role AS ENUM (
-    'admin',
-    'moderator'
-);
-
-
-ALTER TYPE public.user_role OWNER TO postgres;
-
---
--- Name: zone_seat_type; Type: TYPE; Schema: public; Owner: postgres
---
-
-CREATE TYPE public.zone_seat_type AS ENUM (
-    'missing',
-    'enabled',
-    'disabled'
-);
-
-
-ALTER TYPE public.zone_seat_type OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -229,33 +179,81 @@ ALTER SEQUENCE public.events_event_id_seq OWNED BY public.events.event_id;
 
 
 --
+-- Name: parking_disabled_spaces; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.parking_disabled_spaces (
+    p_space_id integer NOT NULL,
+    space_number integer NOT NULL,
+    space_row character varying(255) NOT NULL,
+    type public.enum_parking_disabled_spaces_type,
+    p_floor_id integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.parking_disabled_spaces OWNER TO postgres;
+
+--
+-- Name: parking_disabled_spaces_p_space_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.parking_disabled_spaces_p_space_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.parking_disabled_spaces_p_space_id_seq OWNER TO postgres;
+
+--
+-- Name: parking_disabled_spaces_p_space_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.parking_disabled_spaces_p_space_id_seq OWNED BY public.parking_disabled_spaces.p_space_id;
+
+
+--
 -- Name: parking_floors; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.parking_floors (
     p_floor_id integer NOT NULL,
-    floor_number_1 integer NOT NULL,
+    floor_number integer NOT NULL,
     spaces_per_row integer NOT NULL,
-    num_of_rows integer NOT NULL
+    num_of_rows integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
 );
 
 
 ALTER TABLE public.parking_floors OWNER TO postgres;
 
 --
--- Name: parking_spaces; Type: TABLE; Schema: public; Owner: postgres
+-- Name: parking_floors_p_floor_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
-CREATE TABLE public.parking_spaces (
-    p_space_id integer NOT NULL,
-    space_number integer NOT NULL,
-    p_floor_id integer NOT NULL,
-    space_row character varying(2) NOT NULL,
-    type public.parking_space_type NOT NULL
-);
+CREATE SEQUENCE public.parking_floors_p_floor_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
 
 
-ALTER TABLE public.parking_spaces OWNER TO postgres;
+ALTER TABLE public.parking_floors_p_floor_id_seq OWNER TO postgres;
+
+--
+-- Name: parking_floors_p_floor_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.parking_floors_p_floor_id_seq OWNED BY public.parking_floors.p_floor_id;
+
 
 --
 -- Name: users; Type: TABLE; Schema: public; Owner: postgres
@@ -297,6 +295,45 @@ ALTER SEQUENCE public.users_user_id_seq OWNED BY public.users.user_id;
 
 
 --
+-- Name: zone_disabled_seats; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.zone_disabled_seats (
+    z_seat_id integer NOT NULL,
+    seat_number integer NOT NULL,
+    seat_row character varying(255) NOT NULL,
+    type public.enum_zone_disabled_seats_type,
+    zone_id integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.zone_disabled_seats OWNER TO postgres;
+
+--
+-- Name: zone_disabled_seats_z_seat_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.zone_disabled_seats_z_seat_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.zone_disabled_seats_z_seat_id_seq OWNER TO postgres;
+
+--
+-- Name: zone_disabled_seats_z_seat_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.zone_disabled_seats_z_seat_id_seq OWNED BY public.zone_disabled_seats.z_seat_id;
+
+
+--
 -- Name: zone_resources; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -332,45 +369,6 @@ ALTER TABLE public.zone_resources_resource_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.zone_resources_resource_id_seq OWNED BY public.zone_resources.resource_id;
-
-
---
--- Name: zone_seats; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.zone_seats (
-    z_seat_id integer NOT NULL,
-    seat_number integer NOT NULL,
-    seat_row character varying(255) NOT NULL,
-    type public.enum_zone_seats_type,
-    zone_id integer NOT NULL,
-    "createdAt" timestamp with time zone NOT NULL,
-    "updatedAt" timestamp with time zone NOT NULL
-);
-
-
-ALTER TABLE public.zone_seats OWNER TO postgres;
-
---
--- Name: zone_seats_z_seat_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.zone_seats_z_seat_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE public.zone_seats_z_seat_id_seq OWNER TO postgres;
-
---
--- Name: zone_seats_z_seat_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.zone_seats_z_seat_id_seq OWNED BY public.zone_seats.z_seat_id;
 
 
 --
@@ -458,6 +456,20 @@ ALTER TABLE ONLY public.events ALTER COLUMN event_id SET DEFAULT nextval('public
 
 
 --
+-- Name: parking_disabled_spaces p_space_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parking_disabled_spaces ALTER COLUMN p_space_id SET DEFAULT nextval('public.parking_disabled_spaces_p_space_id_seq'::regclass);
+
+
+--
+-- Name: parking_floors p_floor_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parking_floors ALTER COLUMN p_floor_id SET DEFAULT nextval('public.parking_floors_p_floor_id_seq'::regclass);
+
+
+--
 -- Name: users user_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -465,17 +477,17 @@ ALTER TABLE ONLY public.users ALTER COLUMN user_id SET DEFAULT nextval('public.u
 
 
 --
+-- Name: zone_disabled_seats z_seat_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zone_disabled_seats ALTER COLUMN z_seat_id SET DEFAULT nextval('public.zone_disabled_seats_z_seat_id_seq'::regclass);
+
+
+--
 -- Name: zone_resources resource_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.zone_resources ALTER COLUMN resource_id SET DEFAULT nextval('public.zone_resources_resource_id_seq'::regclass);
-
-
---
--- Name: zone_seats z_seat_id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.zone_seats ALTER COLUMN z_seat_id SET DEFAULT nextval('public.zone_seats_z_seat_id_seq'::regclass);
 
 
 --
@@ -498,6 +510,22 @@ ALTER TABLE ONLY public.zones ALTER COLUMN zone_id SET DEFAULT nextval('public.z
 
 ALTER TABLE ONLY public.events
     ADD CONSTRAINT events_pkey PRIMARY KEY (event_id);
+
+
+--
+-- Name: parking_disabled_spaces parking_disabled_spaces_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parking_disabled_spaces
+    ADD CONSTRAINT parking_disabled_spaces_pkey PRIMARY KEY (p_space_id);
+
+
+--
+-- Name: parking_floors parking_floors_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.parking_floors
+    ADD CONSTRAINT parking_floors_pkey PRIMARY KEY (p_floor_id);
 
 
 --
@@ -525,22 +553,6 @@ ALTER TABLE ONLY public.event_bookings
 
 
 --
--- Name: parking_floors pk_parking_floors; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.parking_floors
-    ADD CONSTRAINT pk_parking_floors PRIMARY KEY (p_floor_id);
-
-
---
--- Name: parking_spaces pk_parking_spaces; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.parking_spaces
-    ADD CONSTRAINT pk_parking_spaces PRIMARY KEY (p_space_id);
-
-
---
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -557,19 +569,19 @@ ALTER TABLE ONLY public.users
 
 
 --
+-- Name: zone_disabled_seats zone_disabled_seats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zone_disabled_seats
+    ADD CONSTRAINT zone_disabled_seats_pkey PRIMARY KEY (z_seat_id);
+
+
+--
 -- Name: zone_resources zone_resources_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.zone_resources
     ADD CONSTRAINT zone_resources_pkey PRIMARY KEY (resource_id);
-
-
---
--- Name: zone_seats zone_seats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.zone_seats
-    ADD CONSTRAINT zone_seats_pkey PRIMARY KEY (z_seat_id);
 
 
 --
@@ -631,26 +643,11 @@ CREATE INDEX fk_event_bookings_zone_id ON public.event_bookings USING btree (zon
 
 
 --
--- Name: fk_parking_spaces_p_floor_id; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX fk_parking_spaces_p_floor_id ON public.parking_spaces USING btree (p_floor_id);
-
-
---
 -- Name: booking_parking_spaces fk_booking_parking_spaces_booking_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.booking_parking_spaces
     ADD CONSTRAINT fk_booking_parking_spaces_booking_id FOREIGN KEY (booking_id) REFERENCES public.event_bookings(booking_id);
-
-
---
--- Name: booking_parking_spaces fk_booking_parking_spaces_p_space_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.booking_parking_spaces
-    ADD CONSTRAINT fk_booking_parking_spaces_p_space_id FOREIGN KEY (p_space_id) REFERENCES public.parking_spaces(p_space_id);
 
 
 --
@@ -662,11 +659,19 @@ ALTER TABLE ONLY public.booking_seats
 
 
 --
--- Name: parking_spaces fk_parking_spaces_p_floor_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: parking_disabled_spaces parking_disabled_spaces_p_floor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public.parking_spaces
-    ADD CONSTRAINT fk_parking_spaces_p_floor_id FOREIGN KEY (p_floor_id) REFERENCES public.parking_floors(p_floor_id);
+ALTER TABLE ONLY public.parking_disabled_spaces
+    ADD CONSTRAINT parking_disabled_spaces_p_floor_id_fkey FOREIGN KEY (p_floor_id) REFERENCES public.parking_floors(p_floor_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: zone_disabled_seats zone_disabled_seats_zone_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zone_disabled_seats
+    ADD CONSTRAINT zone_disabled_seats_zone_id_fkey FOREIGN KEY (zone_id) REFERENCES public.zones(zone_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
@@ -675,14 +680,6 @@ ALTER TABLE ONLY public.parking_spaces
 
 ALTER TABLE ONLY public.zone_resources
     ADD CONSTRAINT zone_resources_zone_id_fkey FOREIGN KEY (zone_id) REFERENCES public.zones(zone_id) ON UPDATE CASCADE ON DELETE CASCADE;
-
-
---
--- Name: zone_seats zone_seats_zone_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.zone_seats
-    ADD CONSTRAINT zone_seats_zone_id_fkey FOREIGN KEY (zone_id) REFERENCES public.zones(zone_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
