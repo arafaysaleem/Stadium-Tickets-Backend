@@ -6,8 +6,10 @@ class DbContext {
     get Users(){ return this.models.Users; }
     get Events(){ return this.models.Events; }
     get Zones(){ return this.models.Zones; }
+    get ParkingFloors(){ return this.models.ParkingFloors; }
     get ZoneResources(){ return this.models.ZoneResources; }
-    get ZoneSeats(){ return this.models.ZoneSeats; }
+    get ZoneDisabledSeats(){ return this.models.ZoneDisabledSeats; }
+    get ParkingDisabledSpaces(){ return this.models.ParkingDisabledSpaces; }
     get ZoneTypes(){ return this.models.ZoneTypes; }
 
     init({ host, port, user, password, database, dialect, connLimit, paramLogging }) {
@@ -37,28 +39,20 @@ class DbContext {
     }
 
     #initModels = (sequelize) => {
-        const EventModel = require("./models/event.model");
-        const UserModel = require("./models/user.model");
-        const ZoneModel = require("./models/zone.model");
-        const ZoneSeatModel = require("./models/zoneSeat.model");
-        const ZoneResourceModel = require("./models/zoneResource.model");
-        const ZoneTypeModel = require("./models/zoneType.model");
-
-        EventModel.init(sequelize, DataTypes);
-        UserModel.init(sequelize, DataTypes);
-        ZoneModel.init(sequelize, DataTypes);
-        ZoneSeatModel.init(sequelize, DataTypes);
-        ZoneResourceModel.init(sequelize, DataTypes);
-        ZoneTypeModel.init(sequelize, DataTypes);
-
         const models = {
-            Events: EventModel,
-            Users: UserModel,
-            Zones: ZoneModel,
-            ZoneSeats: ZoneSeatModel,
-            ZoneResources: ZoneResourceModel,
-            ZoneTypes: ZoneTypeModel
+            Events: require("./models/event.model"),
+            Users: require("./models/user.model"),
+            Zones: require("./models/zone.model"),
+            ParkingFloors: require("./models/parkingFloor.model"),
+            ZoneDisabledSeats: require("./models/zoneDisabledSeat.model"),
+            ParkingDisabledSpaces: require("./models/parkingDisabledSpace.model"),
+            ZoneResources: require("./models/zoneResource.model"),
+            ZoneTypes: require("./models/zoneType.model")
         };
+
+        Object.values(models).forEach(model => {
+            model.init(sequelize, DataTypes);
+        });
 
         return models;
     };
