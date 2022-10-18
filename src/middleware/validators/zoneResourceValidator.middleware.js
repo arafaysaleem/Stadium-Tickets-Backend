@@ -1,5 +1,5 @@
 const { body, param } = require('express-validator');
-const { ResourceTypes } = require('../../utils/enums/resourceType.enum');
+const { ResourceType } = require('../../utils/enums/resourceType.enum');
 
 exports.createZoneResourceSchema = [
     body('resource_url')
@@ -14,7 +14,7 @@ exports.createZoneResourceSchema = [
         .exists()
         .withMessage('Type is required for each resource')
         .bail()
-        .isIn([...Object.values(ResourceTypes)])
+        .isIn([...Object.values(ResourceType)])
         .withMessage('Invalid resource type')
 ];
 
@@ -27,7 +27,7 @@ exports.updateZoneResourceSchema = [
     body('type')
         .optional()
         .trim()
-        .isIn([...Object.values(ResourceTypes)])
+        .isIn([...Object.values(ResourceType)])
         .withMessage('Invalid resource type'),
     body()
         .custom(value => {

@@ -1,4 +1,4 @@
-module.exports.Days = {
+module.exports.Day = {
     Monday: 'monday',
     Tuesday: 'tuesday',
     Wednesday: 'wednesday',

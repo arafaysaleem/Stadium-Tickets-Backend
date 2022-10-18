@@ -39,7 +39,7 @@ class ZoneModel extends Model {
     static associate(models) {
         this.Type = this.belongsTo(models.ZoneTypeModel, { foreignKey: 'z_type_id', as: 'type' });
         this.Resources = this.hasMany(models.ZoneResourceModel, { foreignKey: 'zone_id', as: 'resources' });
-        this.Seats = this.hasMany(models.ZoneSeatModel, { foreignKey: 'zone_id', as: 'seats' });
+        this.DisabledSeats = this.hasMany(models.ZoneDisabledSeatModel, { foreignKey: 'zone_id', as: 'disabled_seats' });
     }
 
     static findAllByFilters(filters){
@@ -54,8 +54,8 @@ class ZoneModel extends Model {
                     attributes: ['z_type_id', 'type', 'price']
                 },
                 {
-                    association: this.Seats,
-                    as: this.Seats.as,
+                    association: this.DisabledSeats,
+                    as: this.DisabledSeats.as,
                     attributes: ['z_seat_id', 'seat_number', 'seat_row', 'type']
                 }
             ]
@@ -74,8 +74,8 @@ class ZoneModel extends Model {
                         attributes: ['z_type_id', 'type', 'price']
                     },
                     {
-                        association: this.Seats,
-                        as: this.Seats.as,
+                        association: this.DisabledSeats,
+                        as: this.DisabledSeats.as,
                         attributes: ['z_seat_id', 'seat_number', 'seat_row', 'type']
                     }
                 ]
@@ -93,8 +93,8 @@ class ZoneModel extends Model {
                 raw: true,
                 include: [
                     {
-                        association: this.Seats,
-                        as: this.Seats.as
+                        association: this.DisabledSeats,
+                        as: this.DisabledSeats.as
                     },
                     {
                         association: this.Resources,

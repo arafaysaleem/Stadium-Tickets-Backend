@@ -1,5 +1,5 @@
 const { body, param } = require('express-validator');
-const { Roles } = require('../../utils/enums/roles.enum');
+const { Role } = require('../../utils/enums/role.enum');
 const EmailValidator = require('deep-email-validator');
 
 exports.createUserSchema = [
@@ -32,7 +32,7 @@ exports.createUserSchema = [
     body('role')
         .trim()
         .exists()
-        .isIn([...Object.values(Roles)])
+        .isIn([...Object.values(Role)])
         .withMessage('Invalid Role type')
 ];
 

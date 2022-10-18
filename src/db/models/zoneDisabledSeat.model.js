@@ -1,7 +1,7 @@
 const { Model } = require('sequelize');
-const { SeatTypes } = require('../../utils/enums/seatTypes.enum');
+const { DisabledSeatType } = require('../../utils/enums/disabledSeatType.enum');
 
-class ZoneSeatModel extends Model {
+class ZoneDisabledSeatModel extends Model {
     static init(sequelize, DataTypes) {
         return super.init(
             {
@@ -21,14 +21,14 @@ class ZoneSeatModel extends Model {
                 },
                 type: {
                     type: DataTypes.ENUM,
-                    values: [...Object.values(SeatTypes)]
+                    values: [...Object.values(DisabledSeatType)]
                 },
                 zone_id: {
                     type: DataTypes.INTEGER,
                     allowNull: false
                 }
             },
-            { sequelize, tableName: "zone_seats" }
+            { sequelize, tableName: "zone_disabled_seats" }
         );
     }
 
@@ -57,4 +57,4 @@ class ZoneSeatModel extends Model {
     }
 }
 
-module.exports = ZoneSeatModel;
+module.exports = ZoneDisabledSeatModel;

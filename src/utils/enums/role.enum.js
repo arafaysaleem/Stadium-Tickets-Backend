@@ -1,4 +1,4 @@
-module.exports.Roles = {
+module.exports.Role = {
     Admin: 'admin',
     Moderator: 'moderator'
 };

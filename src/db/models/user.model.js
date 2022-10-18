@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const { Roles } = require('../../utils/enums/roles.enum');
+const { Role } = require('../../utils/enums/role.enum');
 
 class UserModel extends Model {
     static init(sequelize, DataTypes) {
@@ -25,7 +25,7 @@ class UserModel extends Model {
                 },
                 role: {
                     type: DataTypes.ENUM,
-                    values: [...Object.values(Roles)]
+                    values: [...Object.values(Role)]
                 }
             },
             { sequelize, tableName: "users" }

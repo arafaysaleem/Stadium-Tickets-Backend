@@ -1,4 +1,4 @@
-module.exports.RequestMethods = {
+module.exports.RequestMethod = {
     GET: 'GET',
     POST: 'POST',
     PATCH: 'PATCH',

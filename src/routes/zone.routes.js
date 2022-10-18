@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { jwtUserAuth } = require('../middleware/auth.middleware');
 const awaitHandlerFactory = require('../middleware/awaitHandlerFactory.middleware');
-const { Roles } = require('../utils/enums/roles.enum');
+const { Role } = require('../utils/enums/role.enum');
 const { checkValidation } = require('../middleware/validation.middleware');
 
 const zoneController = require('../controllers/zone.controller');
@@ -15,7 +15,7 @@ router.route('/zones')
         awaitHandlerFactory(zoneController.getAllZones)
     )
     .post( // localhost:3000/api/API_VERSION/zones
-        jwtUserAuth(Roles.Admin),
+        jwtUserAuth(Role.Admin),
         createZoneSchema,
         checkValidation,
         awaitHandlerFactory(zoneController.createZone)
@@ -28,14 +28,14 @@ router.route('/zones/:id')
         awaitHandlerFactory(zoneController.getZoneById)
     )
     .patch( // localhost:3000/api/API_VERSION/zones/1 , using patch for partial update
-        jwtUserAuth(Roles.Admin),
+        jwtUserAuth(Role.Admin),
         getZoneParamSchema,
         updateZoneSchema,
         checkValidation,
         awaitHandlerFactory(zoneController.updateZone)
     )
     .delete( // localhost:3000/api/API_VERSION/zones/1
-        jwtUserAuth(Roles.Admin),
+        jwtUserAuth(Role.Admin),
         getZoneParamSchema,
         checkValidation,
         awaitHandlerFactory(zoneController.deleteZone)

@@ -1,4 +1,4 @@
-module.exports.ResourceTypes = {
+module.exports.ResourceType = {
     Image: 'image',
     Video: 'video'
 };

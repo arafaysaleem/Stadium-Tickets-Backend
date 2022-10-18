@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { jwtUserAuth } = require('../middleware/auth.middleware');
 const awaitHandlerFactory = require('../middleware/awaitHandlerFactory.middleware');
-const { Roles } = require('../utils/enums/roles.enum');
+const { Role } = require('../utils/enums/role.enum');
 const { checkValidation } = require('../middleware/validation.middleware');
 
 const zoneTypeController = require('../controllers/zoneType.controller');
@@ -13,7 +13,7 @@ router.route('/zone-types')
         awaitHandlerFactory(zoneTypeController.getAllZoneTypes)
     )
     .post( // localhost:3000/api/API_VERSION/zone-types
-        jwtUserAuth(Roles.Admin),
+        jwtUserAuth(Role.Admin),
         getZoneTypeParamSchema,
         createZoneTypeSchema,
         checkValidation,
@@ -27,14 +27,14 @@ router.route('/zone-types/:id')
         awaitHandlerFactory(zoneTypeController.getZoneTypeById)
     )
     .patch( // localhost:3000/api/API_VERSION/zone-types/1 , using patch for partial update
-        jwtUserAuth(Roles.Admin),
+        jwtUserAuth(Role.Admin),
         getZoneTypeParamSchema,
         updateZoneTypeSchema,
         checkValidation,
         awaitHandlerFactory(zoneTypeController.updateZoneType)
     )
     .delete( // localhost:3000/api/API_VERSION/zone-types/1
-        jwtUserAuth(Roles.Admin),
+        jwtUserAuth(Role.Admin),
         getZoneTypeParamSchema,
         checkValidation,
         awaitHandlerFactory(zoneTypeController.deleteZoneType)

@@ -1,4 +1,4 @@
-module.exports.EventTypes = {
+module.exports.EventType = {
     Open: 'open',
     Closed: 'closed'
 };

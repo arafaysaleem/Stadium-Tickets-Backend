@@ -1,7 +1,7 @@
 const { body, param } = require('express-validator');
-const { SeatTypes } = require('../../utils/enums/seatTypes.enum');
+const { DisabledSeatType } = require('../../utils/enums/disabledSeatType.enum');
 
-exports.createZoneSeatSchema = [
+exports.createZoneDisabledSeatSchema = [
     body('seat_number')
         .exists()
         .withMessage('Seat number is required for each seat')
@@ -24,11 +24,11 @@ exports.createZoneSeatSchema = [
         .exists()
         .withMessage('Type is required for each seat')
         .bail()
-        .isIn([...Object.values(SeatTypes)])
+        .isIn([...Object.values(DisabledSeatType)])
         .withMessage('Invalid seat type')
 ];
 
-exports.updateZoneSeatSchema = [
+exports.updateZoneDisabledSeatSchema = [
     body('seat_number')
         .optional()
         .isInt()
@@ -45,7 +45,7 @@ exports.updateZoneSeatSchema = [
     body('type')
         .optional()
         .trim()
-        .isIn([...Object.values(SeatTypes)])
+        .isIn([...Object.values(DisabledSeatType)])
         .withMessage('Invalid seat type'),
     body()
         .custom(value => {
@@ -60,7 +60,7 @@ exports.updateZoneSeatSchema = [
         .withMessage('Invalid updates!')
 ];
 
-exports.getZoneSeatParamSchema = [
+exports.getZoneDisabledSeatParamSchema = [
     param('zone_id')
         .exists()
         .withMessage('Zone id is required for the endpoint')
@@ -69,5 +69,5 @@ exports.getZoneSeatParamSchema = [
     param('id')
         .optional()
         .isInt({ min: 1 })
-        .withMessage('Zone seat id must be an integer >= 1')
+        .withMessage('Zone disabled seat id must be an integer >= 1')
 ];

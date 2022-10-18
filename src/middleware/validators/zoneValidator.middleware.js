@@ -1,6 +1,6 @@
 const { body, query, param } = require('express-validator');
-const { ResourceTypes } = require('../../utils/enums/resourceType.enum');
-const { SeatTypes } = require('../../utils/enums/seatTypes.enum');
+const { ResourceType } = require('../../utils/enums/resourceType.enum');
+const { DisabledSeatType } = require('../../utils/enums/disabledSeatType.enum');
 
 exports.createZoneSchema = [
     body('name')
@@ -50,22 +50,22 @@ exports.createZoneSchema = [
         .exists()
         .withMessage('Resource type is required for each resource')
         .bail()
-        .isIn([...Object.values(ResourceTypes)])
+        .isIn([...Object.values(ResourceType)])
         .withMessage('Invalid Resource type'),
-    body('seats')
+    body('disabled_seats')
         .optional()
         .isArray()
-        .withMessage('Disabled\\Missing seats must be an array like [{seat_number : 1, seat_row: \'A\', type: \'missing\'\\\'disabled\'},{...}]')
+        .withMessage('Blocked\\Missing seats must be an array like [{seat_number : 1, seat_row: \'A\', type: \'missing\'\\\'blocked\'},{...}]')
         .bail()
         .notEmpty()
-        .withMessage('Disabled\\Missing can\'t be empty'),
-    body('seats.*.seat_number')
+        .withMessage('Blocked\\Missing can\'t be empty'),
+    body('disabled_seats.*.seat_number')
         .exists()
         .withMessage('Seat number is required for each seat')
         .bail()
         .isInt()
         .withMessage('Should be an integer'),
-    body('seats.*.seat_row')
+    body('disabled_seats.*.seat_row')
         .trim()
         .exists()
         .withMessage('Seat row is required for each seat')
@@ -76,12 +76,12 @@ exports.createZoneSchema = [
         .isAlpha()
         .withMessage('Must be alphabetic')
         .toUpperCase(),
-    body('seats.*.type')
+    body('disabled_seats.*.type')
         .trim()
         .exists()
         .withMessage('Seat type is required for each seat')
         .bail()
-        .isIn([...Object.values(SeatTypes)])
+        .isIn([...Object.values(DisabledSeatType)])
         .withMessage('Invalid Seat type')
 ];
 
