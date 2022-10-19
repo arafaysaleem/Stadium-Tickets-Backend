@@ -6,6 +6,8 @@ const zoneTypeRouter = require('../routes/zoneType.routes');
 const zoneRouter = require('../routes/zone.routes');
 const zoneResourceRouter = require('../routes/zoneResource.routes');
 const zoneDisabledSeatRouter = require('../routes/zoneDisabledSeat.routes');
+const parkingFloorRouter = require('../routes/parkingFloor.routes');
+const parkingDisabledSpaceRouter = require('../routes/parkingDisabledSpace.routes');
 const { apiKeyAuth } = require('../middleware/auth.middleware');
 
 class RoutesLoader {
@@ -22,6 +24,8 @@ class RoutesLoader {
         app.use(baseRoute, zoneResourceRouter);
         app.use(baseRoute, zoneDisabledSeatRouter);
         app.use(baseRoute, zoneTypeRouter);
+        app.use(baseRoute, parkingFloorRouter);
+        app.use(baseRoute, parkingDisabledSpaceRouter);
     }
 }
 
