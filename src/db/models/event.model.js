@@ -1,5 +1,5 @@
 const { Model } = require('sequelize');
-const { EventType } = require('../../utils/enums/eventType.enum');
+const { EventStatus } = require('../../utils/enums/eventStatus.enum');
 
 class EventModel extends Model {
     static init(sequelize, DataTypes) {
@@ -33,11 +33,31 @@ class EventModel extends Model {
                 },
                 event_status: {
                     type: DataTypes.ENUM,
-                    values: [...Object.values(EventType)]
+                    values: [...Object.values(EventStatus)]
                 }
             },
             { sequelize, tableName: "events" }
         );
+    }
+
+    static findAllByFilters(filters){
+        return this.findAll({ where: {...filters}, raw: true });
+    }
+
+    static findById(event_id){
+        return this.findByPk(event_id, { raw: true });
+    }
+
+    static updateById(body, event_id){
+        return this.update(body, { where: { event_id }, raw: true });
+    }
+
+    static createNew(body){
+        return this.create(body, { raw: true });
+    }
+
+    static deleteById(event_id){
+        return this.destroy({ where: { event_id }, raw: true });
     }
 }
 

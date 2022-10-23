@@ -4,6 +4,7 @@ const authRouter = require('../routes/auth.routes');
 const userRouter = require('../routes/user.routes');
 const zoneTypeRouter = require('../routes/zoneType.routes');
 const zoneRouter = require('../routes/zone.routes');
+const eventRouter = require('../routes/event.routes');
 const zoneResourceRouter = require('../routes/zoneResource.routes');
 const zoneDisabledSeatRouter = require('../routes/zoneDisabledSeat.routes');
 const parkingFloorRouter = require('../routes/parkingFloor.routes');
@@ -26,6 +27,7 @@ class RoutesLoader {
         app.use(baseRoute, zoneTypeRouter);
         app.use(baseRoute, parkingFloorRouter);
         app.use(baseRoute, parkingDisabledSpaceRouter);
+        app.use(baseRoute, eventRouter);
     }
 }
 
