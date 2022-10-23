@@ -70,7 +70,7 @@ exports.updateParkingFloorSchema = [
         .withMessage('Please provide required fields to update')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['name', 'spaces_per_row', 'num_of_rows'];
+            const allowUpdates = ['floor_number', 'spaces_per_row', 'num_of_rows'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')

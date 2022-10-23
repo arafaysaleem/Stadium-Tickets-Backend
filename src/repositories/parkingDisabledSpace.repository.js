@@ -15,8 +15,8 @@ class ParkingDisabledSpaceRepository {
         return successResponse(parkingDisabledSpacesList);
     };
 
-    findOne = async(id) => {
-        const parkingDisabledSpace = await DbContext.ParkingDisabledSpaces.findById(id);
+    findOne = async(id, p_floor_id) => {
+        const parkingDisabledSpace = await DbContext.ParkingDisabledSpaces.findById(id, p_floor_id);
         
         if (!parkingDisabledSpace) {
             throw new NotFoundException('Parking disabled space not found');
@@ -37,8 +37,8 @@ class ParkingDisabledSpaceRepository {
         return successResponse(result, 'Parking disabled space was created!');
     };
 
-    update = async(body, id) => {
-        const result = await DbContext.ParkingDisabledSpaces.updateById(body, id);
+    update = async(body, id, p_floor_id) => {
+        const result = await DbContext.ParkingDisabledSpaces.updateById(body, id, p_floor_id);
 
         if (!result) {
             throw new UnexpectedException('Something went wrong');
@@ -55,8 +55,8 @@ class ParkingDisabledSpaceRepository {
         return successResponse(responseBody, 'Parking disabled space updated successfully');
     };
 
-    delete = async(id) => {
-        const result = await DbContext.ParkingDisabledSpaces.deleteById(id);
+    delete = async(id, p_floor_id) => {
+        const result = await DbContext.ParkingDisabledSpaces.deleteById(id, p_floor_id);
         if (!result) {
             throw new NotFoundException('Parking disabled space not found');
         }

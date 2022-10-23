@@ -15,8 +15,8 @@ class ZoneDisabledSeatRepository {
         return successResponse(zoneDisabledSeatsList);
     };
 
-    findOne = async(id) => {
-        const zoneDisabledSeat = await DbContext.ZoneDisabledSeats.findById(id);
+    findOne = async(id, zone_id) => {
+        const zoneDisabledSeat = await DbContext.ZoneDisabledSeats.findById(id, zone_id);
         
         if (!zoneDisabledSeat) {
             throw new NotFoundException('Zone disabled seat not found');
@@ -37,8 +37,8 @@ class ZoneDisabledSeatRepository {
         return successResponse(result, 'Zone disabled seat was created!');
     };
 
-    update = async(body, id) => {
-        const result = await DbContext.ZoneDisabledSeats.updateById(body, id);
+    update = async(body, id, zone_id) => {
+        const result = await DbContext.ZoneDisabledSeats.updateById(body, id, zone_id);
 
         if (!result) {
             throw new UnexpectedException('Something went wrong');
@@ -55,8 +55,8 @@ class ZoneDisabledSeatRepository {
         return successResponse(responseBody, 'Zone disabled seat updated successfully');
     };
 
-    delete = async(id) => {
-        const result = await DbContext.ZoneDisabledSeats.deleteById(id);
+    delete = async(id, zone_id) => {
+        const result = await DbContext.ZoneDisabledSeats.deleteById(id, zone_id);
         if (!result) {
             throw new NotFoundException('Zone disabled seat not found');
         }

@@ -40,20 +40,26 @@ class ZoneDisabledSeatModel extends Model {
         return this.findAll({ where: {...filters}, raw: true });
     }
 
-    static findById(id){
-        return this.findByPk(id, { raw: true });
+    static findById(id, zone_id){
+        return this.findOne({
+            where: {
+                z_seat_id: id,
+                zone_id
+            },
+            raw: true
+        });
     }
 
     static createNew(body){
         return this.create(body, { raw: true });
     }
     
-    static updateById(body, id){
-        return this.update(body, { where: { z_seat_id: id }, raw: true });
+    static updateById(body, id, zone_id){
+        return this.update(body, { where: { z_seat_id: id, zone_id }, raw: true });
     }
 
-    static deleteById(id){
-        return this.destroy({ where: { z_seat_id: id }, raw: true });
+    static deleteById(id, zone_id){
+        return this.destroy({ where: { z_seat_id: id, zone_id }, raw: true });
     }
 }
 

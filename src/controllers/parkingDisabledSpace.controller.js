@@ -7,7 +7,7 @@ class ParkingDisabledSpaceController {
     };
 
     getParkingDisabledSpaceById = async(req, res, next) => {
-        const response = await ParkingDisabledSpaceRepository.findOne(req.params.id);
+        const response = await ParkingDisabledSpaceRepository.findOne(req.params.id, req.params.p_floor_id);
         res.send(response);
     };
 
@@ -17,12 +17,12 @@ class ParkingDisabledSpaceController {
     };
 
     updateParkingDisabledSpace = async(req, res, next) => {
-        const response = await ParkingDisabledSpaceRepository.update(req.body, req.params.id);
+        const response = await ParkingDisabledSpaceRepository.update(req.body, req.params.id, req.params.p_floor_id);
         res.send(response);
     };
 
     deleteParkingDisabledSpace = async(req, res, next) => {
-        const response = await ParkingDisabledSpaceRepository.delete(req.params.id);
+        const response = await ParkingDisabledSpaceRepository.delete(req.params.id, req.params.p_floor_id);
         res.send(response);
     };
 }

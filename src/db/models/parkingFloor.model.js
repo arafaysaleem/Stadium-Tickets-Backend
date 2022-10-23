@@ -27,21 +27,11 @@ class ParkingFloorModel extends Model {
     }
 
     static associate(models) {
-        this.ParkingDisabledSpaces = this.hasMany(models.ParkingDisabledSpaceModel, { foreignKey: 'p_floor_id', as: 'disabled_spaces' });
+        this.DisabledSpaces = this.hasMany(models.ParkingDisabledSpaceModel, { foreignKey: 'p_floor_id', as: 'disabled_spaces' });
     }
 
     static findAllByFilters(filters){
-        return this.findAll({
-            where: {...filters},
-            // include: { all: true, nested: true }, // includes all association for this model and their nested models (recursively)
-            include: [
-                {
-                    association: this.DisabledSpaces,
-                    as: this.DisabledSpaces.as,
-                    attributes: ['p_space_id', 'space_number', 'space_row', 'type']
-                }
-            ]
-        });
+        return this.findAll({ where: {...filters} });
     }
 
     static findById(id){

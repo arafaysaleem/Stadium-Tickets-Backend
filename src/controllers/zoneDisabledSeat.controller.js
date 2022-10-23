@@ -7,7 +7,7 @@ class ZoneDisabledSeatController {
     };
 
     getZoneDisabledSeatById = async(req, res, next) => {
-        const response = await ZoneDisabledSeatRepository.findOne(req.params.id);
+        const response = await ZoneDisabledSeatRepository.findOne(req.params.id, req.params.zone_id);
         res.send(response);
     };
 
@@ -17,12 +17,12 @@ class ZoneDisabledSeatController {
     };
 
     updateZoneDisabledSeat = async(req, res, next) => {
-        const response = await ZoneDisabledSeatRepository.update(req.body, req.params.id);
+        const response = await ZoneDisabledSeatRepository.update(req.body, req.params.id, req.params.zone_id);
         res.send(response);
     };
 
     deleteZoneDisabledSeat = async(req, res, next) => {
-        const response = await ZoneDisabledSeatRepository.delete(req.params.id);
+        const response = await ZoneDisabledSeatRepository.delete(req.params.id, req.params.zone_id);
         res.send(response);
     };
 }

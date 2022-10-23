@@ -40,20 +40,26 @@ class ParkingDisabledSpaceModel extends Model {
         return this.findAll({ where: {...filters}, raw: true });
     }
 
-    static findById(id){
-        return this.findByPk(id, { raw: true });
+    static findById(id, p_floor_id){
+        return this.findOne({
+            where: {
+                p_space_id: id,
+                p_floor_id
+            },
+            raw: true
+        });
     }
 
     static createNew(body){
         return this.create(body, { raw: true });
     }
     
-    static updateById(body, id){
-        return this.update(body, { where: { p_space_id: id }, raw: true });
+    static updateById(body, id, p_floor_id){
+        return this.update(body, { where: { p_space_id: id, p_floor_id }, raw: true });
     }
 
-    static deleteById(id){
-        return this.destroy({ where: { p_space_id: id }, raw: true });
+    static deleteById(id, p_floor_id){
+        return this.destroy({ where: { p_space_id: id, p_floor_id }, raw: true });
     }
 }
 
