@@ -557,6 +557,14 @@ COPY public.events (event_id, name, poster_url, date, start_time, end_time, even
 --
 
 COPY public.parking_disabled_spaces (p_space_id, space_number, space_row, type, p_floor_id, "createdAt", "updatedAt") FROM stdin;
+1	3	A	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
+2	4	A	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
+3	5	A	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
+4	3	C	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
+5	4	C	missing	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
+6	5	C	missing	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
+7	1	B	blocked	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
+8	6	D	blocked	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
 \.
 
 
@@ -565,6 +573,9 @@ COPY public.parking_disabled_spaces (p_space_id, space_number, space_row, type, 
 --
 
 COPY public.parking_floors (p_floor_id, floor_number, spaces_per_row, num_of_rows, "createdAt", "updatedAt") FROM stdin;
+1	1	6	7	2022-10-23 15:17:57.506+05	2022-10-23 15:17:57.506+05
+3	2	16	6	2022-10-23 15:24:22.792+05	2022-10-23 15:36:17.515+05
+4	2	12	7	2022-10-23 15:44:14.073+05	2022-10-23 15:44:14.073+05
 \.
 
 
@@ -643,14 +654,14 @@ SELECT pg_catalog.setval('public.events_event_id_seq', 1, false);
 -- Name: parking_disabled_spaces_p_space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.parking_disabled_spaces_p_space_id_seq', 1, false);
+SELECT pg_catalog.setval('public.parking_disabled_spaces_p_space_id_seq', 10, true);
 
 
 --
 -- Name: parking_floors_p_floor_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.parking_floors_p_floor_id_seq', 1, false);
+SELECT pg_catalog.setval('public.parking_floors_p_floor_id_seq', 4, true);
 
 
 --
