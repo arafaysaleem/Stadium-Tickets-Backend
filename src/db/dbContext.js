@@ -11,6 +11,9 @@ class DbContext {
     get ZoneDisabledSeats(){ return this.models.ZoneDisabledSeats; }
     get ParkingDisabledSpaces(){ return this.models.ParkingDisabledSpaces; }
     get ZoneTypes(){ return this.models.ZoneTypes; }
+    get EventBookings(){ return this.models.EventBookings; }
+    get BookingSeats(){ return this.models.BookingSeats; }
+    get BookingParkingSpaces(){ return this.models.BookingParkingSpaces; }
 
     init({ host, port, user, password, database, dialect, connLimit, paramLogging }) {
         if (!this.sequelize){
@@ -48,7 +51,10 @@ class DbContext {
             ZoneDisabledSeats: require("./models/zoneDisabledSeat.model"),
             ParkingDisabledSpaces: require("./models/parkingDisabledSpace.model"),
             ZoneResources: require("./models/zoneResource.model"),
-            ZoneTypes: require("./models/zoneType.model")
+            ZoneTypes: require("./models/zoneType.model"),
+            EventBookings: require('./models/eventBooking.model'),
+            BookingSeats: require('./models/bookingSeat.model'),
+            BookingParkingSpaces: require('./models/bookingParkingSpace.model')
         };
 
         Object.values(models).forEach(model => {

@@ -1,8 +1,14 @@
 const ParkingFloorRepository = require('../repositories/parkingFloor.repository');
+const BookingParkingSpaceRepository = require('../repositories//bookingParkingSpace.repository');
 
 class ParkingFloorController {
     getAllParkingFloors = async(req, res, _) => {
         const response = await ParkingFloorRepository.findAll();
+        res.send(response);
+    };
+
+    getAllBookedSpacesForFloor = async(req, res, next) => {
+        const response = await BookingParkingSpaceRepository.findAllForParkingFloor(req.params.id);
         res.send(response);
     };
 

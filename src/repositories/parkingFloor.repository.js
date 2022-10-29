@@ -24,7 +24,6 @@ class ParkingFloorRepository {
 
         return successResponse(parkingFloor);
     };
-
     
     create = async(body) => {
         const result = await DbContext.ParkingFloors.createNew(body);

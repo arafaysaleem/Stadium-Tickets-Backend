@@ -1,6 +1,7 @@
 const { body, query, param } = require('express-validator');
 const { ResourceType } = require('../../utils/enums/resourceType.enum');
 const { DisabledSeatType } = require('../../utils/enums/disabledSeatType.enum');
+const ZoneModel = require('../../db/models/zone.model');
 
 exports.createZoneSchema = [
     body('name')
@@ -33,39 +34,39 @@ exports.createZoneSchema = [
         .withMessage('Zone type ID is required for the resource')
         .isInt({ min: 1 })
         .withMessage('Invalid Zone type ID found'),
-    body('resources')
+    body(ZoneModel.Resources.as)
         .optional()
         .isArray()
         .withMessage('Resources must be an array like [{resource_url : "www.some-media.com", type: \'image\'},{...}]')
         .bail(),
-    body('resources.*.resource_url')
+    body(`${ZoneModel.Resources.as}.*.resource_url`)
         .trim()
         .exists()
         .withMessage('URL is required for each resource')
         .bail()
         .isURL()
         .withMessage('Invalid resource url found'),
-    body('resources.*.type')
+    body(`${ZoneModel.Resources.as}.*.type`)
         .trim()
         .exists()
         .withMessage('Resource type is required for each resource')
         .bail()
         .isIn([...Object.values(ResourceType)])
         .withMessage('Invalid Resource type'),
-    body('disabled_seats')
+    body(`${ZoneModel.DisabledSeats.as}`)
         .optional()
         .isArray()
         .withMessage('Blocked\\Missing seats must be an array like [{seat_number : 1, seat_row: \'A\', type: \'missing\'\\\'blocked\'},{...}]')
         .bail()
         .notEmpty()
         .withMessage('Blocked\\Missing can\'t be empty'),
-    body('disabled_seats.*.seat_number')
+    body(`${ZoneModel.DisabledSeats.as}.*.seat_number`)
         .exists()
         .withMessage('Seat number is required for each seat')
         .bail()
         .isInt()
         .withMessage('Should be an integer'),
-    body('disabled_seats.*.seat_row')
+    body(`${ZoneModel.DisabledSeats.as}.*.seat_row`)
         .trim()
         .exists()
         .withMessage('Seat row is required for each seat')
@@ -76,7 +77,7 @@ exports.createZoneSchema = [
         .isAlpha()
         .withMessage('Must be alphabetic')
         .toUpperCase(),
-    body('disabled_seats.*.type')
+    body(`${ZoneModel.DisabledSeats.as}.*.type`)
         .trim()
         .exists()
         .withMessage('Seat type is required for each seat')

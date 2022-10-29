@@ -6,11 +6,11 @@ const { Role } = require('../utils/enums/role.enum');
 const { checkValidation } = require('../middleware/validation.middleware');
 
 const eventController = require('../controllers/event.controller');
-const { createEventSchema, updateEventSchema, getEventsQuerySchema, getEventParamSchema } = require('../middleware/validators/eventValidator.middleware');
+const { createEventSchema, updateEventSchema, getEventQuerySchema, getEventParamSchema } = require('../middleware/validators/eventValidator.middleware');
 
 router.route('/events')
     .get( // localhost:3000/api/API_VERSION/events
-        getEventsQuerySchema,
+        getEventQuerySchema,
         checkValidation,
         awaitHandlerFactory(eventController.getAllEvents)
     )
@@ -39,6 +39,13 @@ router.route('/events/:id')
         getEventParamSchema,
         checkValidation,
         awaitHandlerFactory(eventController.deleteEvent)
+    );
+
+router.route('/events/:id/bookings')
+    .delete( // localhost:3000/api/API_VERSION/events/1/bookings
+        getEventParamSchema,
+        checkValidation,
+        awaitHandlerFactory(eventController.deleteEventBookings)
     );
 
 module.exports = router;

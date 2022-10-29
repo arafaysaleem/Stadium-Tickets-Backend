@@ -1,4 +1,5 @@
 const EventRepository = require('../repositories/event.repository');
+const EventBookingRepository = require('../repositories/eventBooking.repository');
 
 class EventController {
     getAllEvents = async(req, res, next) => {
@@ -23,6 +24,11 @@ class EventController {
 
     deleteEvent = async(req, res, next) => {
         const response = await EventRepository.delete(req.params.id);
+        res.send(response);
+    };
+
+    deleteEventBookings = async(req, res, next) => {
+        const response = await EventBookingRepository.delete({ event_id: req.params.id });
         res.send(response);
     };
 }
