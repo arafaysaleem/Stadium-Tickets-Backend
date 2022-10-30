@@ -3,6 +3,10 @@ const { BookingStatus } = require('../../utils/enums/bookingStatus.enum');
 const ZoneModel = require('./zone.model');
 
 class EventBookingModel extends Model {
+    static zoneAlias = 'zone';
+    static bookingSeatsAlias = 'booking_seats';
+    static bookingParkingSpacesAlias = 'booking_parking_spaces';
+
     static init(sequelize, DataTypes) {
         return super.init(
             {
@@ -44,9 +48,9 @@ class EventBookingModel extends Model {
 
     static associate(models) {
         this.belongsTo(models.EventModel, { foreignKey: 'event_id' });
-        this.Zone = this.belongsTo(models.ZoneModel, { foreignKey: 'zone_id', as: 'zone' });
-        this.BookingSeats = this.hasMany(models.BookingSeatModel, { foreignKey: 'booking_id', as: 'booking_seats' });
-        this.BookingParkingSpaces = this.hasMany(models.BookingParkingSpaceModel, { foreignKey: 'booking_id', as: 'booking_parking_spaces' });
+        this.Zone = this.belongsTo(models.ZoneModel, { foreignKey: 'zone_id', as: this.zoneAlias });
+        this.BookingSeats = this.hasMany(models.BookingSeatModel, { foreignKey: 'booking_id', as: this.bookingSeatsAlias });
+        this.BookingParkingSpaces = this.hasMany(models.BookingParkingSpaceModel, { foreignKey: 'booking_id', as: this.bookingParkingSpacesAlias });
     }
 
     static findAllByFilters(filters){

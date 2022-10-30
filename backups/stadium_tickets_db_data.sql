@@ -17,34 +17,42 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- Data for Name: event_bookings; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.event_bookings (booking_id, datetime, zone_id, event_id, total_amount, status, payment_made, person_name) FROM stdin;
-\.
-
-
---
--- Data for Name: booking_parking_spaces; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.booking_parking_spaces (booking_id, p_space_id) FROM stdin;
-\.
-
-
---
--- Data for Name: booking_seats; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.booking_seats (z_seat_id, booking_id, person_name, identification_number) FROM stdin;
-\.
-
-
---
 -- Data for Name: events; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY public.events (event_id, name, poster_url, date, start_time, end_time, event_status, "createdAt", "updatedAt") FROM stdin;
+1	PAKISTAN VS INDIA	www.some-image.com	2022-10-30	12:00:00	15:30:00	open	2022-10-30 20:09:42.082+05	2022-10-30 20:09:42.082+05
+2	LIVERPOOL VS CHELSEA	www.some-image.com	2022-10-30	16:00:00	18:00:00	closed	2022-10-30 20:11:42.019+05	2022-10-30 20:20:01.401+05
+\.
+
+
+--
+-- Data for Name: zone_types; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.zone_types (z_type_id, type, price, "createdAt", "updatedAt") FROM stdin;
+1	vip	70	2022-10-15 03:46:36.174+05	2022-10-15 03:46:36.174+05
+2	premium	50	2022-10-15 03:46:45.752+05	2022-10-15 03:46:45.752+05
+\.
+
+
+--
+-- Data for Name: zones; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.zones (zone_id, name, seats_per_row, num_of_rows, color_hex_code, z_type_id, "createdAt", "updatedAt") FROM stdin;
+4	EAST	5	4	#FF0000	1	2022-10-15 03:46:51.567+05	2022-10-15 03:46:51.567+05
+8	WEST	6	7	#F3F000	2	2022-10-15 04:07:55.849+05	2022-10-15 04:07:55.849+05
+6	SOUTH	7	6	#F3F000	1	2022-10-15 04:04:05.076+05	2022-10-15 04:09:09.773+05
+9	NORTH	4	4	#FDDF00	1	2022-10-15 20:00:40.352+05	2022-10-15 20:00:40.352+05
+\.
+
+
+--
+-- Data for Name: event_bookings; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, status, zone_id, event_id, "updatedAt") FROM stdin;
 \.
 
 
@@ -56,6 +64,22 @@ COPY public.parking_floors (p_floor_id, floor_number, spaces_per_row, num_of_row
 1	1	6	7	2022-10-23 15:17:57.506+05	2022-10-23 15:17:57.506+05
 3	2	16	6	2022-10-23 15:24:22.792+05	2022-10-23 15:36:17.515+05
 4	2	12	7	2022-10-23 15:44:14.073+05	2022-10-23 15:44:14.073+05
+\.
+
+
+--
+-- Data for Name: booking_parking_spaces; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.booking_parking_spaces (b_p_space_id, space_number, space_row, p_floor_id, booking_id, "createdAt", "updatedAt") FROM stdin;
+\.
+
+
+--
+-- Data for Name: booking_seats; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_number, seat_row, booking_id, "createdAt", "updatedAt") FROM stdin;
 \.
 
 
@@ -81,28 +105,6 @@ COPY public.parking_disabled_spaces (p_space_id, space_number, space_row, type, 
 
 COPY public.users (user_id, full_name, email, password, role, "createdAt", "updatedAt") FROM stdin;
 1	Abdur Rafay Saleem	arafaysaleem@gmail.com	$2a$08$KnHSm5QQ9.qpve0INFauQO8oLlA/JtRtTf0BPrdDHrJGP7tbwDeW.	admin	2022-10-15 03:21:59.901+05	2022-10-15 03:21:59.901+05
-\.
-
-
---
--- Data for Name: zone_types; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.zone_types (z_type_id, type, price, "createdAt", "updatedAt") FROM stdin;
-1	vip	70	2022-10-15 03:46:36.174+05	2022-10-15 03:46:36.174+05
-2	premium	50	2022-10-15 03:46:45.752+05	2022-10-15 03:46:45.752+05
-\.
-
-
---
--- Data for Name: zones; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.zones (zone_id, name, seats_per_row, num_of_rows, color_hex_code, z_type_id, "createdAt", "updatedAt") FROM stdin;
-4	EAST	5	4	#FF0000	1	2022-10-15 03:46:51.567+05	2022-10-15 03:46:51.567+05
-8	WEST	6	7	#F3F000	2	2022-10-15 04:07:55.849+05	2022-10-15 04:07:55.849+05
-6	SOUTH	7	6	#F3F000	1	2022-10-15 04:04:05.076+05	2022-10-15 04:09:09.773+05
-9	NORTH	4	4	#FDDF00	1	2022-10-15 20:00:40.352+05	2022-10-15 20:00:40.352+05
 \.
 
 
@@ -140,10 +142,31 @@ COPY public.zone_resources (resource_id, resource_url, zone_id, type, "createdAt
 
 
 --
+-- Name: booking_parking_spaces_b_p_space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 1, false);
+
+
+--
+-- Name: booking_seats_b_seat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 1, false);
+
+
+--
+-- Name: event_bookings_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 1, false);
+
+
+--
 -- Name: events_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.events_event_id_seq', 1, false);
+SELECT pg_catalog.setval('public.events_event_id_seq', 3, true);
 
 
 --

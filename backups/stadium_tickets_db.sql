@@ -46,6 +46,19 @@ CREATE TYPE public.booking_status AS ENUM (
 ALTER TYPE public.booking_status OWNER TO postgres;
 
 --
+-- Name: enum_event_bookings_status; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.enum_event_bookings_status AS ENUM (
+    'reserved',
+    'confirmed',
+    'cancelled'
+);
+
+
+ALTER TYPE public.enum_event_bookings_status OWNER TO postgres;
+
+--
 -- Name: enum_events_event_status; Type: TYPE; Schema: public; Owner: postgres
 --
 
@@ -114,26 +127,79 @@ SET default_table_access_method = heap;
 --
 
 CREATE TABLE public.booking_parking_spaces (
+    b_p_space_id integer NOT NULL,
+    space_number integer NOT NULL,
+    space_row character varying(255) NOT NULL,
+    p_floor_id integer NOT NULL,
     booking_id integer NOT NULL,
-    p_space_id integer NOT NULL
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
 );
 
 
 ALTER TABLE public.booking_parking_spaces OWNER TO postgres;
 
 --
+-- Name: booking_parking_spaces_b_p_space_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.booking_parking_spaces_b_p_space_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.booking_parking_spaces_b_p_space_id_seq OWNER TO postgres;
+
+--
+-- Name: booking_parking_spaces_b_p_space_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.booking_parking_spaces_b_p_space_id_seq OWNED BY public.booking_parking_spaces.b_p_space_id;
+
+
+--
 -- Name: booking_seats; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE public.booking_seats (
-    z_seat_id integer NOT NULL,
+    b_seat_id integer NOT NULL,
+    person_name character varying(255) NOT NULL,
+    identification_number character varying(255) NOT NULL,
+    seat_number integer NOT NULL,
+    seat_row character varying(255) NOT NULL,
     booking_id integer NOT NULL,
-    person_name character varying(50) NOT NULL,
-    identification_number character varying(15) NOT NULL
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
 );
 
 
 ALTER TABLE public.booking_seats OWNER TO postgres;
+
+--
+-- Name: booking_seats_b_seat_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.booking_seats_b_seat_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.booking_seats_b_seat_id_seq OWNER TO postgres;
+
+--
+-- Name: booking_seats_b_seat_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.booking_seats_b_seat_id_seq OWNED BY public.booking_seats.b_seat_id;
+
 
 --
 -- Name: event_bookings; Type: TABLE; Schema: public; Owner: postgres
@@ -141,17 +207,39 @@ ALTER TABLE public.booking_seats OWNER TO postgres;
 
 CREATE TABLE public.event_bookings (
     booking_id integer NOT NULL,
-    datetime timestamp without time zone NOT NULL,
+    amount_payable double precision NOT NULL,
+    datetime timestamp with time zone NOT NULL,
+    person_name character varying(255) NOT NULL,
+    status public.enum_event_bookings_status,
     zone_id integer NOT NULL,
     event_id integer NOT NULL,
-    total_amount integer NOT NULL,
-    status public.booking_status NOT NULL,
-    payment_made boolean NOT NULL,
-    person_name character varying(50) NOT NULL
+    "updatedAt" timestamp with time zone NOT NULL
 );
 
 
 ALTER TABLE public.event_bookings OWNER TO postgres;
+
+--
+-- Name: event_bookings_booking_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.event_bookings_booking_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.event_bookings_booking_id_seq OWNER TO postgres;
+
+--
+-- Name: event_bookings_booking_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.event_bookings_booking_id_seq OWNED BY public.event_bookings.booking_id;
+
 
 --
 -- Name: events; Type: TABLE; Schema: public; Owner: postgres
@@ -465,6 +553,27 @@ ALTER SEQUENCE public.zones_zone_id_seq OWNED BY public.zones.zone_id;
 
 
 --
+-- Name: booking_parking_spaces b_p_space_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_parking_spaces ALTER COLUMN b_p_space_id SET DEFAULT nextval('public.booking_parking_spaces_b_p_space_id_seq'::regclass);
+
+
+--
+-- Name: booking_seats b_seat_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_seats ALTER COLUMN b_seat_id SET DEFAULT nextval('public.booking_seats_b_seat_id_seq'::regclass);
+
+
+--
+-- Name: event_bookings booking_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event_bookings ALTER COLUMN booking_id SET DEFAULT nextval('public.event_bookings_booking_id_seq'::regclass);
+
+
+--
 -- Name: events event_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -524,7 +633,7 @@ ALTER TABLE ONLY public.zones ALTER COLUMN zone_id SET DEFAULT nextval('public.z
 -- Data for Name: booking_parking_spaces; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.booking_parking_spaces (booking_id, p_space_id) FROM stdin;
+COPY public.booking_parking_spaces (b_p_space_id, space_number, space_row, p_floor_id, booking_id, "createdAt", "updatedAt") FROM stdin;
 \.
 
 
@@ -532,7 +641,7 @@ COPY public.booking_parking_spaces (booking_id, p_space_id) FROM stdin;
 -- Data for Name: booking_seats; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.booking_seats (z_seat_id, booking_id, person_name, identification_number) FROM stdin;
+COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_number, seat_row, booking_id, "createdAt", "updatedAt") FROM stdin;
 \.
 
 
@@ -540,7 +649,7 @@ COPY public.booking_seats (z_seat_id, booking_id, person_name, identification_nu
 -- Data for Name: event_bookings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.event_bookings (booking_id, datetime, zone_id, event_id, total_amount, status, payment_made, person_name) FROM stdin;
+COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, status, zone_id, event_id, "updatedAt") FROM stdin;
 \.
 
 
@@ -549,6 +658,8 @@ COPY public.event_bookings (booking_id, datetime, zone_id, event_id, total_amoun
 --
 
 COPY public.events (event_id, name, poster_url, date, start_time, end_time, event_status, "createdAt", "updatedAt") FROM stdin;
+1	PAKISTAN VS INDIA	www.some-image.com	2022-10-30	12:00:00	15:30:00	open	2022-10-30 20:09:42.082+05	2022-10-30 20:09:42.082+05
+2	LIVERPOOL VS CHELSEA	www.some-image.com	2022-10-30	16:00:00	18:00:00	closed	2022-10-30 20:11:42.019+05	2022-10-30 20:20:01.401+05
 \.
 
 
@@ -644,10 +755,31 @@ COPY public.zones (zone_id, name, seats_per_row, num_of_rows, color_hex_code, z_
 
 
 --
+-- Name: booking_parking_spaces_b_p_space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 1, false);
+
+
+--
+-- Name: booking_seats_b_seat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 1, false);
+
+
+--
+-- Name: event_bookings_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 1, false);
+
+
+--
 -- Name: events_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.events_event_id_seq', 1, false);
+SELECT pg_catalog.setval('public.events_event_id_seq', 3, true);
 
 
 --
@@ -700,6 +832,30 @@ SELECT pg_catalog.setval('public.zones_zone_id_seq', 9, true);
 
 
 --
+-- Name: booking_parking_spaces booking_parking_spaces_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_parking_spaces
+    ADD CONSTRAINT booking_parking_spaces_pkey PRIMARY KEY (b_p_space_id);
+
+
+--
+-- Name: booking_seats booking_seats_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_seats
+    ADD CONSTRAINT booking_seats_pkey PRIMARY KEY (b_seat_id);
+
+
+--
+-- Name: event_bookings event_bookings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event_bookings
+    ADD CONSTRAINT event_bookings_pkey PRIMARY KEY (booking_id);
+
+
+--
 -- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -721,30 +877,6 @@ ALTER TABLE ONLY public.parking_disabled_spaces
 
 ALTER TABLE ONLY public.parking_floors
     ADD CONSTRAINT parking_floors_pkey PRIMARY KEY (p_floor_id);
-
-
---
--- Name: booking_parking_spaces pk_booking_parking_spaces; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.booking_parking_spaces
-    ADD CONSTRAINT pk_booking_parking_spaces PRIMARY KEY (booking_id, p_space_id);
-
-
---
--- Name: booking_seats pk_booking_seats; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.booking_seats
-    ADD CONSTRAINT pk_booking_seats PRIMARY KEY (z_seat_id, booking_id);
-
-
---
--- Name: event_bookings pk_event_bookings; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.event_bookings
-    ADD CONSTRAINT pk_event_bookings PRIMARY KEY (booking_id);
 
 
 --
@@ -796,61 +928,43 @@ ALTER TABLE ONLY public.zones
 
 
 --
--- Name: fk_booking_parking_spaces_booking_id; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX fk_booking_parking_spaces_booking_id ON public.booking_parking_spaces USING btree (booking_id);
-
-
---
--- Name: fk_booking_parking_spaces_p_space_id; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX fk_booking_parking_spaces_p_space_id ON public.booking_parking_spaces USING btree (p_space_id);
-
-
---
--- Name: fk_booking_seats_booking_id; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX fk_booking_seats_booking_id ON public.booking_seats USING btree (booking_id);
-
-
---
--- Name: fk_booking_seats_z_seat_id; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX fk_booking_seats_z_seat_id ON public.booking_seats USING btree (z_seat_id);
-
-
---
--- Name: fk_event_bookings_event_id; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX fk_event_bookings_event_id ON public.event_bookings USING btree (event_id);
-
-
---
--- Name: fk_event_bookings_zone_id; Type: INDEX; Schema: public; Owner: postgres
---
-
-CREATE INDEX fk_event_bookings_zone_id ON public.event_bookings USING btree (zone_id);
-
-
---
--- Name: booking_parking_spaces fk_booking_parking_spaces_booking_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: booking_parking_spaces booking_parking_spaces_booking_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.booking_parking_spaces
-    ADD CONSTRAINT fk_booking_parking_spaces_booking_id FOREIGN KEY (booking_id) REFERENCES public.event_bookings(booking_id);
+    ADD CONSTRAINT booking_parking_spaces_booking_id_fkey FOREIGN KEY (booking_id) REFERENCES public.event_bookings(booking_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
--- Name: booking_seats fk_booking_seats_booking_id; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: booking_parking_spaces booking_parking_spaces_p_floor_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_parking_spaces
+    ADD CONSTRAINT booking_parking_spaces_p_floor_id_fkey FOREIGN KEY (p_floor_id) REFERENCES public.parking_floors(p_floor_id) ON UPDATE CASCADE;
+
+
+--
+-- Name: booking_seats booking_seats_booking_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.booking_seats
-    ADD CONSTRAINT fk_booking_seats_booking_id FOREIGN KEY (booking_id) REFERENCES public.event_bookings(booking_id);
+    ADD CONSTRAINT booking_seats_booking_id_fkey FOREIGN KEY (booking_id) REFERENCES public.event_bookings(booking_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: event_bookings event_bookings_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event_bookings
+    ADD CONSTRAINT event_bookings_event_id_fkey FOREIGN KEY (event_id) REFERENCES public.events(event_id) ON UPDATE CASCADE;
+
+
+--
+-- Name: event_bookings event_bookings_zone_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.event_bookings
+    ADD CONSTRAINT event_bookings_zone_id_fkey FOREIGN KEY (zone_id) REFERENCES public.zones(zone_id) ON UPDATE CASCADE;
 
 
 --

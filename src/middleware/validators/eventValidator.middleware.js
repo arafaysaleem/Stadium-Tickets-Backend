@@ -150,45 +150,6 @@ exports.getEventQuerySchema = [
         .withMessage('Invalid query filters!')
 ];
 
-exports.updateEventSchema = [
-    body('name')
-        .optional()
-        .trim()
-        .isLength({min: 1, max: 50})
-        .withMessage('Length must be between 1 and 50')
-        .isAlpha('en-US', { ignore: ' ' })
-        .withMessage('Must be alphabetic')
-        .toUpperCase(),
-    body('seats_per_row')
-        .optional()
-        .isInt({min: 1})
-        .withMessage('Should be a whole number >= 1'),
-    body('num_of_rows')
-        .optional()
-        .isInt({min: 1})
-        .withMessage('Should be a whole number >= 1'),
-    body('color_hex_code')
-        .optional()
-        .trim()
-        .isHexColor()
-        .withMessage('Should be a 7-digit hex code'),
-    body('z_type_id')
-        .optional()
-        .isInt({ min: 1 })
-        .withMessage('Invalid Event type ID found'),
-    body()
-        .custom(value => {
-            return Object.keys(value).length !== 0;
-        })
-        .withMessage('Please provide required fields to update')
-        .custom(value => {
-            const updates = Object.keys(value);
-            const allowUpdates = ['name', 'seats_per_row', 'num_of_rows', 'color_hex_code', 'z_type_id'];
-            return updates.every(update => allowUpdates.includes(update));
-        })
-        .withMessage('Invalid updates!')
-];
-
 exports.getEventParamSchema = [
     param('id')
         .optional()

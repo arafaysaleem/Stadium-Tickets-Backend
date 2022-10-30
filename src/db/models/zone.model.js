@@ -1,6 +1,10 @@
 const { Model } = require('sequelize');
 
 class ZoneModel extends Model {
+    static typeAlias = 'type';
+    static resourcesAlias = 'resources';
+    static disabledSeatsAlias = 'disabled_seats';
+
     static init(sequelize, DataTypes) {
         return super.init(
             {
@@ -37,9 +41,9 @@ class ZoneModel extends Model {
     }
 
     static associate(models) {
-        this.Type = this.belongsTo(models.ZoneTypeModel, { foreignKey: 'z_type_id', as: 'type' });
-        this.Resources = this.hasMany(models.ZoneResourceModel, { foreignKey: 'zone_id', as: 'resources' });
-        this.DisabledSeats = this.hasMany(models.ZoneDisabledSeatModel, { foreignKey: 'zone_id', as: 'disabled_seats' });
+        this.Type = this.belongsTo(models.ZoneTypeModel, { foreignKey: 'z_type_id', as: this.typeAlias });
+        this.Resources = this.hasMany(models.ZoneResourceModel, { foreignKey: 'zone_id', as: this.resourcesAlias });
+        this.DisabledSeats = this.hasMany(models.ZoneDisabledSeatModel, { foreignKey: 'zone_id', as: this.disabledSeatsAlias });
     }
 
     static findAllByFilters(filters){
