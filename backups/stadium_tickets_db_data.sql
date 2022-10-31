@@ -53,6 +53,8 @@ COPY public.zones (zone_id, name, seats_per_row, num_of_rows, color_hex_code, z_
 --
 
 COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, status, zone_id, event_id, "updatedAt") FROM stdin;
+4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	confirmed	4	1	2022-10-31 16:51:31.783+05
+5	1400	2022-10-31 16:57:30+05	Rafay Saleem	confirmed	4	1	2022-10-31 16:57:41.429+05
 \.
 
 
@@ -72,6 +74,7 @@ COPY public.parking_floors (p_floor_id, floor_number, spaces_per_row, num_of_row
 --
 
 COPY public.booking_parking_spaces (b_p_space_id, space_number, space_row, p_floor_id, booking_id, "createdAt", "updatedAt") FROM stdin;
+1	5	B	3	4	2022-10-31 16:51:31.811+05	2022-10-31 16:51:31.811+05
 \.
 
 
@@ -80,6 +83,10 @@ COPY public.booking_parking_spaces (b_p_space_id, space_number, space_row, p_flo
 --
 
 COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_number, seat_row, booking_id, "createdAt", "updatedAt") FROM stdin;
+1	Shahmeer Asif	a1b2c3d4f5g6h7	3	A	4	2022-10-31 16:51:31.809+05	2022-10-31 16:51:31.809+05
+2	Zaim Moosani	a0b2c4d6f8g0h2	4	A	4	2022-10-31 16:51:31.809+05	2022-10-31 16:51:31.809+05
+3	Rafay Saleem	a1b2c3d4f5g6h7	3	C	5	2022-10-31 16:57:41.462+05	2022-10-31 16:57:41.462+05
+4	Rabbiya Tariq	a0b2c4d6f8g0h2	4	C	5	2022-10-31 16:57:41.464+05	2022-10-31 16:57:41.464+05
 \.
 
 
@@ -145,21 +152,21 @@ COPY public.zone_resources (resource_id, resource_url, zone_id, type, "createdAt
 -- Name: booking_parking_spaces_b_p_space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 1, false);
+SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 1, true);
 
 
 --
 -- Name: booking_seats_b_seat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 1, false);
+SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 4, true);
 
 
 --
 -- Name: event_bookings_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 1, false);
+SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 5, true);
 
 
 --
