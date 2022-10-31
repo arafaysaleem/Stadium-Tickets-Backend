@@ -18,11 +18,13 @@ class RoutesLoader {
     static initRoutes(app, version) {
         const baseRoute = `/api/${version}`;
 
+        // Health route is not behind an api key
+        app.use(baseRoute, healthCheckRouter);
+
         // Check api key on all routes
         app.use(`${baseRoute}/*`, apiKeyAuth());
         
         app.use(`${baseRoute}/auth`, authRouter);
-        app.use(baseRoute, healthCheckRouter);
         app.use(baseRoute, userRouter);
         app.use(baseRoute, zoneRouter);
         app.use(baseRoute, zoneResourceRouter);
