@@ -15,7 +15,7 @@ class DbContext {
     get BookingSeats(){ return this.models.BookingSeats; }
     get BookingParkingSpaces(){ return this.models.BookingParkingSpaces; }
 
-    init({ host, port, user, password, database, dialect, connLimit, paramLogging }) {
+    init({ host, port, user, password, database, dialect, connLimit, paramLogging, useSSL = false }) {
         if (!this.sequelize){
             this.sequelize = new Sequelize({
                 host: host,
@@ -30,6 +30,12 @@ class DbContext {
                 pool: {
                     max: connLimit,
                     acquire: 30 * 1000
+                },
+                dialectOptions: {
+                    ssl: {
+                        require: useSSL,
+                        rejectUnauthorized: false
+                    }
                 }
             });
 

@@ -9,6 +9,8 @@ function errorMiddleware(err, req, res, next) {
             err = new DuplicateEntryException(err.original.detail);
         } else if (err.name === 'SequelizeForeignKeyConstraintError'){
             err = new ForeignKeyViolationException(err.original.detail);
+        } else {
+            err = err = new InternalServerException(err.original.detail || 'Internal server error');
         }
     } else if (!err.message) {
         if (!err.isOperational) err = new InternalServerException('Internal server error');
