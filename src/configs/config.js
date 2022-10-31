@@ -9,7 +9,7 @@ module.exports.Config = {
     DB_PASS: process.env.DB_PASS || '',
     DB_DATABASE: process.env.DB_DATABASE || 'test',
     DB_DIALECT: process.env.DB_DIALECT || 'postgres',
-    DB_CONN_LIMIT: process.env.DB_CONN_LIMIT || 5,
+    DB_CONN_LIMIT: Number(process.env.DB_CONN_LIMIT) || 5,
     SECRET_JWT: process.env.SECRET_JWT || "SECRET_JWT",
     EXPIRY_JWT: process.env.EXPIRY_JWT || '1h',
     EXPIRY_HOURS_OTP: 1,

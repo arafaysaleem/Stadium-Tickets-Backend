@@ -18,7 +18,7 @@ describe("Healthcheck", () => {
     });
 
     it("returns OK, uptime and timestamp, if server is healthy", async() => {
-        const res = await request(app).get(`/api/${Config.API_VERSION}/health`, null);
+        const res = await request(await app).get(`/api/${Config.API_VERSION}/health`, null);
 
         // status check
         expect(res.status).to.be.equal(200);
