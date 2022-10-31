@@ -22,7 +22,7 @@ class EventBookingController {
     };
 
     deleteEventBooking = async(req, res, next) => {
-        const response = await EventBookingRepository.delete({ id: req.params.id });
+        const response = await EventBookingRepository.delete({ booking_id: req.params.id });
         res.send(response);
     };
 }

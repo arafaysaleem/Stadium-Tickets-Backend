@@ -1,6 +1,7 @@
 const { Model } = require('sequelize');
 const { BookingStatus } = require('../../utils/enums/bookingStatus.enum');
 const ZoneModel = require('./zone.model');
+const BookingParkingSpaceModel = require('./bookingParkingSpace.model');
 
 class EventBookingModel extends Model {
     static zoneAlias = 'zone';
@@ -75,13 +76,19 @@ class EventBookingModel extends Model {
                 {
                     association: this.BookingSeats,
                     as: this.BookingSeats.as,
-                    required: true,
-                    attributes: ['b_seat_id', 'seat_number', 'seat_row', 'person_name', 'identification_number']
+                    required: true
                 },
                 {
                     association: this.BookingParkingSpaces,
                     as: this.BookingParkingSpaces.as,
-                    attributes: ['b_space_id', 'space_number', 'space_row', 'floor_number']
+                    attributes: ['b_p_space_id', 'space_number', 'space_row'],
+                    include: [
+                        {
+                            association: BookingParkingSpaceModel.ParkingFloor,
+                            as: BookingParkingSpaceModel.ParkingFloor.as,
+                            attributes: ['p_floor_id', 'floor_number']
+                        }
+                    ]
                 }
             ]
         });
@@ -132,7 +139,14 @@ class EventBookingModel extends Model {
                     {
                         association: this.BookingParkingSpaces,
                         as: this.BookingParkingSpaces.as,
-                        attributes: ['b_space_id', 'space_number', 'space_row', 'floor_number']
+                        attributes: ['b_p_space_id', 'space_number', 'space_row'],
+                        include: [
+                            {
+                                association: BookingParkingSpaceModel.ParkingFloor,
+                                as: BookingParkingSpaceModel.ParkingFloor.as,
+                                attributes: ['floor_number']
+                            }
+                        ]
                     }
                 ]
             }
@@ -144,7 +158,21 @@ class EventBookingModel extends Model {
     }
 
     static createNew(body){
-        return this.create(body, { raw: true });
+        return this.create(body,
+            {
+                raw: true,
+                include: [
+                    {
+                        association: this.BookingSeats,
+                        as: this.BookingSeats.as,
+                        required: true
+                    },
+                    {
+                        association: this.BookingParkingSpaces,
+                        as: this.BookingParkingSpaces.as
+                    }
+                ]
+            });
     }
 
     static deleteByFilters(filters){

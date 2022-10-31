@@ -81,7 +81,7 @@ exports.createEventBookingSchema = [
         .exists()
         .withMessage('Person ID is required for each seat')
         .bail()
-        .isAlphanumeric({ length: 14 })
+        .isAlphanumeric('en-US', { length: 14 })
         .withMessage('Invalid Person ID format'),
     body(EventBookingModel.bookingParkingSpacesAlias)
         .optional()
