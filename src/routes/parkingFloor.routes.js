@@ -39,8 +39,8 @@ router.route('/parking-floors/:id')
         awaitHandlerFactory(parkingFloorController.deleteParkingFloor)
     );
 
-router.route('/zones/:id/booked-spaces')
-    .get( // localhost:3000/api/API_VERSION/zones/1/booked-spaces
+router.route('/parking-floors/:id/booked-spaces')
+    .get( // localhost:3000/api/API_VERSION/parking-floors/1/booked-spaces
         getParkingFloorParamSchema,
         checkValidation,
         awaitHandlerFactory(parkingFloorController.getAllBookedSpacesForFloor)
