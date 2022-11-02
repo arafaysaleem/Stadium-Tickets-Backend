@@ -25,7 +25,6 @@ class EventRepository {
         return successResponse(event);
     };
 
-    
     create = async(body) => {
         const result = await DbContext.Events.createNew(body);
         

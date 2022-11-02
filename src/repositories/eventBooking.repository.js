@@ -18,7 +18,8 @@ class EventBookingRepository {
     findAllBookedSeatsForZone = async(zone_id) => {
         const eventBookingsList = await DbContext.EventBookings.findAllForZone(zone_id);
 
-        let bookedSeatsList = eventBookingsList.map(booking => ({ ...booking.booked_seats }));
+        let bookedSeatsList = [];
+        eventBookingsList.forEach(booking => bookedSeatsList.push(...booking.booking_seats));
 
         return successResponse(bookedSeatsList);
     };
