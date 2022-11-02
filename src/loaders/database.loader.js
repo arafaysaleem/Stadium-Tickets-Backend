@@ -13,7 +13,8 @@ class DatabaseLoader {
             password: Config.DB_PASS,
             database: Config.DB_DATABASE,
             connLimit: Config.DB_CONN_LIMIT,
-            dialect: Config.DB_DIALECT
+            dialect: Config.DB_DIALECT,
+            useSSL: Config.isProduction
         });
 
         // verify connection
