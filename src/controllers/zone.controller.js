@@ -1,5 +1,4 @@
 const ZoneRepository = require('../repositories/zone.repository');
-const EventBookingRepository = require('../repositories/eventBooking.repository');
 
 class ZoneController {
     getAllZones = async(req, res, next) => {
@@ -7,8 +6,8 @@ class ZoneController {
         res.send(response);
     };
 
-    getAllBookedSeatsForZone = async(req, res, next) => {
-        const response = await EventBookingRepository.findAllBookedSeatsForZone(req.params.id);
+    getAllTypeOfSeatsForZone = async(req, res, next) => {
+        const response = await ZoneRepository.findAllTypesOfSeats(req.params.id);
         res.send(response);
     };
 

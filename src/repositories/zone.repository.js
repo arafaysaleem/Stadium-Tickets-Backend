@@ -25,6 +25,28 @@ class ZoneRepository {
         return successResponse(zone);
     };
 
+    findAllTypesOfSeats = async(id) => {
+        const disabledSeatsList = await DbContext.ZoneDisabledSeats.findAllByFilters({ zone_id: id });
+
+        const eventBookingsList = await DbContext.EventBookings.findAllForZone(id);
+        
+        const zoneSeatsList = disabledSeatsList.map((m) => ({
+            seat_number: m.seat_number,
+            seat_row: m.seat_row,
+            type: m.type
+        }));
+
+        for (var booking of eventBookingsList) {
+            var bookingSeatsList = booking.booking_seats.map((m) => ({
+                seat_number: m.seat_number,
+                seat_row: m.seat_row,
+                type: 'booked'
+            }));
+            zoneSeatsList.push(...bookingSeatsList);
+        }
+
+        return successResponse(zoneSeatsList);
+    };
     
     create = async(body) => {
         const result = await DbContext.Zones.createNew(body);

@@ -15,15 +15,6 @@ class EventBookingRepository {
         return successResponse(eventBookingsList);
     };
 
-    findAllBookedSeatsForZone = async(zone_id) => {
-        const eventBookingsList = await DbContext.EventBookings.findAllForZone(zone_id);
-
-        let bookedSeatsList = [];
-        eventBookingsList.forEach(booking => bookedSeatsList.push(...booking.booking_seats));
-
-        return successResponse(bookedSeatsList);
-    };
-
     findOne = async(id) => {
         const eventBooking = await DbContext.EventBookings.findById(id);
         

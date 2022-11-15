@@ -41,11 +41,11 @@ router.route('/zones/:id')
         awaitHandlerFactory(zoneController.deleteZone)
     );
 
-router.route('/zones/:id/booked-seats')
-    .get( // localhost:3000/api/API_VERSION/zones/1/booked-seats
+router.route('/zones/:id/seats')
+    .get( // localhost:3000/api/API_VERSION/zones/1/seats
         getZoneParamSchema,
         checkValidation,
-        awaitHandlerFactory(zoneController.getAllBookedSeatsForZone)
+        awaitHandlerFactory(zoneController.getAllTypeOfSeatsForZone)
     );
 
 module.exports = router;
