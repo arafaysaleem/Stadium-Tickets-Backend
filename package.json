@@ -35,8 +35,8 @@
   "license": "ISC",
   "dependencies": {
     "@sendgrid/mail": "^7.7.0",
-    "@sentry/node": "^7.17.3",
-    "@sentry/tracing": "^7.17.3",
+    "@sentry/node": "^7.21.0",
+    "@sentry/tracing": "^7.21.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "cross-env": "^7.0.3",
@@ -47,14 +47,14 @@
     "jsonwebtoken": "^8.5.1",
     "otp-generator": "^4.0.0",
     "pg": "^8.8.0",
-    "sequelize": "^6.25.3"
+    "sequelize": "^6.25.8"
   },
   "devDependencies": {
-    "@babel/core": "^7.19.6",
+    "@babel/core": "^7.20.2",
     "@babel/eslint-parser": "^7.19.1",
     "chai": "^4.3.6",
     "decache": "^4.6.1",
-    "eslint": "^8.26.0",
+    "eslint": "^8.28.0",
     "eslint-config-strongloop": "^2.1.0",
     "mocha": "^10.1.0",
     "mochawesome": "^7.1.3",
