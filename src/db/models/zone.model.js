@@ -71,11 +71,6 @@ class ZoneModel extends Model {
                         as: this.Type.as,
                         required: true,
                         attributes: ['z_type_id', 'type', 'price']
-                    },
-                    {
-                        association: this.DisabledSeats,
-                        as: this.DisabledSeats.as,
-                        attributes: ['z_seat_id', 'seat_number', 'seat_row', 'type']
                     }
                 ]
             }

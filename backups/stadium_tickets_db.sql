@@ -647,6 +647,10 @@ COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_n
 2	Zaim Moosani	a0b2c4d6f8g0h2	4	A	4	2022-10-31 16:51:31.809+05	2022-10-31 16:51:31.809+05
 3	Rafay Saleem	a1b2c3d4f5g6h7	3	C	5	2022-10-31 16:57:41.462+05	2022-10-31 16:57:41.462+05
 4	Rabbiya Tariq	a0b2c4d6f8g0h2	4	C	5	2022-10-31 16:57:41.464+05	2022-10-31 16:57:41.464+05
+5	Shahmeer Asif	a1b2c3d4f5g6h7	3	C	6	2022-11-16 00:48:58.905+05	2022-11-16 00:48:58.905+05
+6	Zaim Moosani	a0b2c4d6f8g0h2	4	C	6	2022-11-16 00:48:58.905+05	2022-11-16 00:48:58.905+05
+7	Abdur Rafay Saleem	a1b2c3d4f5g6h7	5	C	6	2022-11-16 00:48:58.906+05	2022-11-16 00:48:58.906+05
+8	Rabbiya Tariq	a0b2c4d6f8g0h2	6	C	6	2022-11-16 00:48:58.906+05	2022-11-16 00:48:58.906+05
 \.
 
 
@@ -657,6 +661,7 @@ COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_n
 COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, status, zone_id, event_id, "updatedAt") FROM stdin;
 4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	confirmed	4	1	2022-10-31 16:51:31.783+05
 5	1400	2022-10-31 16:57:30+05	Rafay Saleem	confirmed	4	1	2022-10-31 16:57:41.429+05
+6	2800	2022-11-16 00:44:00+05	Henry Ford	confirmed	6	1	2022-11-16 00:48:58.876+05
 \.
 
 
@@ -772,14 +777,14 @@ SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 1, tr
 -- Name: booking_seats_b_seat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 4, true);
+SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 8, true);
 
 
 --
 -- Name: event_bookings_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 5, true);
+SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 6, true);
 
 
 --

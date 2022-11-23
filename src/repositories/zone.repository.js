@@ -7,6 +7,7 @@ const {
     CreateFailedException,
     UnexpectedException
 } = require('../utils/exceptions/database.exception');
+const { DisabledSeatType } = require('../utils/enums/disabledSeatType.enum');
 
 class ZoneRepository {
     findAll = async(filters = {}) => {
@@ -25,6 +26,36 @@ class ZoneRepository {
         return successResponse(zone);
     };
 
+    findAllTypesOfSeats = async(id) => {
+        const disabledSeatsList = await DbContext.ZoneDisabledSeats.findAllByFilters({ zone_id: id });
+
+        const eventBookingsList = await DbContext.EventBookings.findAllForZone(id);
+        
+        let blockedSeatsList = [];
+        let missingSeatsList = [];
+        for (var disabledSeat of disabledSeatsList) {
+            var seat = { seat_number: disabledSeat.seat_number, seat_row: disabledSeat.seat_row };
+            if (disabledSeat.type === DisabledSeatType.Blocked) blockedSeatsList.push(seat);
+            else missingSeatsList.push(seat);
+        }
+
+        let bookedSeatsList = [];
+        for (var booking of eventBookingsList) {
+            var bookingSeatsList = booking.booking_seats.map((m) => ({
+                seat_number: m.seat_number,
+                seat_row: m.seat_row
+            }));
+            bookedSeatsList.push(...bookingSeatsList);
+        }
+
+        var zoneSeats = {
+            blocked: blockedSeatsList,
+            missing: missingSeatsList,
+            booked: bookedSeatsList
+        };
+
+        return successResponse(zoneSeats);
+    };
     
     create = async(body) => {
         const result = await DbContext.Zones.createNew(body);
