@@ -50,7 +50,7 @@
     "sequelize": "^6.25.8"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.2",
+    "@babel/core": "^7.20.5",
     "@babel/eslint-parser": "^7.19.1",
     "chai": "^4.3.6",
     "decache": "^4.6.1",
