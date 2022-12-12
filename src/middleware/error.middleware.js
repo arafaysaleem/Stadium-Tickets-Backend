@@ -9,6 +9,7 @@ function errorMiddleware(err, req, res, next) {
     } else if (err.status === 500 && !err.isOperational) {
         err = new InternalServerException(err.message, err.data);
     } else if (!err.code || (!err.message && !err.isOperational)) {
+        if (Config.isDev) console.error(err);
         err = new InternalServerException('Internal server error');
     }
 
@@ -32,7 +33,8 @@ function dbErrorHandler(err){
     } else if (err.name === 'SequelizeForeignKeyConstraintError'){
         error = new ForeignKeyViolationException(err.original.detail);
     } else {
-        error = new DatabaseException(err.original.detail || 'Something wrong with the database');
+        let message = err.original.detail || (Config.isDev ? err.original.message : 'Something wrong with the database');
+        error = new DatabaseException(message);
     }
     return error;
 }

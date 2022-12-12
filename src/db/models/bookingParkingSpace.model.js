@@ -41,6 +41,7 @@ class BookingParkingSpaceModel extends Model {
         return this.findAll({
             where: { p_floor_id },
             attributes: ['b_p_space_id', 'space_number', 'space_row'],
+            raw: true,
             include: [
                 {
                     association: this.Booking,
