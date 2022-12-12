@@ -47,7 +47,7 @@
     "jsonwebtoken": "^8.5.1",
     "otp-generator": "^4.0.0",
     "pg": "^8.8.0",
-    "sequelize": "^6.26.0"
+    "sequelize": "^6.27.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.5",
