@@ -520,6 +520,7 @@ CREATE TABLE public.zones (
     zone_id integer NOT NULL,
     name character varying(255) NOT NULL,
     seats_per_row integer NOT NULL,
+    number integer DEFAULT 0 NOT NULL,
     num_of_rows integer NOT NULL,
     color_hex_code character varying(255) NOT NULL,
     z_type_id integer NOT NULL,

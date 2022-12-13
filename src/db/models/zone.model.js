@@ -22,6 +22,11 @@ class ZoneModel extends Model {
                     type: DataTypes.INTEGER,
                     allowNull: false
                 },
+                number: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false,
+                    unique: true
+                },
                 num_of_rows: {
                     type: DataTypes.INTEGER,
                     allowNull: false
