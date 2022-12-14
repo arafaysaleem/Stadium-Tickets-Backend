@@ -15,7 +15,6 @@ router.route('/event-bookings')
         awaitHandlerFactory(eventBookingController.getAllEventBookings)
     )
     .post( // localhost:3000/api/API_VERSION/event-bookings
-        jwtUserAuth(Role.Admin),
         createEventBookingSchema,
         checkValidation,
         awaitHandlerFactory(eventBookingController.createEventBooking)

@@ -39,11 +39,11 @@ router.route('/parking-floors/:id')
         awaitHandlerFactory(parkingFloorController.deleteParkingFloor)
     );
 
-router.route('/parking-floors/:id/booked-spaces')
-    .get( // localhost:3000/api/API_VERSION/parking-floors/1/booked-spaces
+router.route('/parking-floors/:id/spaces')
+    .get( // localhost:3000/api/API_VERSION/parking-floors/1/spaces
         getParkingFloorParamSchema,
         checkValidation,
-        awaitHandlerFactory(parkingFloorController.getAllBookedSpacesForFloor)
+        awaitHandlerFactory(parkingFloorController.getAllTypeOfSpacesForFloor)
     );
 
 module.exports = router;

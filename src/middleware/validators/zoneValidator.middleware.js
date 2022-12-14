@@ -23,6 +23,11 @@ exports.createZoneSchema = [
         .withMessage('Total number of seat rows is required')
         .isInt({min: 1})
         .withMessage('Should be a whole number >= 1'),
+    body('number')
+        .exists()
+        .withMessage('The zone number as per frontend positioning')
+        .isInt({min: 1})
+        .withMessage('Should be a whole number >= 1'),
     body('color_hex_code')
         .trim()
         .exists()
@@ -99,6 +104,10 @@ exports.updateZoneSchema = [
         .optional()
         .isInt({min: 1})
         .withMessage('Should be a whole number >= 1'),
+    body('number')
+        .optional()
+        .isInt({min: 1})
+        .withMessage('Should be a whole number >= 1'),
     body('num_of_rows')
         .optional()
         .isInt({min: 1})
@@ -119,7 +128,7 @@ exports.updateZoneSchema = [
         .withMessage('Please provide required fields to update')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['name', 'seats_per_row', 'num_of_rows', 'color_hex_code', 'z_type_id'];
+            const allowUpdates = ['name', 'seats_per_row', 'number', 'num_of_rows', 'color_hex_code', 'z_type_id'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')

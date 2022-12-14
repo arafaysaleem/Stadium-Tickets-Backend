@@ -40,11 +40,11 @@ COPY public.zone_types (z_type_id, type, price, "createdAt", "updatedAt") FROM s
 -- Data for Name: zones; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.zones (zone_id, name, seats_per_row, num_of_rows, color_hex_code, z_type_id, "createdAt", "updatedAt") FROM stdin;
-4	EAST	5	4	#FF0000	1	2022-10-15 03:46:51.567+05	2022-10-15 03:46:51.567+05
-8	WEST	6	7	#F3F000	2	2022-10-15 04:07:55.849+05	2022-10-15 04:07:55.849+05
-6	SOUTH	7	6	#F3F000	1	2022-10-15 04:04:05.076+05	2022-10-15 04:09:09.773+05
-9	NORTH	4	4	#FDDF00	1	2022-10-15 20:00:40.352+05	2022-10-15 20:00:40.352+05
+COPY public.zones (zone_id, name, seats_per_row, number, num_of_rows, color_hex_code, z_type_id, "createdAt", "updatedAt") FROM stdin;
+8	WEST	6	5	7	#F3F000	2	2022-10-15 04:07:55.849+05	2022-12-13 23:37:52.62+05
+4	EAST	5	6	4	#FF0000	1	2022-10-15 03:46:51.567+05	2022-12-13 23:38:11.198+05
+6	SOUTH	7	7	6	#F3F000	1	2022-10-15 04:04:05.076+05	2022-12-13 23:38:26.021+05
+9	NORTH	4	9	4	#FDDF00	1	2022-10-15 20:00:40.352+05	2022-12-13 23:38:42.586+05
 \.
 
 
@@ -56,6 +56,7 @@ COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, s
 4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	confirmed	4	1	2022-10-31 16:51:31.783+05
 5	1400	2022-10-31 16:57:30+05	Rafay Saleem	confirmed	4	1	2022-10-31 16:57:41.429+05
 6	2800	2022-11-16 00:44:00+05	Henry Ford	confirmed	6	1	2022-11-16 00:48:58.876+05
+7	1400	2022-12-12 16:51:30+05	Gary Shane	confirmed	4	1	2022-12-12 17:19:27.474+05
 \.
 
 
@@ -76,6 +77,7 @@ COPY public.parking_floors (p_floor_id, floor_number, spaces_per_row, num_of_row
 
 COPY public.booking_parking_spaces (b_p_space_id, space_number, space_row, p_floor_id, booking_id, "createdAt", "updatedAt") FROM stdin;
 1	5	B	3	4	2022-10-31 16:51:31.811+05	2022-10-31 16:51:31.811+05
+2	1	A	4	7	2022-12-12 17:19:27.602+05	2022-12-12 17:19:27.602+05
 \.
 
 
@@ -92,6 +94,7 @@ COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_n
 6	Zaim Moosani	a0b2c4d6f8g0h2	4	C	6	2022-11-16 00:48:58.905+05	2022-11-16 00:48:58.905+05
 7	Abdur Rafay Saleem	a1b2c3d4f5g6h7	5	C	6	2022-11-16 00:48:58.906+05	2022-11-16 00:48:58.906+05
 8	Rabbiya Tariq	a0b2c4d6f8g0h2	6	C	6	2022-11-16 00:48:58.906+05	2022-11-16 00:48:58.906+05
+9	Haleema Syed	a1b2c3d4f5g6h7	4	C	7	2022-12-12 17:19:27.601+05	2022-12-12 17:19:27.601+05
 \.
 
 
@@ -157,21 +160,21 @@ COPY public.zone_resources (resource_id, resource_url, zone_id, type, "createdAt
 -- Name: booking_parking_spaces_b_p_space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 1, true);
+SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 2, true);
 
 
 --
 -- Name: booking_seats_b_seat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 8, true);
+SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 9, true);
 
 
 --
 -- Name: event_bookings_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 6, true);
+SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 7, true);
 
 
 --
