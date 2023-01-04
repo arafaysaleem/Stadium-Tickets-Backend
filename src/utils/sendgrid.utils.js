@@ -26,7 +26,7 @@ exports.sendOTPEmail = async(student, OTP) => {
 };
 
 exports.sendBookingSummaryEmail = async(
-    {order_date, order_amount, event, seats, parking, person},
+    {order_date, currency, order_amount, event, seats, parking, person},
     id
 ) => {
     const msg = {
@@ -36,9 +36,9 @@ exports.sendBookingSummaryEmail = async(
         templateId: 'd-a7224b78c13746948e8f56f7d5c3b1e6',
         dynamic_template_data: {
             person_name: person.name,
-            order_date: order_date, order_id: id, order_amount: order_amount,
-            seat_price: seats.price, seat_qty: seats.quantity, seat_total: seats.total,
-            parking_price: parking.price, parking_qty: parking.quantity, parking_total: parking.total,
+            order_date: order_date, order_id: id, order_amount: `${currency}${order_amount}`,
+            seat_price: seats.price, seat_qty: seats.quantity, seat_total: `${currency}${seats.total}`,
+            parking_price: parking.price, parking_qty: parking.quantity, parking_total: `${currency}${parking.total}`,
             event_name: event.name, event_date: event.date, event_time: event.time
         }
     };

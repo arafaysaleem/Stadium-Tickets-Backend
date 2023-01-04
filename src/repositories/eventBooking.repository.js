@@ -56,7 +56,7 @@ class EventBookingRepository {
     };
 
     confirmPayment = async(body, id) => {
-        const result = await DbContext.EventBookings.updateById({ booking_status: BookingStatus.Confirmed }, id);
+        const result = await DbContext.EventBookings.updateById({ status: BookingStatus.Confirmed }, id);
 
         if (!result) {
             throw new UnexpectedException('Something went wrong');

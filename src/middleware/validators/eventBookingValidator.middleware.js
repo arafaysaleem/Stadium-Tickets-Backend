@@ -149,12 +149,18 @@ exports.processBookingPaymentSchema = [
         .withMessage('Amount should be a valid decimal (0.00)')
         .isFloat({ min: 0.1 })
         .withMessage('Rating should be > 0.0'),
-    body('order_datetime')
+    body('currency')
+        .exists()
+        .withMessage('Currency is required')
+        .bail()
+        .isIn(['$', '£', '€'])
+        .withMessage('Should be a valid currency'),
+    body('order_date')
         .trim()
         .exists()
-        .withMessage('Order datetime is required')
-        .matches(datetimeRegex)
-        .withMessage('Order datetime should be valid datetime of format \'YYYY-MM-DD HH:mm:ss\''),
+        .withMessage('Event date is required')
+        .isDate({ format: 'YYYY-MM-DD', strictMode: true, delimiters: ['-'] })
+        .withMessage('Event date must be a valid date of format \'YYYY-MM-DD\''),
     body('person')
         .exists()
         .withMessage('Booking person details are required')
@@ -262,7 +268,7 @@ exports.processBookingPaymentSchema = [
         .withMessage('Please provide required fields to process payment')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['order_amount', 'order_datetime', 'person', 'seats', 'parking', 'event'];
+            const allowUpdates = ['order_amount', 'currency', 'order_date', 'person', 'seats', 'parking', 'event'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid fields!')
