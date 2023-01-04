@@ -21,6 +21,11 @@ class EventBookingController {
         res.send(response);
     };
 
+    processBookingPayment = async(req, res, next) => {
+        const response = await EventBookingRepository.confirmPayment(req.body, req.params.id);
+        res.send(response);
+    };
+
     deleteEventBooking = async(req, res, next) => {
         const response = await EventBookingRepository.delete({ booking_id: req.params.id });
         res.send(response);

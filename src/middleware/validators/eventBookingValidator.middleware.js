@@ -1,6 +1,6 @@
 const { body, query, param } = require('express-validator');
 const { BookingStatus } = require('../../utils/enums/bookingStatus.enum');
-const { datetimeRegex } = require('../../utils/common.utils');
+const { datetimeRegex, timeRegex } = require('../../utils/common.utils');
 const EventBookingModel = require('../../db/models/eventBooking.model');
 
 exports.createEventBookingSchema = [
@@ -8,7 +8,7 @@ exports.createEventBookingSchema = [
         .trim()
         .exists()
         .withMessage('Event booking person name is required')
-        .isLength({min: 1, max: 50})
+        .isLength({ min: 1, max: 50 })
         .withMessage('Length must be between 1 and 50')
         .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic'),
@@ -16,9 +16,9 @@ exports.createEventBookingSchema = [
         .exists()
         .withMessage('Total payable amount is required')
         .bail()
-        .isDecimal({force_decimal: false, decimal_digits: '2'})
+        .isDecimal({ force_decimal: false, decimal_digits: '2' })
         .withMessage('Amount should be a valid decimal (0.00)')
-        .isFloat({min: 0.1})
+        .isFloat({ min: 0.1 })
         .withMessage('Rating should be > 0.0'),
     body('datetime')
         .trim()
@@ -55,7 +55,7 @@ exports.createEventBookingSchema = [
         .exists()
         .withMessage('Person name is required for each booked seat')
         .bail()
-        .isLength({min: 1, max: 50})
+        .isLength({ min: 1, max: 50 })
         .withMessage('Length must be between 1 and 50')
         .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic'),
@@ -70,7 +70,7 @@ exports.createEventBookingSchema = [
         .exists()
         .withMessage('Seat row is required for each seat')
         .bail()
-        .isLength({min: 1, max: 1})
+        .isLength({ min: 1, max: 1 })
         .withMessage('Must be a single character')
         .bail()
         .isAlpha()
@@ -99,7 +99,7 @@ exports.createEventBookingSchema = [
         .exists()
         .withMessage('Space row is required for each parking')
         .bail()
-        .isLength({min: 1, max: 1})
+        .isLength({ min: 1, max: 1 })
         .withMessage('Must be a single character')
         .bail()
         .isAlpha()
@@ -118,7 +118,7 @@ exports.updateEventBookingSchema = [
     body('person_name')
         .optional()
         .trim()
-        .isLength({min: 1, max: 50})
+        .isLength({ min: 1, max: 50 })
         .withMessage('Length must be between 1 and 50')
         .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic'),
@@ -138,6 +138,134 @@ exports.updateEventBookingSchema = [
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')
+];
+
+exports.processBookingPaymentSchema = [
+    body('order_amount')
+        .exists()
+        .withMessage('Total payable amount is required')
+        .bail()
+        .isDecimal({ force_decimal: false, decimal_digits: '2' })
+        .withMessage('Amount should be a valid decimal (0.00)')
+        .isFloat({ min: 0.1 })
+        .withMessage('Rating should be > 0.0'),
+    body('order_datetime')
+        .trim()
+        .exists()
+        .withMessage('Order datetime is required')
+        .matches(datetimeRegex)
+        .withMessage('Order datetime should be valid datetime of format \'YYYY-MM-DD HH:mm:ss\''),
+    body('person')
+        .exists()
+        .withMessage('Booking person details are required')
+        .bail()
+        .isObject()
+        .withMessage('Booking person must be an object like {name: "John Doe", email: "john.doe@gmail.com"}')
+        .bail(),
+    body('person.name')
+        .trim()
+        .exists()
+        .withMessage('Event booking person name is required')
+        .isLength({ min: 1, max: 50 })
+        .withMessage('Length must be between 1 and 50')
+        .isAlpha('en-US', { ignore: ' ' })
+        .withMessage('Must be alphabetic'),
+    body('person.email')
+        .trim()
+        .exists()
+        .withMessage('Person email is required.')
+        .isEmail()
+        .withMessage('Must be a valid email')
+        .normalizeEmail(),
+    body('seats')
+        .exists()
+        .withMessage('Booking seats summary is required')
+        .bail()
+        .isObject()
+        .withMessage('Booking seats must be an object like {price: 15, qty: 2, total: 30}')
+        .bail(),
+    body('seats.price')
+        .trim()
+        .exists()
+        .withMessage('Seat price is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid price. Should be a whole number > 0'),
+    body('seats.qty')
+        .trim()
+        .exists()
+        .withMessage('Seat quantity is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid quantity. Should be a whole number > 0'),
+    body('seats.total')
+        .trim()
+        .exists()
+        .withMessage('Seat total is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid total. Should be a whole number > 0'),
+    body('parking')
+        .exists()
+        .withMessage('Booking parking summary is required')
+        .bail()
+        .isObject()
+        .withMessage('Booking parking must be an object like {price: 15, qty: 2, total: 30}')
+        .bail(),
+    body('parking.price')
+        .trim()
+        .exists()
+        .withMessage('Seat price is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid price. Should be a whole number > 0'),
+    body('parking.qty')
+        .trim()
+        .exists()
+        .withMessage('Seat quantity is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid quantity. Should be a whole number > 0'),
+    body('parking.total')
+        .trim()
+        .exists()
+        .withMessage('Seat total is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid total. Should be a whole number > 0'),
+    body('event')
+        .exists()
+        .withMessage('Booking event details are required')
+        .bail()
+        .isObject()
+        .withMessage('Booking event must be an object like {name: "Event Name", date: "YYYY-MM-DD", time: "HH:mm"}')
+        .bail(),
+    body('event.name')
+        .trim()
+        .exists()
+        .withMessage('Event name is required')
+        .isLength({ min: 1, max: 50 })
+        .withMessage('Length must be between 1 and 50')
+        .isAlpha('en-US', { ignore: ' ' })
+        .withMessage('Must be alphabetic')
+        .toUpperCase(),
+    body('event.date')
+        .trim()
+        .exists()
+        .withMessage('Event date is required')
+        .isDate({ format: 'YYYY-MM-DD', strictMode: true, delimiters: ['-'] })
+        .withMessage('Event date must be a valid date of format \'YYYY-MM-DD\''),
+    body('event.time')
+        .trim()
+        .exists()
+        .withMessage('Event start time is required')
+        .matches(timeRegex)
+        .withMessage('Event start must be a valid time of format \'hh:mm\''),
+    body()
+        .custom(value => {
+            return Object.keys(value).length !== 0;
+        })
+        .withMessage('Please provide required fields to process payment')
+        .custom(value => {
+            const updates = Object.keys(value);
+            const allowUpdates = ['order_amount', 'order_datetime', 'person', 'seats', 'parking', 'event'];
+            return updates.every(update => allowUpdates.includes(update));
+        })
+        .withMessage('Invalid fields!')
 ];
 
 exports.getEventBookingsQuerySchema = [

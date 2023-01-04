@@ -7,6 +7,8 @@ const {
     CreateFailedException,
     UnexpectedException
 } = require('../utils/exceptions/database.exception');
+const { BookingStatus } = require('../utils/enums/bookingStatus.enum');
+const { sendBookingSummaryEmail } = require('../utils/sendgrid.utils');
 
 class EventBookingRepository {
     findAll = async(filters = {}) => {
@@ -51,6 +53,26 @@ class EventBookingRepository {
         };
 
         return successResponse(responseBody, 'Event booking updated successfully');
+    };
+
+    confirmPayment = async(body, id) => {
+        const result = await DbContext.EventBookings.updateById({ booking_status: BookingStatus.Confirmed }, id);
+
+        if (!result) {
+            throw new UnexpectedException('Something went wrong');
+        }
+
+        const affectedRows = result[0];
+
+        if (!affectedRows) throw new UpdateFailedException('Event booking confirmation failed');
+        
+        sendBookingSummaryEmail(body, id);
+
+        const responseBody = {
+            rows_changed: affectedRows
+        };
+
+        return successResponse(responseBody, 'Event booking confirmed successfully');
     };
 
     delete = async(filters = {}) => {

@@ -1,6 +1,7 @@
 const sgMail = require('@sendgrid/mail');
 const { Config } = require('../configs/config');
 const { OTPGenerationException } = require('../utils/exceptions/auth.exception');
+const { InternalServerException } = require('../utils/exceptions/api.exception');
 
 sgMail.setApiKey(Config.SENDGRID_API_KEY);
 
@@ -20,6 +21,35 @@ exports.sendOTPEmail = async(student, OTP) => {
         if (err.response) {
             console.error(err.response.body);
             throw new OTPGenerationException(err.message);
+        }
+    }
+};
+
+exports.sendBookingSummaryEmail = async(
+    {order_date, order_amount, event, seats, parking, person},
+    id
+) => {
+    const msg = {
+        to: person.email, // Change to your recipient
+        from: Config.SENDGRID_SENDER, // Change to your verified sender
+        subject: 'Your Booked Tickets Summary',
+        templateId: 'd-a7224b78c13746948e8f56f7d5c3b1e6',
+        dynamic_template_data: {
+            person_name: person.name,
+            order_date: order_date, order_id: id, order_amount: order_amount,
+            seat_price: seats.price, seat_qty: seats.quantity, seat_total: seats.total,
+            parking_price: parking.price, parking_qty: parking.quantity, parking_total: parking.total,
+            event_name: event.name, event_date: event.date, event_time: event.time
+        }
+    };
+
+    try {
+        await sgMail.send(msg);
+    } catch (err) {
+        console.error(err);
+        if (err.response) {
+            console.error(err.response.body);
+            throw new InternalServerException(err.message);
         }
     }
 };
