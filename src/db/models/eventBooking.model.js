@@ -30,6 +30,11 @@ class EventBookingModel extends Model {
                     length: 50,
                     allowNull: false
                 },
+                person_email: {
+                    type: DataTypes.STRING,
+                    length: 20,
+                    allowNull: false
+                },
                 status: {
                     type: DataTypes.ENUM,
                     values: [...Object.values(BookingStatus)]
@@ -154,7 +159,7 @@ class EventBookingModel extends Model {
     }
 
     static updateById(body, booking_id){
-        return this.update(body, { where: { booking_id }, raw: true });
+        return this.update(body, { where: { booking_id }, raw: true, returning: true, plain: true });
     }
 
     static createNew(body){

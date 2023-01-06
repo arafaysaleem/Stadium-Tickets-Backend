@@ -12,6 +12,13 @@ exports.createEventBookingSchema = [
         .withMessage('Length must be between 1 and 50')
         .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic'),
+    body('person_email')
+        .trim()
+        .exists()
+        .withMessage('Person email is required.')
+        .isEmail()
+        .withMessage('Must be a valid email')
+        .normalizeEmail(),
     body('amount_payable')
         .exists()
         .withMessage('Total payable amount is required')
@@ -122,6 +129,12 @@ exports.updateEventBookingSchema = [
         .withMessage('Length must be between 1 and 50')
         .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic'),
+    body('person_email')
+        .optional()
+        .trim()
+        .isEmail()
+        .withMessage('Must be a valid email')
+        .normalizeEmail(),
     body('status')
         .optional()
         .trim()
@@ -134,7 +147,7 @@ exports.updateEventBookingSchema = [
         .withMessage('Please provide required fields to update')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['person_name', 'status'];
+            const allowUpdates = ['person_name', 'person_email', 'status'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')
@@ -161,28 +174,6 @@ exports.processBookingPaymentSchema = [
         .withMessage('Event date is required')
         .isDate({ format: 'YYYY-MM-DD', strictMode: true, delimiters: ['-'] })
         .withMessage('Event date must be a valid date of format \'YYYY-MM-DD\''),
-    body('person')
-        .exists()
-        .withMessage('Booking person details are required')
-        .bail()
-        .isObject()
-        .withMessage('Booking person must be an object like {name: "John Doe", email: "john.doe@gmail.com"}')
-        .bail(),
-    body('person.name')
-        .trim()
-        .exists()
-        .withMessage('Event booking person name is required')
-        .isLength({ min: 1, max: 50 })
-        .withMessage('Length must be between 1 and 50')
-        .isAlpha('en-US', { ignore: ' ' })
-        .withMessage('Must be alphabetic'),
-    body('person.email')
-        .trim()
-        .exists()
-        .withMessage('Person email is required.')
-        .isEmail()
-        .withMessage('Must be a valid email')
-        .normalizeEmail(),
     body('seats')
         .exists()
         .withMessage('Booking seats summary is required')
@@ -268,7 +259,7 @@ exports.processBookingPaymentSchema = [
         .withMessage('Please provide required fields to process payment')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['order_amount', 'currency', 'order_date', 'person', 'seats', 'parking', 'event'];
+            const allowUpdates = ['order_amount', 'currency', 'order_date', 'seats', 'parking', 'event'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid fields!')

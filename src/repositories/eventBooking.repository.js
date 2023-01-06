@@ -63,9 +63,11 @@ class EventBookingRepository {
         }
 
         const affectedRows = result[0];
+        const booking = result[1];
 
-        if (!affectedRows) throw new UpdateFailedException('Event booking confirmation failed');
+        if (!affectedRows || !booking) throw new UpdateFailedException('Event booking confirmation failed');
         
+        body.person = { name: booking.person_name, email: booking.person_email };
         sendBookingSummaryEmail(body, id);
 
         const responseBody = {
