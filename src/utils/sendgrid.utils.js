@@ -26,14 +26,15 @@ exports.sendOTPEmail = async(student, OTP) => {
 };
 
 exports.sendBookingSummaryEmail = async(
-    {order_date, currency, order_amount, event, seats, parking, person},
+    {order_date, order_amount, event, seats, parking, person},
     id
 ) => {
+    var currency = Config.CURRENCY;
     const msg = {
         to: person.email, // Change to your recipient
         from: Config.SENDGRID_SENDER, // Change to your verified sender
         subject: 'Your Booked Tickets Summary',
-        templateId: 'd-a7224b78c13746948e8f56f7d5c3b1e6',
+        templateId: 'd-241cc9653214403dbb32fac0b3029eb9',
         dynamic_template_data: {
             person_name: person.name,
             order_date: order_date, order_id: id, order_amount: `${currency}${order_amount}`,

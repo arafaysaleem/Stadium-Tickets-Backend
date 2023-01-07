@@ -8,7 +8,7 @@ read -sp "Enter password for user '${PGUSER}': " PGPASSWORD
 echo
 echo "======= STARTING DB RESTORE ======="
 
-pg_restore -h stadium-tickets-db.postgres.database.azure.com stadium_tickets_db_data.dump
+psql -h stadium-tickets-db.postgres.database.azure.com -1 -f "backups/stadium_tickets_db_data.sql"
 
 echo
 echo "========== RESTORE COMPLETE =========="

@@ -162,12 +162,6 @@ exports.processBookingPaymentSchema = [
         .withMessage('Amount should be a valid decimal (0.00)')
         .isFloat({ min: 0.1 })
         .withMessage('Rating should be > 0.0'),
-    body('currency')
-        .exists()
-        .withMessage('Currency is required')
-        .bail()
-        .isIn(['$', '£', '€'])
-        .withMessage('Should be a valid currency'),
     body('order_date')
         .trim()
         .exists()
@@ -259,7 +253,7 @@ exports.processBookingPaymentSchema = [
         .withMessage('Please provide required fields to process payment')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['order_amount', 'currency', 'order_date', 'seats', 'parking', 'event'];
+            const allowUpdates = ['order_amount', 'order_date', 'seats', 'parking', 'event'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid fields!')

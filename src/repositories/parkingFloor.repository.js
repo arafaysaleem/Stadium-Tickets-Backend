@@ -8,10 +8,15 @@ const {
     CreateFailedException,
     UnexpectedException
 } = require('../utils/exceptions/database.exception');
+const { Config } = require('../configs/config');
 
 class ParkingFloorRepository {
     findAll = async(filters = {}) => {
         const parkingFloorsList = await DbContext.ParkingFloors.findAllByFilters(filters);
+        
+        parkingFloorsList.forEach(parkingFloor => {
+            parkingFloor.price = Number(Config.PARKING_PRICE);
+        });
 
         return successResponse(parkingFloorsList);
     };
@@ -23,6 +28,7 @@ class ParkingFloorRepository {
             throw new NotFoundException('Parking floor not found');
         }
 
+        parkingFloor.price = Number(Config.PARKING_PRICE);
         return successResponse(parkingFloor);
     };
     
