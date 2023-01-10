@@ -1,6 +1,6 @@
 const { body, query, param } = require('express-validator');
 const { BookingStatus } = require('../../utils/enums/bookingStatus.enum');
-const { datetimeRegex, timeRegex } = require('../../utils/common.utils');
+const { datetimeRegex, timeRegex, idRegex } = require('../../utils/common.utils');
 const EventBookingModel = require('../../db/models/eventBooking.model');
 
 exports.createEventBookingSchema = [
@@ -88,7 +88,7 @@ exports.createEventBookingSchema = [
         .exists()
         .withMessage('Person ID is required for each seat')
         .bail()
-        .isAlphanumeric('en-US', { length: 14 })
+        .matches(idRegex)
         .withMessage('Invalid Person ID format'),
     body(EventBookingModel.bookingParkingSpacesAlias)
         .optional()
