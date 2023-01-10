@@ -210,6 +210,7 @@ CREATE TABLE public.event_bookings (
     amount_payable double precision NOT NULL,
     datetime timestamp with time zone NOT NULL,
     person_name character varying(255) NOT NULL,
+    person_email character varying(255) NOT NULL,
     status public.enum_event_bookings_status,
     zone_id integer NOT NULL,
     event_id integer NOT NULL,
@@ -520,7 +521,7 @@ CREATE TABLE public.zones (
     zone_id integer NOT NULL,
     name character varying(255) NOT NULL,
     seats_per_row integer NOT NULL,
-    number integer DEFAULT 0 NOT NULL,
+    number integer NOT NULL,
     num_of_rows integer NOT NULL,
     color_hex_code character varying(255) NOT NULL,
     z_type_id integer NOT NULL,
@@ -661,11 +662,11 @@ COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_n
 -- Data for Name: event_bookings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, status, zone_id, event_id, "updatedAt") FROM stdin;
-4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	confirmed	4	1	2022-10-31 16:51:31.783+05
-5	1400	2022-10-31 16:57:30+05	Rafay Saleem	confirmed	4	1	2022-10-31 16:57:41.429+05
-6	2800	2022-11-16 00:44:00+05	Henry Ford	confirmed	6	1	2022-11-16 00:48:58.876+05
-7	1400	2022-12-12 16:51:30+05	Gary Shane	confirmed	4	1	2022-12-12 17:19:27.474+05
+COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, person_email, status, zone_id, event_id, "updatedAt") FROM stdin;
+5	1400	2022-10-31 16:57:30+05	Rafay Saleem	arafaysaleem@gmail.com	confirmed	4	1	2022-10-31 16:57:41.429+05
+6	2800	2022-11-16 00:44:00+05	Henry Ford	arafaysaleem@gmail.com	confirmed	6	1	2022-11-16 00:48:58.876+05
+7	1400	2022-12-12 16:51:30+05	Gary Shane	arafaysaleem@gmail.com	confirmed	4	1	2022-12-12 17:19:27.474+05
+4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	arafaysaleem@gmail.com	confirmed	4	1	2023-01-04 16:27:20.707+05
 \.
 
 
@@ -933,6 +934,14 @@ ALTER TABLE ONLY public.zone_resources
 
 ALTER TABLE ONLY public.zone_types
     ADD CONSTRAINT zone_types_pkey PRIMARY KEY (z_type_id);
+
+
+--
+-- Name: zones zones_number_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zones
+    ADD CONSTRAINT zones_number_key UNIQUE (number);
 
 
 --

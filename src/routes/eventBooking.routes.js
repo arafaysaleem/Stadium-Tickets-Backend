@@ -6,7 +6,13 @@ const { Role } = require('../utils/enums/role.enum');
 const { checkValidation } = require('../middleware/validation.middleware');
 
 const eventBookingController = require('../controllers/eventBooking.controller');
-const { createEventBookingSchema, updateEventBookingSchema, getEventBookingsQuerySchema, getEventBookingParamSchema } = require('../middleware/validators/eventBookingValidator.middleware');
+const {
+    createEventBookingSchema,
+    updateEventBookingSchema,
+    getEventBookingsQuerySchema,
+    getEventBookingParamSchema,
+    processBookingPaymentSchema
+} = require('../middleware/validators/eventBookingValidator.middleware');
 
 router.route('/event-bookings')
     .get( // localhost:3000/api/API_VERSION/event-bookings
@@ -38,6 +44,13 @@ router.route('/event-bookings/:id')
         getEventBookingParamSchema,
         checkValidation,
         awaitHandlerFactory(eventBookingController.deleteEventBooking)
+    );
+
+router.route('/event-bookings/:id/process-payment')
+    .post( // localhost:3000/api/API_VERSION/event-bookings/1/process-payment
+        processBookingPaymentSchema,
+        checkValidation,
+        awaitHandlerFactory(eventBookingController.processBookingPayment)
     );
 
 module.exports = router;

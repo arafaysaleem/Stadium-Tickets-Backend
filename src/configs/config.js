@@ -13,6 +13,8 @@ module.exports.Config = {
     SECRET_JWT: process.env.SECRET_JWT || "SECRET_JWT",
     EXPIRY_JWT: process.env.EXPIRY_JWT || '1h',
     EXPIRY_HOURS_OTP: 1,
+    PARKING_PRICE: Number(process.env.PARKING_PRICE) || 10,
+    CURRENCY: process.env.CURRENCY || '$',
     SENDGRID_API_KEY: process.env.SENDGRID_API_KEY || "SENDGRID_API_KEY",
     SENDGRID_SENDER: process.env.SENDGRID_SENDER || "SENDGRID_FROM_EMAIL",
     SENTRY_DSN: process.env.SENTRY_DSN || "https://some-id@oid.ingest.sentry.io/id",

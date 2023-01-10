@@ -31,7 +31,7 @@ class ParkingFloorModel extends Model {
     }
 
     static findAllByFilters(filters){
-        return this.findAll({ where: {...filters} });
+        return this.findAll({ where: {...filters}, raw: true });
     }
 
     static findById(id){

@@ -210,6 +210,7 @@ CREATE TABLE public.event_bookings (
     amount_payable double precision NOT NULL,
     datetime timestamp with time zone NOT NULL,
     person_name character varying(255) NOT NULL,
+    person_email character varying(255) NOT NULL,
     status public.enum_event_bookings_status,
     zone_id integer NOT NULL,
     event_id integer NOT NULL,
@@ -520,7 +521,7 @@ CREATE TABLE public.zones (
     zone_id integer NOT NULL,
     name character varying(255) NOT NULL,
     seats_per_row integer NOT NULL,
-    number integer DEFAULT 0 NOT NULL,
+    number integer NOT NULL,
     num_of_rows integer NOT NULL,
     color_hex_code character varying(255) NOT NULL,
     z_type_id integer NOT NULL,
@@ -716,6 +717,14 @@ ALTER TABLE ONLY public.zone_resources
 
 ALTER TABLE ONLY public.zone_types
     ADD CONSTRAINT zone_types_pkey PRIMARY KEY (z_type_id);
+
+
+--
+-- Name: zones zones_number_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.zones
+    ADD CONSTRAINT zones_number_key UNIQUE (number);
 
 
 --
