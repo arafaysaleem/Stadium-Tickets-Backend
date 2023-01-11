@@ -38,8 +38,8 @@ exports.sendBookingSummaryEmail = async(
         dynamic_template_data: {
             person_name: person.name,
             order_date: order_date, order_id: id, order_amount: `${currency}${order_amount}`,
-            seat_price: seats.price, seat_qty: seats.quantity, seat_total: `${currency}${seats.total}`,
-            parking_price: parking.price, parking_qty: parking.quantity, parking_total: `${currency}${parking.total}`,
+            seat_price: seats.price, seat_qty: seats.qty, seat_total: `${currency}${seats.total}`,
+            parking_price: parking.price, parking_qty: parking.qty, parking_total: `${currency}${parking.total}`,
             event_name: event.name, event_date: event.date, event_time: event.time
         }
     };

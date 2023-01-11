@@ -12,7 +12,7 @@ class MiddlewareLoader {
         });
 
         if (Config.isProduction) {
-            // Sentry error loggin middleware
+            // Sentry error logging middleware
             // This must be after routes loader and before error middleware
             app.use(Sentry.Handlers.errorHandler());
         }
