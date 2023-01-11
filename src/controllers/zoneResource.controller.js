@@ -7,7 +7,7 @@ class ZoneResourceController {
     };
 
     getZoneResourceById = async(req, res, next) => {
-        const response = await ZoneResourceRepository.findOne(req.params.id);
+        const response = await ZoneResourceRepository.findOne(req.params.id, req.params.zone_id);
         res.send(response);
     };
 
@@ -17,12 +17,12 @@ class ZoneResourceController {
     };
 
     updateZoneResource = async(req, res, next) => {
-        const response = await ZoneResourceRepository.update(req.body, req.params.id);
+        const response = await ZoneResourceRepository.update(req.body, req.params.id, req.params.zone_id);
         res.send(response);
     };
 
     deleteZoneResource = async(req, res, next) => {
-        const response = await ZoneResourceRepository.delete(req.params.id);
+        const response = await ZoneResourceRepository.delete(req.params.id, req.params.zone_id);
         res.send(response);
     };
 }

@@ -15,8 +15,8 @@ class ZoneResourceRepository {
         return successResponse(zoneResourcesList);
     };
 
-    findOne = async(id) => {
-        const zoneResource = await DbContext.ZoneResources.findById(id);
+    findOne = async(id, zone_id) => {
+        const zoneResource = await DbContext.ZoneResources.findById(id, zone_id);
         
         if (!zoneResource) {
             throw new NotFoundException('Zone resource not found');
@@ -37,8 +37,8 @@ class ZoneResourceRepository {
         return successResponse(result, 'Zone resource was created!');
     };
 
-    update = async(body, id) => {
-        const result = await DbContext.ZoneResources.updateById(body, id);
+    update = async(body, id, zone_id) => {
+        const result = await DbContext.ZoneResources.updateById(body, id, zone_id);
 
         if (!result) {
             throw new UnexpectedException('Something went wrong');
@@ -55,8 +55,8 @@ class ZoneResourceRepository {
         return successResponse(responseBody, 'Zone resource updated successfully');
     };
 
-    delete = async(id) => {
-        const result = await DbContext.ZoneResources.deleteById(id);
+    delete = async(id, zone_id) => {
+        const result = await DbContext.ZoneResources.deleteById(id, zone_id);
         if (!result) {
             throw new NotFoundException('Zone resource not found');
         }

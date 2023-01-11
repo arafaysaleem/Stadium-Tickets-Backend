@@ -231,8 +231,8 @@ exports.processBookingPaymentSchema = [
         .withMessage('Event name is required')
         .isLength({ min: 1, max: 50 })
         .withMessage('Length must be between 1 and 50')
-        .isAlphanumeric('en-US', { ignore: [' ', ',', '-'] })
-        .withMessage("Can only be alphanumeric, spaces, or ',','-'")
+        .isAlphanumeric('en-US', { ignore: new RegExp(/[,. -]/g) })
+        .withMessage("Can only be alphanumeric, spaces, or (, -)")
         .toUpperCase(),
     body('event.date')
         .trim()
