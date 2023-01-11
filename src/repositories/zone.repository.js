@@ -26,10 +26,10 @@ class ZoneRepository {
         return successResponse(zone);
     };
 
-    findAllTypesOfSeats = async(id) => {
+    findAllTypesOfSeats = async(id, event_id) => {
         const disabledSeatsList = await DbContext.ZoneDisabledSeats.findAllByFilters({ zone_id: id });
 
-        const eventBookingsList = await DbContext.EventBookings.findAllForZone(id);
+        const eventBookingsList = await DbContext.EventBookings.findAllForZone(id, event_id);
         
         let blockedSeatsList = [];
         let missingSeatsList = [];

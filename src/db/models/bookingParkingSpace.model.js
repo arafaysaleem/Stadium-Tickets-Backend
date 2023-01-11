@@ -37,7 +37,7 @@ class BookingParkingSpaceModel extends Model {
         this.ParkingFloor = this.belongsTo(models.ParkingFloorModel, { foreignKey: 'p_floor_id', as: 'parking_floor' });
     }
 
-    static findAllForParkingFloor(p_floor_id){
+    static findAllForParkingFloor(p_floor_id, event_id){
         return this.findAll({
             where: { p_floor_id },
             attributes: ['b_p_space_id', 'space_number', 'space_row'],
@@ -49,6 +49,7 @@ class BookingParkingSpaceModel extends Model {
                     attributes: [],
                     required: true,
                     where: {
+                        event_id,
                         status: [BookingStatus.Confirmed, BookingStatus.Reserved]
                     }
                 }

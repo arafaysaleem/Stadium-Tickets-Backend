@@ -7,7 +7,7 @@ class ParkingFloorController {
     };
 
     getAllTypeOfSpacesForFloor = async(req, res, next) => {
-        const response = await ParkingFloorRepository.findAllTypesOfSpaces(req.params.id);
+        const response = await ParkingFloorRepository.findAllTypesOfSpaces(req.params.id, req.params.event_id);
         res.send(response);
     };
 

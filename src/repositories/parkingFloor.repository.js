@@ -32,10 +32,10 @@ class ParkingFloorRepository {
         return successResponse(parkingFloor);
     };
     
-    findAllTypesOfSpaces = async(id) => {
+    findAllTypesOfSpaces = async(id, event_id) => {
         const disabledSpaces = await DbContext.ParkingDisabledSpaces.findAllByFilters({ p_floor_id: id });
 
-        const parkingBookingsList = await DbContext.BookingParkingSpaces.findAllForParkingFloor(id);
+        const parkingBookingsList = await DbContext.BookingParkingSpaces.findAllForParkingFloor(id, event_id);
 
         let blockedSpaces = [];
         let missingSpaces = [];
