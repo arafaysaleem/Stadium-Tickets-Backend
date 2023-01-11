@@ -9,8 +9,8 @@ exports.createEventSchema = [
         .withMessage('Event name is required')
         .isLength({min: 1, max: 50})
         .withMessage('Length must be between 1 and 50')
-        .isAlpha('en-US', { ignore: ' ' })
-        .withMessage('Must be alphabetic')
+        .isAlphanumeric('en-US', { ignore: new RegExp(/[,. -]/g) })
+        .withMessage("Can only be alphanumeric, spaces, or (, -)")
         .toUpperCase(),
     body('poster_url')
         .trim()
@@ -56,8 +56,8 @@ exports.updateEventSchema = [
         .trim()
         .isLength({min: 1, max: 50})
         .withMessage('Length must be between 1 and 50')
-        .isAlpha('en-US', { ignore: ' ' })
-        .withMessage('Must be alphabetic')
+        .isAlphanumeric('en-US', { ignore: new RegExp(/[,. -]/g) })
+        .withMessage("Can only be alphanumeric, spaces, or (, -)")
         .toUpperCase(),
     body('poster_url')
         .optional()
