@@ -41,8 +41,8 @@ router.route('/zones/:id')
         awaitHandlerFactory(zoneController.deleteZone)
     );
 
-router.route('/zones/:id/seats')
-    .get( // localhost:3000/api/API_VERSION/zones/1/seats
+router.route('/zones/:id/events/:event_id/seats')
+    .get( // localhost:3000/api/API_VERSION/zones/1/events/2/seats
         getZoneParamSchema,
         checkValidation,
         awaitHandlerFactory(zoneController.getAllTypeOfSeatsForZone)

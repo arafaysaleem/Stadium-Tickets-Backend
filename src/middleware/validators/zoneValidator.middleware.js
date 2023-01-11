@@ -152,5 +152,9 @@ exports.getZoneParamSchema = [
     param('id')
         .optional()
         .isInt({ min: 1 })
-        .withMessage('Zone id must be an integer >= 1')
+        .withMessage('Zone id must be an integer >= 1'),
+    param('event_id')
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage('Event id must be an integer >= 1')
 ];

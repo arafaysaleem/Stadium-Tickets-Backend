@@ -99,10 +99,11 @@ class EventBookingModel extends Model {
         });
     }
 
-    static findAllForZone(zone_id){
+    static findAllForZone(zone_id, event_id){
         return this.findAll({
             where: {
                 zone_id,
+                event_id,
                 status: [BookingStatus.Confirmed, BookingStatus.Reserved]
             },
             attributes: ['booking_id'],

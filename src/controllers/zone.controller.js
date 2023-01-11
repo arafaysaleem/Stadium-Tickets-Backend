@@ -7,7 +7,7 @@ class ZoneController {
     };
 
     getAllTypeOfSeatsForZone = async(req, res, next) => {
-        const response = await ZoneRepository.findAllTypesOfSeats(req.params.id);
+        const response = await ZoneRepository.findAllTypesOfSeats(req.params.id, req.params.event_id);
         res.send(response);
     };
 
