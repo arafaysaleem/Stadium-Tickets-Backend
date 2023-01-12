@@ -15,15 +15,16 @@ class ParkingFloorRepository {
         const parkingFloorsList = await DbContext.ParkingFloors.findAllByFilters(filters);
         
         for (var parkingFloor of parkingFloorsList) {
-            let blockedSpaces = [];
-            let missingSpaces = [];
+            let blockedSpacesList = [];
+            let missingSpacesList = [];
             for (var space of parkingFloor.disabled_spaces) {
-                if (space.type === DisabledSpaceType.Blocked) blockedSpaces.push(space);
-                else missingSpaces.push(space);
+                if (space.type === DisabledSpaceType.Blocked) blockedSpacesList.push(space);
+                else missingSpacesList.push(space);
             }
             parkingFloor.price = Number(Config.PARKING_PRICE);
-            parkingFloor.blocked = blockedSpaces;
-            parkingFloor.missing = missingSpaces;
+            parkingFloor.setDataValue('blocked', blockedSpacesList);
+            parkingFloor.setDataValue('missing', missingSpacesList);
+            parkingFloor.setDataValue('disabled_spaces', undefined);
         }
 
         return successResponse(parkingFloorsList);
@@ -36,15 +37,16 @@ class ParkingFloorRepository {
             throw new NotFoundException('Parking floor not found');
         }
 
-        let blockedSpaces = [];
-        let missingSpaces = [];
+        let blockedSpacesList = [];
+        let missingSpacesList = [];
         for (var space of parkingFloor.disabled_spaces) {
-            if (space.type === DisabledSpaceType.Blocked) blockedSpaces.push(space);
-            else missingSpaces.push(space);
+            if (space.type === DisabledSpaceType.Blocked) blockedSpacesList.push(space);
+            else missingSpacesList.push(space);
         }
         parkingFloor.price = Number(Config.PARKING_PRICE);
-        parkingFloor.blocked = blockedSpaces;
-        parkingFloor.missing = missingSpaces;
+        parkingFloor.setDataValue('blocked', blockedSpacesList);
+        parkingFloor.setDataValue('missing', missingSpacesList);
+        parkingFloor.setDataValue('disabled_spaces', undefined);
 
         return successResponse(parkingFloor);
     };

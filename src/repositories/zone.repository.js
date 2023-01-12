@@ -20,8 +20,9 @@ class ZoneRepository {
                 if (zone.type === DisabledSeatType.Blocked) blockedSeatsList.push(seat);
                 else missingSeatsList.push(seat);
             }
-            zone.blocked = blockedSeatsList;
-            zone.missing = missingSeatsList;
+            zone.setDataValue('blocked', blockedSeatsList);
+            zone.setDataValue('missing', missingSeatsList);
+            zone.setDataValue('disabled_seats', undefined);
         }
 
         return successResponse(zonesList);
@@ -40,8 +41,9 @@ class ZoneRepository {
             if (zone.type === DisabledSeatType.Blocked) blockedSeatsList.push(seat);
             else missingSeatsList.push(seat);
         }
-        zone.blocked = blockedSeatsList;
-        zone.missing = missingSeatsList;
+        zone.setDataValue('blocked', blockedSeatsList);
+        zone.setDataValue('missing', missingSeatsList);
+        zone.setDataValue('disabled_seats', undefined);
 
         return successResponse(zone);
     };
