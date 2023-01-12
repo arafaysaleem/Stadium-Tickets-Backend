@@ -21,7 +21,7 @@ class ParkingFloorRepository {
                 if (space.type === DisabledSpaceType.Blocked) blockedSpacesList.push(space);
                 else missingSpacesList.push(space);
             }
-            parkingFloor.price = Number(Config.PARKING_PRICE);
+            parkingFloor.setDataValue('price', Number(Config.PARKING_PRICE));
             parkingFloor.setDataValue('blocked', blockedSpacesList);
             parkingFloor.setDataValue('missing', missingSpacesList);
             parkingFloor.setDataValue('disabled_spaces', undefined);
@@ -43,7 +43,7 @@ class ParkingFloorRepository {
             if (space.type === DisabledSpaceType.Blocked) blockedSpacesList.push(space);
             else missingSpacesList.push(space);
         }
-        parkingFloor.price = Number(Config.PARKING_PRICE);
+        parkingFloor.setDataValue('price', Number(Config.PARKING_PRICE));
         parkingFloor.setDataValue('blocked', blockedSpacesList);
         parkingFloor.setDataValue('missing', missingSpacesList);
         parkingFloor.setDataValue('disabled_spaces', undefined);
