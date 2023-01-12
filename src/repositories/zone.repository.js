@@ -13,6 +13,17 @@ class ZoneRepository {
     findAll = async(filters = {}) => {
         const zonesList = await DbContext.Zones.findAllByFilters(filters);
 
+        for (var zone of zonesList) {
+            let blockedSeatsList = [];
+            let missingSeatsList = [];
+            for (var seat of zone.disabled_seats) {
+                if (zone.type === DisabledSeatType.Blocked) blockedSeatsList.push(seat);
+                else missingSeatsList.push(seat);
+            }
+            zone.blocked = blockedSeatsList;
+            zone.missing = missingSeatsList;
+        }
+
         return successResponse(zonesList);
     };
 
@@ -23,38 +34,16 @@ class ZoneRepository {
             throw new NotFoundException('Zone not found');
         }
 
-        return successResponse(zone);
-    };
-
-    findAllTypesOfSeats = async(id, event_id) => {
-        const disabledSeatsList = await DbContext.ZoneDisabledSeats.findAllByFilters({ zone_id: id });
-
-        const eventBookingsList = await DbContext.EventBookings.findAllForZone(id, event_id);
-        
         let blockedSeatsList = [];
         let missingSeatsList = [];
-        for (var disabledSeat of disabledSeatsList) {
-            var seat = { seat_number: disabledSeat.seat_number, seat_row: disabledSeat.seat_row };
-            if (disabledSeat.type === DisabledSeatType.Blocked) blockedSeatsList.push(seat);
+        for (var seat of zone.disabled_seats) {
+            if (zone.type === DisabledSeatType.Blocked) blockedSeatsList.push(seat);
             else missingSeatsList.push(seat);
         }
+        zone.blocked = blockedSeatsList;
+        zone.missing = missingSeatsList;
 
-        let bookedSeatsList = [];
-        for (var booking of eventBookingsList) {
-            var bookingSeatsList = booking.booking_seats.map((m) => ({
-                seat_number: m.seat_number,
-                seat_row: m.seat_row
-            }));
-            bookedSeatsList.push(...bookingSeatsList);
-        }
-
-        var zoneSeats = {
-            blocked: blockedSeatsList,
-            missing: missingSeatsList,
-            booked: bookedSeatsList
-        };
-
-        return successResponse(zoneSeats);
+        return successResponse(zone);
     };
     
     create = async(body) => {

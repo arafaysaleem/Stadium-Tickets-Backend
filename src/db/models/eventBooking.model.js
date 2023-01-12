@@ -99,7 +99,7 @@ class EventBookingModel extends Model {
         });
     }
 
-    static findAllForZone(zone_id, event_id){
+    static findAllForZone(event_id, zone_id){
         return this.findAll({
             where: {
                 zone_id,

@@ -14,9 +14,17 @@ class ParkingFloorRepository {
     findAll = async(filters = {}) => {
         const parkingFloorsList = await DbContext.ParkingFloors.findAllByFilters(filters);
         
-        parkingFloorsList.forEach(parkingFloor => {
+        for (var parkingFloor of parkingFloorsList) {
+            let blockedSpaces = [];
+            let missingSpaces = [];
+            for (var space of parkingFloor.disabled_spaces) {
+                if (space.type === DisabledSpaceType.Blocked) blockedSpaces.push(space);
+                else missingSpaces.push(space);
+            }
             parkingFloor.price = Number(Config.PARKING_PRICE);
-        });
+            parkingFloor.blocked = blockedSpaces;
+            parkingFloor.missing = missingSpaces;
+        }
 
         return successResponse(parkingFloorsList);
     };
@@ -28,36 +36,17 @@ class ParkingFloorRepository {
             throw new NotFoundException('Parking floor not found');
         }
 
-        parkingFloor.price = Number(Config.PARKING_PRICE);
-        return successResponse(parkingFloor);
-    };
-    
-    findAllTypesOfSpaces = async(id, event_id) => {
-        const disabledSpaces = await DbContext.ParkingDisabledSpaces.findAllByFilters({ p_floor_id: id });
-
-        const parkingBookingsList = await DbContext.BookingParkingSpaces.findAllForParkingFloor(id, event_id);
-
         let blockedSpaces = [];
         let missingSpaces = [];
-        for (var disabledSpace of disabledSpaces) {
-            var space = { space_number: disabledSpace.space_number, space_row: disabledSpace.space_row };
-            if (disabledSpace.type === DisabledSpaceType.Blocked) blockedSpaces.push(space);
+        for (var space of parkingFloor.disabled_spaces) {
+            if (space.type === DisabledSpaceType.Blocked) blockedSpaces.push(space);
             else missingSpaces.push(space);
         }
+        parkingFloor.price = Number(Config.PARKING_PRICE);
+        parkingFloor.blocked = blockedSpaces;
+        parkingFloor.missing = missingSpaces;
 
-        let bookedSpaces = [];
-        for (var booking of parkingBookingsList) {
-            const { space_number, space_row } = booking;
-            bookedSpaces.push({ space_number, space_row });
-        }
-
-        var parkingFloorSpaces = {
-            blocked: blockedSpaces,
-            missing: missingSpaces,
-            booked: bookedSpaces
-        };
-
-        return successResponse(parkingFloorSpaces);
+        return successResponse(parkingFloor);
     };
 
     create = async(body) => {

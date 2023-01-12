@@ -290,5 +290,9 @@ exports.getEventBookingParamSchema = [
     param('zone_id')
         .optional()
         .isInt({ min: 1 })
-        .withMessage('Zone id must be an integer >= 1')
+        .withMessage('Zone id must be an integer >= 1'),
+    param('p_floor_id')
+        .optional()
+        .isInt({ min: 1 })
+        .withMessage('Parking Floor id must be an integer >= 1')
 ];

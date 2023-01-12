@@ -6,11 +6,6 @@ class ZoneController {
         res.send(response);
     };
 
-    getAllTypeOfSeatsForZone = async(req, res, next) => {
-        const response = await ZoneRepository.findAllTypesOfSeats(req.params.id, req.params.event_id);
-        res.send(response);
-    };
-
     getZoneById = async(req, res, next) => {
         const response = await ZoneRepository.findOne(req.params.id);
         res.send(response);
