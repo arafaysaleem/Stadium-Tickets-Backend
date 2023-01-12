@@ -26,6 +26,33 @@ class EventBookingRepository {
 
         return successResponse(eventBooking);
     };
+
+    findAllZoneBookedSeats = async(id, zone_id) => {
+        const eventBookingsList = await DbContext.EventBookings.findAllForZone(id, zone_id);
+        
+        let bookedSeatsList = [];
+        for (var booking of eventBookingsList) {
+            var bookingSeatsList = booking.booking_seats.map((m) => ({
+                seat_number: m.seat_number,
+                seat_row: m.seat_row
+            }));
+            bookedSeatsList.push(...bookingSeatsList);
+        }
+
+        return successResponse(bookedSeatsList);
+    };
+
+    findAllParkingBookedSpaces = async(id, p_floor_id) => {
+        const parkingBookingsList = await DbContext.BookingParkingSpaces.findAllForParkingFloor(p_floor_id, id);
+
+        let bookedSpacesList = [];
+        for (var booking of parkingBookingsList) {
+            const { space_number, space_row } = booking;
+            bookedSpacesList.push({ space_number, space_row });
+        }
+
+        return successResponse(bookedSpacesList);
+    };
     
     create = async(body) => {
         const result = await DbContext.EventBookings.createNew(body);

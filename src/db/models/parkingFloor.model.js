@@ -31,12 +31,29 @@ class ParkingFloorModel extends Model {
     }
 
     static findAllByFilters(filters){
-        return this.findAll({ where: {...filters}, raw: true });
+        return this.findAll({
+            where: {...filters},
+            include: [
+                {
+                    association: this.DisabledSpaces,
+                    as: this.DisabledSpaces.as,
+                    attributes: ['p_space_id', 'space_number', 'space_row', 'type']
+                }
+            ]
+        });
     }
 
     static findById(id){
-        return this.findByPk(id, { raw: true }
-        );
+        return this.findByPk(id, {
+            // include: { all: true, nested: true }, // includes all association for this model and their nested models (recursively)
+            include: [
+                {
+                    association: this.DisabledSpaces,
+                    as: this.DisabledSpaces.as,
+                    attributes: ['p_space_id', 'space_number', 'space_row', 'type']
+                }
+            ]
+        });
     }
 
     static updateById(body, id){

@@ -53,4 +53,18 @@ router.route('/event-bookings/:id/process-payment')
         awaitHandlerFactory(eventBookingController.processBookingPayment)
     );
 
+router.route('/event-bookings/:id/zones/:zone_id/seats')
+    .get( // localhost:3000/api/API_VERSION/event-bookings/1/zones/3/seats
+        getEventBookingParamSchema,
+        checkValidation,
+        awaitHandlerFactory(eventBookingController.getAllBookedSeatsForZone)
+    );
+
+router.route('/event-bookings/:id/parking-floors/:p_floor_id/spaces')
+    .get( // localhost:3000/api/API_VERSION/event-bookings/1/parking-floors/3/spaces
+        getEventBookingParamSchema,
+        checkValidation,
+        awaitHandlerFactory(eventBookingController.getAllBookedSpacesForParkingFloor)
+    );
+
 module.exports = router;
