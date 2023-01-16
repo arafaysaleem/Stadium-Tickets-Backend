@@ -199,21 +199,21 @@ exports.processBookingPaymentSchema = [
         .withMessage('Booking parking must be an object like {price: 15, qty: 2, total: 30}')
         .bail(),
     body('parking.price')
-        .trim()
+        .if(body('parking').exists())
         .exists()
-        .withMessage('Seat price is required')
+        .withMessage('Parking price is required')
         .isInt({ min: 1 })
         .withMessage('Invalid price. Should be a whole number > 0'),
     body('parking.qty')
-        .trim()
+        .if(body('parking').exists())
         .exists()
-        .withMessage('Seat quantity is required')
+        .withMessage('Parking quantity is required')
         .isInt({ min: 1 })
         .withMessage('Invalid quantity. Should be a whole number > 0'),
     body('parking.total')
-        .trim()
+        .if(body('parking').exists())
         .exists()
-        .withMessage('Seat total is required')
+        .withMessage('Parking total is required')
         .isInt({ min: 1 })
         .withMessage('Invalid total. Should be a whole number > 0'),
     body('event')
