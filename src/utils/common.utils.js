@@ -70,7 +70,7 @@ exports.sleep = (ms) => {
 exports.yearRegex = new RegExp(/^(19[5-9]\d|20[0-4]\d|2050)$/);
 exports.OTPRegex = new RegExp(/^[0-9]{4}$/);
 exports.seatRegex = new RegExp(/^[A-Z]{1,2}-[0-9]{1,}$/);
-exports.idRegex = new RegExp(/^([1-9]-\d{4}-\d{4}|[1-9]\d{11})$/);
+exports.idRegex = new RegExp(/^([1-9]\d{8}|[1-9]\d{11})$/);
 exports.timeRegex = new RegExp(/^([01][0-9]|2[0-3]):[0-5][0-9]$/);
 exports.timestampRegex = new RegExp(/^(?:0?[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/);
 exports.datetimeRegex = new RegExp(/^([\+-]?\d{4}(?!\d{2}\b))((-?)((0[1-9]|1[0-2])(\3([12]\d|0[1-9]|3[01]))?|W([0-4]\d|5[0-2])(-?[1-7])?|(00[1-9]|0[1-9]\d|[12]\d{2}|3([0-5]\d|6[1-6])))([T\s]((([01]\d|2[0-3])((:?)[0-5]\d)?|24\:?00)([\.,]\d+(?!:))?)?(\17[0-5]\d([\.,]\d+)?)?([zZ]|([\+-])([01]\d|2[0-3]):?([0-5]\d)?)?)?)?$/);
