@@ -30,6 +30,7 @@ exports.sendBookingSummaryEmail = async(
     id
 ) => {
     var currency = Config.CURRENCY;
+    var parkingSummary = parking || {price: 'N/A', qty: 0, total: 0};
     const msg = {
         to: person.email, // Change to your recipient
         from: Config.SENDGRID_SENDER, // Change to your verified sender
@@ -39,7 +40,7 @@ exports.sendBookingSummaryEmail = async(
             person_name: person.name,
             order_date: order_date, order_id: id, order_amount: `${currency}${order_amount}`,
             seat_price: seats.price, seat_qty: seats.qty, seat_total: `${currency}${seats.total}`,
-            parking_price: parking.price, parking_qty: parking.qty, parking_total: `${currency}${parking.total}`,
+            parking_price: parkingSummary.price, parking_qty: parkingSummary.qty, parking_total: `${currency}${parkingSummary.total}`,
             event_name: event.name, event_date: event.date, event_time: event.time
         }
     };

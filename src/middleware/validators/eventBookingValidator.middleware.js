@@ -194,9 +194,7 @@ exports.processBookingPaymentSchema = [
         .isInt({ min: 1 })
         .withMessage('Invalid total. Should be a whole number > 0'),
     body('parking')
-        .exists()
-        .withMessage('Booking parking summary is required')
-        .bail()
+        .optional()
         .isObject()
         .withMessage('Booking parking must be an object like {price: 15, qty: 2, total: 30}')
         .bail(),
