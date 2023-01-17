@@ -210,6 +210,7 @@ CREATE TABLE public.event_bookings (
     amount_payable double precision NOT NULL,
     datetime timestamp with time zone NOT NULL,
     person_name character varying(255) NOT NULL,
+    person_contact character varying(255) NOT NULL,
     person_email character varying(255) NOT NULL,
     status public.enum_event_bookings_status,
     zone_id integer NOT NULL,

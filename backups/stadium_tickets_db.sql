@@ -210,6 +210,7 @@ CREATE TABLE public.event_bookings (
     amount_payable double precision NOT NULL,
     datetime timestamp with time zone NOT NULL,
     person_name character varying(255) NOT NULL,
+    person_contact character varying(255) NOT NULL,
     person_email character varying(255) NOT NULL,
     status public.enum_event_bookings_status,
     zone_id integer NOT NULL,
@@ -662,11 +663,11 @@ COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_n
 -- Data for Name: event_bookings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, person_email, status, zone_id, event_id, "updatedAt") FROM stdin;
-5	1400	2022-10-31 16:57:30+05	Rafay Saleem	arafaysaleem@gmail.com	confirmed	4	1	2022-10-31 16:57:41.429+05
-6	2800	2022-11-16 00:44:00+05	Henry Ford	arafaysaleem@gmail.com	confirmed	6	1	2022-11-16 00:48:58.876+05
-7	1400	2022-12-12 16:51:30+05	Gary Shane	arafaysaleem@gmail.com	confirmed	4	1	2022-12-12 17:19:27.474+05
-4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	arafaysaleem@gmail.com	confirmed	4	1	2023-01-17 04:13:32.671+05
+COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, person_contact, person_email, status, zone_id, event_id, "updatedAt") FROM stdin;
+5	1400	2022-10-31 16:57:30+05	Rafay Saleem	+50640956712	arafaysaleem@gmail.com	confirmed	4	1	2022-10-31 16:57:41.429+05
+6	2800	2022-11-16 00:44:00+05	Henry Ford	+50640956712	arafaysaleem@gmail.com	confirmed	6	1	2022-11-16 00:48:58.876+05
+7	1400	2022-12-12 16:51:30+05	Gary Shane	+50640956712	arafaysaleem@gmail.com	confirmed	4	1	2022-12-12 17:19:27.474+05
+4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	+50640956712	arafaysaleem@gmail.com	confirmed	4	1	2023-01-17 04:13:32.671+05
 \.
 
 
