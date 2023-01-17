@@ -30,6 +30,11 @@ class EventBookingModel extends Model {
                     length: 50,
                     allowNull: false
                 },
+                person_contact: {
+                    type: DataTypes.STRING,
+                    length: 12,
+                    allowNull: false
+                },
                 person_email: {
                     type: DataTypes.STRING,
                     length: 20,

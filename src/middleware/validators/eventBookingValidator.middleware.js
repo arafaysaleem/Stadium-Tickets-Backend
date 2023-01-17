@@ -1,23 +1,35 @@
 const { body, query, param } = require('express-validator');
 const { BookingStatus } = require('../../utils/enums/bookingStatus.enum');
-const { datetimeRegex, timeRegex, idRegex } = require('../../utils/common.utils');
+const { datetimeRegex, timeRegex, idRegex, contactRegex } = require('../../utils/common.utils');
+const EmailValidator = require('deep-email-validator');
 const EventBookingModel = require('../../db/models/eventBooking.model');
 
 exports.createEventBookingSchema = [
     body('person_name')
         .trim()
         .exists()
-        .withMessage('Event booking person name is required')
+        .withMessage('Buyer name is required')
         .isLength({ min: 1, max: 50 })
         .withMessage('Length must be between 1 and 50')
         .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic'),
+    body('person_contact')
+        .trim()
+        .exists()
+        .withMessage('Buyer contact is required')
+        .matches(contactRegex)
+        .withMessage('Must be a valid Costa Rica mobile number along with country code'),
     body('person_email')
         .trim()
         .exists()
-        .withMessage('Person email is required.')
+        .withMessage('Buyer email is required.')
         .isEmail()
         .withMessage('Must be a valid email')
+        .custom(async(email) => {
+            const {valid} = await EmailValidator.validate(email);
+            return valid;
+        })
+        .withMessage('Email unrecognized')
         .normalizeEmail(),
     body('amount_payable')
         .exists()
@@ -129,11 +141,21 @@ exports.updateEventBookingSchema = [
         .withMessage('Length must be between 1 and 50')
         .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic'),
+    body('person_contact')
+        .optional()
+        .trim()
+        .matches(contactRegex)
+        .withMessage('Must be a valid Costa Rica mobile number along with country code'),
     body('person_email')
         .optional()
         .trim()
         .isEmail()
         .withMessage('Must be a valid email')
+        .custom(async(email) => {
+            const {valid} = await EmailValidator.validate(email);
+            return valid;
+        })
+        .withMessage('Email unrecognized')
         .normalizeEmail(),
     body('status')
         .optional()
