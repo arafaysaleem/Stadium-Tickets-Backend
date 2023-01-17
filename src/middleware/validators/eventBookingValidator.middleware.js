@@ -169,7 +169,7 @@ exports.updateEventBookingSchema = [
         .withMessage('Please provide required fields to update')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['person_name', 'person_email', 'status'];
+            const allowUpdates = ['person_name', 'person_email', 'person_contact', 'status'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')
