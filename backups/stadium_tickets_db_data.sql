@@ -58,7 +58,7 @@ COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, p
 5	1400	2022-10-31 16:57:30+05	Rafay Saleem	+50640956712	arafaysaleem@gmail.com	confirmed	4	1	2022-10-31 16:57:41.429+05
 6	2800	2022-11-16 00:44:00+05	Henry Ford	+50640956712	arafaysaleem@gmail.com	confirmed	6	1	2022-11-16 00:48:58.876+05
 7	1400	2022-12-12 16:51:30+05	Gary Shane	+50640956712	arafaysaleem@gmail.com	confirmed	4	1	2022-12-12 17:19:27.474+05
-4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	+50682345678	arafaysaleem@gmail.com	confirmed	4	1	2023-01-17 21:53:46.379+05
+4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	+50682345678	arafaysaleem@gmail.com	confirmed	4	1	2023-01-27 21:37:53.748+05
 \.
 
 
@@ -105,6 +105,12 @@ COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_n
 --
 
 COPY public.categories (category_id, name, "createdAt", "updatedAt") FROM stdin;
+1	Drinks	2023-01-27 20:42:55.979+05	2023-01-27 20:42:55.979+05
+2	Burgers	2023-01-27 20:43:16.045+05	2023-01-27 20:43:16.045+05
+3	Pizza	2023-01-27 20:43:28.199+05	2023-01-27 20:43:28.199+05
+4	Chinese	2023-01-27 20:43:47.759+05	2023-01-27 20:43:47.759+05
+5	Tacos	2023-01-27 20:43:55.386+05	2023-01-27 20:43:55.386+05
+6	Chicken	2023-01-27 20:44:29.486+05	2023-01-27 20:44:29.486+05
 \.
 
 
@@ -113,6 +119,14 @@ COPY public.categories (category_id, name, "createdAt", "updatedAt") FROM stdin;
 --
 
 COPY public.brands (brand_id, category_id, name, logo_url, "createdAt", "updatedAt") FROM stdin;
+1	1	Nestle	https://www.waleedshah.ae/wp-content/uploads/2018/04/Nestle-Logo.png	2023-01-27 20:54:53.891+05	2023-01-27 20:54:53.891+05
+2	3	Pizza Hut	https://www.freepnglogos.com/uploads/pizza-hut-png-logo/does-the-new-logo-flavors-pizza-hut-png-13.png	2023-01-27 20:59:46.543+05	2023-01-27 20:59:46.543+05
+4	6	KFC	https://cyntaria.blob.core.windows.net/images/brands/kfc.png	2023-01-27 21:02:05.663+05	2023-01-27 21:02:05.663+05
+5	4	Teriyaki	https://cyntaria.blob.core.windows.net/images/brands/teriyaki.png	2023-01-27 21:02:40.038+05	2023-01-27 21:02:40.038+05
+6	5	Taco Bell	https://cyntaria.blob.core.windows.net/images/brands/taco_bell.png	2023-01-27 21:03:17.468+05	2023-01-27 21:03:17.468+05
+7	3	Dominos	https://cyntaria.blob.core.windows.net/images/brands/dominos.png	2023-01-27 21:03:56.989+05	2023-01-27 21:03:56.989+05
+8	3	Papa Johns	https://cyntaria.blob.core.windows.net/images/brands/papa_johns.png	2023-01-27 21:04:15.056+05	2023-01-27 21:04:15.056+05
+9	2	Smash Burger	https://cyntaria.blob.core.windows.net/images/brands/smash_burger.png	2023-01-27 21:08:24.053+05	2023-01-27 21:08:24.053+05
 \.
 
 
@@ -137,6 +151,18 @@ COPY public.parking_disabled_spaces (p_space_id, space_number, space_row, type, 
 --
 
 COPY public.snacks (snack_id, name, image_url, brand_id, price, "createdAt", "updatedAt") FROM stdin;
+1	Mineral Water	https://banner2.cleanpng.com/20171220/bqw/water-bottle-png-image-5a3ab38d99d457.62425636151379649363014217.jpg	1	5	2023-01-27 21:17:03.889+05	2023-01-27 21:17:03.889+05
+2	Orange Iced Tea	https://www.nestleprofessional.com.au/sites/default/files/styles/np_product_detail/public/2022-03/Nestea%20Lemon.png?itok=YSkH9R6o	1	8	2023-01-27 21:18:09.932+05	2023-01-27 21:18:09.932+05
+3	Cheese Burst	https://www.pngkey.com/png/full/123-1230165_singapore-pizza-hut-menu-pizza-hut-seafood-deluxe.png	2	20	2023-01-27 21:19:19.235+05	2023-01-27 21:19:19.235+05
+4	Veggie	https://www.nicepng.com/png/full/52-522964_singapore-pizza-hut-menu-food.png	2	20	2023-01-27 21:19:35.518+05	2023-01-27 21:19:35.518+05
+5	Peppy Paneer	https://www.nicepng.com/png/detail/811-8114767_welcome-to-pizza-hut-middle-east-pizza-hut.png	2	22	2023-01-27 21:19:57.315+05	2023-01-27 21:19:57.315+05
+6	Pepperoni	https://www.pngall.com/wp-content/uploads/4/Pepperoni-Dominos-Pizza-PNG-HD-Image.png	7	25	2023-01-27 21:21:48.472+05	2023-01-27 21:21:48.472+05
+7	Pepperoni	https://e7.pngegg.com/pngimages/523/79/png-clipart-papa-john-s-pizza-calzone-domino-s-pizza-pizza-hut-pizza-delivery.png	8	23	2023-01-27 21:22:47.115+05	2023-01-27 21:22:47.115+05
+8	Whopper	https://www.nicepng.com/png/detail/379-3799619_69kib-500x540-muttonwhopper-detail-0-burger-king-burger.png	9	18	2023-01-27 21:24:36.321+05	2023-01-27 21:24:36.321+05
+9	Chicken Royale	https://www.pngitem.com/pimgs/m/523-5236317_double-whopper-burger-king-hd-png-download.png	9	16	2023-01-27 21:25:00.02+05	2023-01-27 21:25:00.02+05
+10	Family Bucket	https://toppng.com/uploads/preview/kfc-bucket-kfc-bucket-chicken-philippines-115632629900ljez85rhg.png	4	40	2023-01-27 21:25:57.375+05	2023-01-27 21:25:57.375+05
+11	Chicken Taco	https://e7.pngegg.com/pngimages/247/952/png-clipart-taco-with-sauce-taco-bell-fast-food-junk-food-fast-food-food-recipe-thumbnail.png	6	15	2023-01-27 21:29:39.909+05	2023-01-27 21:29:39.909+05
+12	Salmon Sushi	https://w7.pngwing.com/pngs/588/319/png-transparent-sushi-doughnut-japanese-cuisine-sushi-food-recipe-green-tea-thumbnail.png	5	12	2023-01-27 21:32:03.242+05	2023-01-27 21:32:03.242+05
 \.
 
 
@@ -206,14 +232,14 @@ SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 9, true);
 -- Name: brands_brand_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.brands_brand_id_seq', 1, false);
+SELECT pg_catalog.setval('public.brands_brand_id_seq', 9, true);
 
 
 --
 -- Name: categories_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.categories_category_id_seq', 1, false);
+SELECT pg_catalog.setval('public.categories_category_id_seq', 6, true);
 
 
 --
@@ -248,7 +274,7 @@ SELECT pg_catalog.setval('public.parking_floors_p_floor_id_seq', 4, true);
 -- Name: snacks_snack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.snacks_snack_id_seq', 1, false);
+SELECT pg_catalog.setval('public.snacks_snack_id_seq', 12, true);
 
 
 --
