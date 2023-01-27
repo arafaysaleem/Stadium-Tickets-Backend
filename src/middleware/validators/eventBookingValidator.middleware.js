@@ -238,6 +238,26 @@ exports.processBookingPaymentSchema = [
         .withMessage('Parking total is required')
         .isInt({ min: 1 })
         .withMessage('Invalid total. Should be a whole number > 0'),
+    body('snacks')
+        .optional()
+        .isArray()
+        .withMessage('Booking seats must be an array like [{seat_number: 1, seat_row: "A", person_name: "John Doe", identification_number: \'12345678912345\'},{...}]')
+        .bail(),
+    body('snacks.*.price')
+        .exists()
+        .withMessage('Snacks price is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid price. Should be a whole number > 0'),
+    body('snacks.*.qty')
+        .exists()
+        .withMessage('Snack quantity is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid quantity. Should be a whole number > 0'),
+    body('snacks.*.total')
+        .exists()
+        .withMessage('Snack total is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid total. Should be a whole number > 0'),
     body('event')
         .exists()
         .withMessage('Booking event details are required')
@@ -273,7 +293,7 @@ exports.processBookingPaymentSchema = [
         .withMessage('Please provide required fields to process payment')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['order_amount', 'order_date', 'seats', 'parking', 'event'];
+            const allowUpdates = ['order_amount', 'order_date', 'seats', 'parking', 'snacks', 'event'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid fields!')
