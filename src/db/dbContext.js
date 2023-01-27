@@ -61,9 +61,9 @@ class DbContext {
             EventBookings: require('./models/eventBooking.model'),
             BookingSeats: require('./models/bookingSeat.model'),
             BookingParkingSpaces: require('./models/bookingParkingSpace.model'),
-            Categories: require('./models/categories.model'),
-            Brands: require('./models/brands.model'),
-            Snacks: require('./models/snacks.model')
+            Categories: require('./models/category.model'),
+            Brands: require('./models/brand.model'),
+            Snacks: require('./models/snack.model')
         };
 
         Object.values(models).forEach(model => {
