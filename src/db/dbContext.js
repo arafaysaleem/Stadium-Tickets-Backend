@@ -14,6 +14,7 @@ class DbContext {
     get EventBookings(){ return this.models.EventBookings; }
     get BookingSeats(){ return this.models.BookingSeats; }
     get BookingParkingSpaces(){ return this.models.BookingParkingSpaces; }
+    get BookingSnacks(){ return this.models.BookingSnacks; }
     get Categories(){ return this.models.Categories; }
     get Brands(){ return this.models.Brands; }
     get Snacks(){ return this.models.Snacks; }
@@ -61,6 +62,7 @@ class DbContext {
             EventBookings: require('./models/eventBooking.model'),
             BookingSeats: require('./models/bookingSeat.model'),
             BookingParkingSpaces: require('./models/bookingParkingSpace.model'),
+            BookingSnacks: require('./models/bookingSnack.model'),
             Categories: require('./models/category.model'),
             Brands: require('./models/brand.model'),
             Snacks: require('./models/snack.model')

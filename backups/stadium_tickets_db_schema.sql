@@ -202,6 +202,44 @@ ALTER SEQUENCE public.booking_seats_b_seat_id_seq OWNED BY public.booking_seats.
 
 
 --
+-- Name: booking_snacks; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.booking_snacks (
+    b_snack_id integer NOT NULL,
+    snack_id integer NOT NULL,
+    quantity integer NOT NULL,
+    booking_id integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.booking_snacks OWNER TO postgres;
+
+--
+-- Name: booking_snacks_b_snack_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.booking_snacks_b_snack_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.booking_snacks_b_snack_id_seq OWNER TO postgres;
+
+--
+-- Name: booking_snacks_b_snack_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.booking_snacks_b_snack_id_seq OWNED BY public.booking_snacks.b_snack_id;
+
+
+--
 -- Name: brands; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -683,6 +721,13 @@ ALTER TABLE ONLY public.booking_seats ALTER COLUMN b_seat_id SET DEFAULT nextval
 
 
 --
+-- Name: booking_snacks b_snack_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks ALTER COLUMN b_snack_id SET DEFAULT nextval('public.booking_snacks_b_snack_id_seq'::regclass);
+
+
+--
 -- Name: brands brand_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -780,6 +825,14 @@ ALTER TABLE ONLY public.booking_parking_spaces
 
 ALTER TABLE ONLY public.booking_seats
     ADD CONSTRAINT booking_seats_pkey PRIMARY KEY (b_seat_id);
+
+
+--
+-- Name: booking_snacks booking_snacks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks
+    ADD CONSTRAINT booking_snacks_pkey PRIMARY KEY (b_snack_id);
 
 
 --
@@ -916,6 +969,22 @@ ALTER TABLE ONLY public.booking_parking_spaces
 
 ALTER TABLE ONLY public.booking_seats
     ADD CONSTRAINT booking_seats_booking_id_fkey FOREIGN KEY (booking_id) REFERENCES public.event_bookings(booking_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: booking_snacks booking_snacks_booking_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks
+    ADD CONSTRAINT booking_snacks_booking_id_fkey FOREIGN KEY (booking_id) REFERENCES public.event_bookings(booking_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: booking_snacks booking_snacks_snack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks
+    ADD CONSTRAINT booking_snacks_snack_id_fkey FOREIGN KEY (snack_id) REFERENCES public.snacks(snack_id) ON UPDATE CASCADE;
 
 
 --

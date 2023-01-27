@@ -131,22 +131,6 @@ COPY public.brands (brand_id, category_id, name, logo_url, "createdAt", "updated
 
 
 --
--- Data for Name: parking_disabled_spaces; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.parking_disabled_spaces (p_space_id, space_number, space_row, type, p_floor_id, "createdAt", "updatedAt") FROM stdin;
-1	3	A	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
-2	4	A	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
-3	5	A	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
-4	3	C	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
-5	4	C	missing	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
-6	5	C	missing	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
-7	1	B	blocked	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
-8	6	D	blocked	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
-\.
-
-
---
 -- Data for Name: snacks; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -163,6 +147,30 @@ COPY public.snacks (snack_id, name, image_url, brand_id, price, "createdAt", "up
 10	Family Bucket	https://toppng.com/uploads/preview/kfc-bucket-kfc-bucket-chicken-philippines-115632629900ljez85rhg.png	4	40	2023-01-27 21:25:57.375+05	2023-01-27 21:25:57.375+05
 11	Chicken Taco	https://e7.pngegg.com/pngimages/247/952/png-clipart-taco-with-sauce-taco-bell-fast-food-junk-food-fast-food-food-recipe-thumbnail.png	6	15	2023-01-27 21:29:39.909+05	2023-01-27 21:29:39.909+05
 12	Salmon Sushi	https://w7.pngwing.com/pngs/588/319/png-transparent-sushi-doughnut-japanese-cuisine-sushi-food-recipe-green-tea-thumbnail.png	5	12	2023-01-27 21:32:03.242+05	2023-01-27 21:32:03.242+05
+\.
+
+
+--
+-- Data for Name: booking_snacks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.booking_snacks (b_snack_id, snack_id, quantity, booking_id, "createdAt", "updatedAt") FROM stdin;
+\.
+
+
+--
+-- Data for Name: parking_disabled_spaces; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.parking_disabled_spaces (p_space_id, space_number, space_row, type, p_floor_id, "createdAt", "updatedAt") FROM stdin;
+1	3	A	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
+2	4	A	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
+3	5	A	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
+4	3	C	missing	4	2022-10-23 15:44:14.096+05	2022-10-23 15:44:14.096+05
+5	4	C	missing	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
+6	5	C	missing	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
+7	1	B	blocked	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
+8	6	D	blocked	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
 \.
 
 
@@ -226,6 +234,13 @@ SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 2, tr
 --
 
 SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 9, true);
+
+
+--
+-- Name: booking_snacks_b_snack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.booking_snacks_b_snack_id_seq', 1, false);
 
 
 --
