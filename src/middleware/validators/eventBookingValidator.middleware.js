@@ -130,7 +130,25 @@ exports.createEventBookingSchema = [
         .withMessage('Parking floor ID is required for each parking')
         .bail()
         .isInt({ min: 1 })
-        .withMessage('Invalid Parking Floor ID found')
+        .withMessage('Invalid Parking Floor ID found'),
+    body(EventBookingModel.bookingSnacksAlias)
+        .optional()
+        .isArray()
+        .withMessage('Booking snacks must be an array like [{snack_id: 1, quantity: 2},{...}]')
+        .bail(),
+    body(`${EventBookingModel.bookingSnacksAlias}.*.quantity`)
+        .exists()
+        .withMessage('Quantity is required for each snack')
+        .bail()
+        .isInt({ min: 1 })
+        .withMessage('Should be an integer'),
+    body(`${EventBookingModel.bookingSnacksAlias}.*.snack_id`)
+        .trim()
+        .exists()
+        .withMessage('Snack ID is required for each snack')
+        .bail()
+        .isInt({ min: 1 })
+        .withMessage('Invalid Snack ID found')
 ];
 
 exports.updateEventBookingSchema = [

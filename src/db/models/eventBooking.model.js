@@ -2,10 +2,12 @@ const { Model } = require('sequelize');
 const { BookingStatus } = require('../../utils/enums/bookingStatus.enum');
 const ZoneModel = require('./zone.model');
 const BookingParkingSpaceModel = require('./bookingParkingSpace.model');
+const BookingSnackModel = require('./bookingSnack.model');
 
 class EventBookingModel extends Model {
     static zoneAlias = 'zone';
     static bookingSeatsAlias = 'booking_seats';
+    static bookingSnacksAlias = 'booking_snacks';
     static bookingParkingSpacesAlias = 'booking_parking_spaces';
 
     static init(sequelize, DataTypes) {
@@ -61,6 +63,7 @@ class EventBookingModel extends Model {
         this.belongsTo(models.EventModel, { foreignKey: 'event_id' });
         this.Zone = this.belongsTo(models.ZoneModel, { foreignKey: 'zone_id', as: this.zoneAlias });
         this.BookingSeats = this.hasMany(models.BookingSeatModel, { foreignKey: 'booking_id', as: this.bookingSeatsAlias });
+        this.BookingSnacks = this.hasMany(models.BookingSnackModel, { foreignKey: 'booking_id', as: this.bookingSnacksAlias });
         this.BookingParkingSpaces = this.hasMany(models.BookingParkingSpaceModel, { foreignKey: 'booking_id', as: this.bookingParkingSpacesAlias });
     }
 
@@ -97,6 +100,17 @@ class EventBookingModel extends Model {
                             association: BookingParkingSpaceModel.ParkingFloor,
                             as: BookingParkingSpaceModel.ParkingFloor.as,
                             attributes: ['p_floor_id', 'floor_number']
+                        }
+                    ]
+                },
+                {
+                    association: this.BookingSnacks,
+                    as: this.BookingSnacks.as,
+                    attributes: ['b_snack_id', 'quantity'],
+                    include: [
+                        {
+                            association: BookingSnackModel.Snack,
+                            as: BookingSnackModel.Snack.as
                         }
                     ]
                 }
@@ -158,6 +172,17 @@ class EventBookingModel extends Model {
                                 attributes: ['floor_number']
                             }
                         ]
+                    },
+                    {
+                        association: this.BookingSnacks,
+                        as: this.BookingSnacks.as,
+                        attributes: ['b_snack_id', 'quantity'],
+                        include: [
+                            {
+                                association: BookingSnackModel.Snack,
+                                as: BookingSnackModel.Snack.as
+                            }
+                        ]
                     }
                 ]
             }
@@ -181,6 +206,10 @@ class EventBookingModel extends Model {
                     {
                         association: this.BookingParkingSpaces,
                         as: this.BookingParkingSpaces.as
+                    },
+                    {
+                        association: this.BookingSnacks,
+                        as: this.BookingSnacks.as
                     }
                 ]
             });
