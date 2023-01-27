@@ -58,7 +58,7 @@ COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, p
 5	1400	2022-10-31 16:57:30+05	Rafay Saleem	+50640956712	arafaysaleem@gmail.com	confirmed	4	1	2022-10-31 16:57:41.429+05
 6	2800	2022-11-16 00:44:00+05	Henry Ford	+50640956712	arafaysaleem@gmail.com	confirmed	6	1	2022-11-16 00:48:58.876+05
 7	1400	2022-12-12 16:51:30+05	Gary Shane	+50640956712	arafaysaleem@gmail.com	confirmed	4	1	2022-12-12 17:19:27.474+05
-4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	+50640956712	arafaysaleem@gmail.com	confirmed	4	1	2023-01-17 04:13:32.671+05
+4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	+50682345678	arafaysaleem@gmail.com	confirmed	4	1	2023-01-17 21:53:46.379+05
 \.
 
 
