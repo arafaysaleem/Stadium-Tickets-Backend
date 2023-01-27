@@ -202,6 +202,118 @@ ALTER SEQUENCE public.booking_seats_b_seat_id_seq OWNED BY public.booking_seats.
 
 
 --
+-- Name: booking_snacks; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.booking_snacks (
+    b_snack_id integer NOT NULL,
+    snack_id integer NOT NULL,
+    quantity integer NOT NULL,
+    booking_id integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.booking_snacks OWNER TO postgres;
+
+--
+-- Name: booking_snacks_b_snack_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.booking_snacks_b_snack_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.booking_snacks_b_snack_id_seq OWNER TO postgres;
+
+--
+-- Name: booking_snacks_b_snack_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.booking_snacks_b_snack_id_seq OWNED BY public.booking_snacks.b_snack_id;
+
+
+--
+-- Name: brands; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.brands (
+    brand_id integer NOT NULL,
+    category_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    logo_url text NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.brands OWNER TO postgres;
+
+--
+-- Name: brands_brand_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.brands_brand_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.brands_brand_id_seq OWNER TO postgres;
+
+--
+-- Name: brands_brand_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.brands_brand_id_seq OWNED BY public.brands.brand_id;
+
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.categories (
+    category_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.categories OWNER TO postgres;
+
+--
+-- Name: categories_category_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.categories_category_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_category_id_seq OWNER TO postgres;
+
+--
+-- Name: categories_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.categories_category_id_seq OWNED BY public.categories.category_id;
+
+
+--
 -- Name: event_bookings; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -210,6 +322,7 @@ CREATE TABLE public.event_bookings (
     amount_payable double precision NOT NULL,
     datetime timestamp with time zone NOT NULL,
     person_name character varying(255) NOT NULL,
+    person_contact character varying(255) NOT NULL,
     person_email character varying(255) NOT NULL,
     status public.enum_event_bookings_status,
     zone_id integer NOT NULL,
@@ -358,6 +471,45 @@ ALTER TABLE public.parking_floors_p_floor_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.parking_floors_p_floor_id_seq OWNED BY public.parking_floors.p_floor_id;
+
+
+--
+-- Name: snacks; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.snacks (
+    snack_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    image_url text NOT NULL,
+    brand_id integer NOT NULL,
+    price integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.snacks OWNER TO postgres;
+
+--
+-- Name: snacks_snack_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.snacks_snack_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.snacks_snack_id_seq OWNER TO postgres;
+
+--
+-- Name: snacks_snack_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.snacks_snack_id_seq OWNED BY public.snacks.snack_id;
 
 
 --
@@ -569,6 +721,27 @@ ALTER TABLE ONLY public.booking_seats ALTER COLUMN b_seat_id SET DEFAULT nextval
 
 
 --
+-- Name: booking_snacks b_snack_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks ALTER COLUMN b_snack_id SET DEFAULT nextval('public.booking_snacks_b_snack_id_seq'::regclass);
+
+
+--
+-- Name: brands brand_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.brands ALTER COLUMN brand_id SET DEFAULT nextval('public.brands_brand_id_seq'::regclass);
+
+
+--
+-- Name: categories category_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categories ALTER COLUMN category_id SET DEFAULT nextval('public.categories_category_id_seq'::regclass);
+
+
+--
 -- Name: event_bookings booking_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -594,6 +767,13 @@ ALTER TABLE ONLY public.parking_disabled_spaces ALTER COLUMN p_space_id SET DEFA
 --
 
 ALTER TABLE ONLY public.parking_floors ALTER COLUMN p_floor_id SET DEFAULT nextval('public.parking_floors_p_floor_id_seq'::regclass);
+
+
+--
+-- Name: snacks snack_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.snacks ALTER COLUMN snack_id SET DEFAULT nextval('public.snacks_snack_id_seq'::regclass);
 
 
 --
@@ -648,6 +828,30 @@ ALTER TABLE ONLY public.booking_seats
 
 
 --
+-- Name: booking_snacks booking_snacks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks
+    ADD CONSTRAINT booking_snacks_pkey PRIMARY KEY (b_snack_id);
+
+
+--
+-- Name: brands brands_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.brands
+    ADD CONSTRAINT brands_pkey PRIMARY KEY (brand_id);
+
+
+--
+-- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (category_id);
+
+
+--
 -- Name: event_bookings event_bookings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -677,6 +881,14 @@ ALTER TABLE ONLY public.parking_disabled_spaces
 
 ALTER TABLE ONLY public.parking_floors
     ADD CONSTRAINT parking_floors_pkey PRIMARY KEY (p_floor_id);
+
+
+--
+-- Name: snacks snacks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.snacks
+    ADD CONSTRAINT snacks_pkey PRIMARY KEY (snack_id);
 
 
 --
@@ -760,6 +972,30 @@ ALTER TABLE ONLY public.booking_seats
 
 
 --
+-- Name: booking_snacks booking_snacks_booking_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks
+    ADD CONSTRAINT booking_snacks_booking_id_fkey FOREIGN KEY (booking_id) REFERENCES public.event_bookings(booking_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: booking_snacks booking_snacks_snack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks
+    ADD CONSTRAINT booking_snacks_snack_id_fkey FOREIGN KEY (snack_id) REFERENCES public.snacks(snack_id) ON UPDATE CASCADE;
+
+
+--
+-- Name: brands brands_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.brands
+    ADD CONSTRAINT brands_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.categories(category_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: event_bookings event_bookings_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -781,6 +1017,14 @@ ALTER TABLE ONLY public.event_bookings
 
 ALTER TABLE ONLY public.parking_disabled_spaces
     ADD CONSTRAINT parking_disabled_spaces_p_floor_id_fkey FOREIGN KEY (p_floor_id) REFERENCES public.parking_floors(p_floor_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: snacks snacks_brand_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.snacks
+    ADD CONSTRAINT snacks_brand_id_fkey FOREIGN KEY (brand_id) REFERENCES public.brands(brand_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

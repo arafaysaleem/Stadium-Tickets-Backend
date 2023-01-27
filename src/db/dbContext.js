@@ -14,6 +14,10 @@ class DbContext {
     get EventBookings(){ return this.models.EventBookings; }
     get BookingSeats(){ return this.models.BookingSeats; }
     get BookingParkingSpaces(){ return this.models.BookingParkingSpaces; }
+    get BookingSnacks(){ return this.models.BookingSnacks; }
+    get Categories(){ return this.models.Categories; }
+    get Brands(){ return this.models.Brands; }
+    get Snacks(){ return this.models.Snacks; }
 
     init({ host, port, user, password, database, dialect, connLimit, paramLogging, useSSL }) {
         if (!this.sequelize){
@@ -57,7 +61,11 @@ class DbContext {
             ZoneTypes: require("./models/zoneType.model"),
             EventBookings: require('./models/eventBooking.model'),
             BookingSeats: require('./models/bookingSeat.model'),
-            BookingParkingSpaces: require('./models/bookingParkingSpace.model')
+            BookingParkingSpaces: require('./models/bookingParkingSpace.model'),
+            BookingSnacks: require('./models/bookingSnack.model'),
+            Categories: require('./models/category.model'),
+            Brands: require('./models/brand.model'),
+            Snacks: require('./models/snack.model')
         };
 
         Object.values(models).forEach(model => {

@@ -1,23 +1,35 @@
 const { body, query, param } = require('express-validator');
 const { BookingStatus } = require('../../utils/enums/bookingStatus.enum');
-const { datetimeRegex, timeRegex, idRegex } = require('../../utils/common.utils');
+const { datetimeRegex, timeRegex, idRegex, contactRegex } = require('../../utils/common.utils');
+const EmailValidator = require('deep-email-validator');
 const EventBookingModel = require('../../db/models/eventBooking.model');
 
 exports.createEventBookingSchema = [
     body('person_name')
         .trim()
         .exists()
-        .withMessage('Event booking person name is required')
+        .withMessage('Buyer name is required')
         .isLength({ min: 1, max: 50 })
         .withMessage('Length must be between 1 and 50')
         .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic'),
+    body('person_contact')
+        .trim()
+        .exists()
+        .withMessage('Buyer contact is required')
+        .matches(contactRegex)
+        .withMessage('Must be a valid Costa Rica mobile number along with country code'),
     body('person_email')
         .trim()
         .exists()
-        .withMessage('Person email is required.')
+        .withMessage('Buyer email is required.')
         .isEmail()
         .withMessage('Must be a valid email')
+        .custom(async(email) => {
+            const {valid} = await EmailValidator.validate(email);
+            return valid;
+        })
+        .withMessage('Email unrecognized')
         .normalizeEmail(),
     body('amount_payable')
         .exists()
@@ -118,7 +130,25 @@ exports.createEventBookingSchema = [
         .withMessage('Parking floor ID is required for each parking')
         .bail()
         .isInt({ min: 1 })
-        .withMessage('Invalid Parking Floor ID found')
+        .withMessage('Invalid Parking Floor ID found'),
+    body(EventBookingModel.bookingSnacksAlias)
+        .optional()
+        .isArray()
+        .withMessage('Booking snacks must be an array like [{snack_id: 1, quantity: 2},{...}]')
+        .bail(),
+    body(`${EventBookingModel.bookingSnacksAlias}.*.quantity`)
+        .exists()
+        .withMessage('Quantity is required for each snack')
+        .bail()
+        .isInt({ min: 1 })
+        .withMessage('Should be an integer'),
+    body(`${EventBookingModel.bookingSnacksAlias}.*.snack_id`)
+        .trim()
+        .exists()
+        .withMessage('Snack ID is required for each snack')
+        .bail()
+        .isInt({ min: 1 })
+        .withMessage('Invalid Snack ID found')
 ];
 
 exports.updateEventBookingSchema = [
@@ -129,11 +159,21 @@ exports.updateEventBookingSchema = [
         .withMessage('Length must be between 1 and 50')
         .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic'),
+    body('person_contact')
+        .optional()
+        .trim()
+        .matches(contactRegex)
+        .withMessage('Must be a valid Costa Rica mobile number along with country code'),
     body('person_email')
         .optional()
         .trim()
         .isEmail()
         .withMessage('Must be a valid email')
+        .custom(async(email) => {
+            const {valid} = await EmailValidator.validate(email);
+            return valid;
+        })
+        .withMessage('Email unrecognized')
         .normalizeEmail(),
     body('status')
         .optional()
@@ -147,7 +187,7 @@ exports.updateEventBookingSchema = [
         .withMessage('Please provide required fields to update')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['person_name', 'person_email', 'status'];
+            const allowUpdates = ['person_name', 'person_email', 'person_contact', 'status'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')
@@ -216,6 +256,34 @@ exports.processBookingPaymentSchema = [
         .withMessage('Parking total is required')
         .isInt({ min: 1 })
         .withMessage('Invalid total. Should be a whole number > 0'),
+    body('snacks')
+        .optional()
+        .isArray()
+        .withMessage('Booking seats must be an array like [{seat_number: 1, seat_row: "A", person_name: "John Doe", identification_number: \'12345678912345\'},{...}]')
+        .bail(),
+    body('snacks.*.name')
+        .trim()
+        .exists()
+        .withMessage('Snack name is required')
+        .isLength({ min: 1, max: 50 })
+        .withMessage('Length must be between 1 and 50')
+        .isAlphanumeric('en-US', { ignore: new RegExp(/[, -]/g) })
+        .withMessage("Can only be alphanumeric, spaces, or (, -)"),
+    body('snacks.*.price')
+        .exists()
+        .withMessage('Snacks price is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid price. Should be a whole number > 0'),
+    body('snacks.*.qty')
+        .exists()
+        .withMessage('Snack quantity is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid quantity. Should be a whole number > 0'),
+    body('snacks.*.total')
+        .exists()
+        .withMessage('Snack total is required')
+        .isInt({ min: 1 })
+        .withMessage('Invalid total. Should be a whole number > 0'),
     body('event')
         .exists()
         .withMessage('Booking event details are required')
@@ -251,7 +319,7 @@ exports.processBookingPaymentSchema = [
         .withMessage('Please provide required fields to process payment')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['order_amount', 'order_date', 'seats', 'parking', 'event'];
+            const allowUpdates = ['order_amount', 'order_date', 'seats', 'parking', 'snacks', 'event'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid fields!')

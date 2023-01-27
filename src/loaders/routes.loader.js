@@ -12,6 +12,9 @@ const parkingDisabledSpaceRouter = require('../routes/parkingDisabledSpace.route
 const eventBookingRouter = require('../routes/eventBooking.routes');
 const bookingParkingSpaceRouter = require('../routes/bookingParkingSpace.routes');
 const bookingSeatRouter = require('../routes/bookingSeat.routes');
+const categoryRouter = require('../routes/category.routes');
+const brandRouter = require('../routes/brand.routes');
+const snackRouter = require('../routes/snack.routes');
 const { apiKeyAuth } = require('../middleware/auth.middleware');
 
 class RoutesLoader {
@@ -36,6 +39,9 @@ class RoutesLoader {
         app.use(baseRoute, eventBookingRouter);
         app.use(baseRoute, bookingParkingSpaceRouter);
         app.use(baseRoute, bookingSeatRouter);
+        app.use(`${baseRoute}/food`, categoryRouter);
+        app.use(`${baseRoute}/food`, brandRouter);
+        app.use(`${baseRoute}/food`, snackRouter);
     }
 }
 

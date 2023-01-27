@@ -202,6 +202,118 @@ ALTER SEQUENCE public.booking_seats_b_seat_id_seq OWNED BY public.booking_seats.
 
 
 --
+-- Name: booking_snacks; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.booking_snacks (
+    b_snack_id integer NOT NULL,
+    snack_id integer NOT NULL,
+    quantity integer NOT NULL,
+    booking_id integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.booking_snacks OWNER TO postgres;
+
+--
+-- Name: booking_snacks_b_snack_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.booking_snacks_b_snack_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.booking_snacks_b_snack_id_seq OWNER TO postgres;
+
+--
+-- Name: booking_snacks_b_snack_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.booking_snacks_b_snack_id_seq OWNED BY public.booking_snacks.b_snack_id;
+
+
+--
+-- Name: brands; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.brands (
+    brand_id integer NOT NULL,
+    category_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    logo_url text NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.brands OWNER TO postgres;
+
+--
+-- Name: brands_brand_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.brands_brand_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.brands_brand_id_seq OWNER TO postgres;
+
+--
+-- Name: brands_brand_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.brands_brand_id_seq OWNED BY public.brands.brand_id;
+
+
+--
+-- Name: categories; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.categories (
+    category_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.categories OWNER TO postgres;
+
+--
+-- Name: categories_category_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.categories_category_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.categories_category_id_seq OWNER TO postgres;
+
+--
+-- Name: categories_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.categories_category_id_seq OWNED BY public.categories.category_id;
+
+
+--
 -- Name: event_bookings; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -210,6 +322,7 @@ CREATE TABLE public.event_bookings (
     amount_payable double precision NOT NULL,
     datetime timestamp with time zone NOT NULL,
     person_name character varying(255) NOT NULL,
+    person_contact character varying(255) NOT NULL,
     person_email character varying(255) NOT NULL,
     status public.enum_event_bookings_status,
     zone_id integer NOT NULL,
@@ -358,6 +471,45 @@ ALTER TABLE public.parking_floors_p_floor_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.parking_floors_p_floor_id_seq OWNED BY public.parking_floors.p_floor_id;
+
+
+--
+-- Name: snacks; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.snacks (
+    snack_id integer NOT NULL,
+    name character varying(255) NOT NULL,
+    image_url text NOT NULL,
+    brand_id integer NOT NULL,
+    price integer NOT NULL,
+    "createdAt" timestamp with time zone NOT NULL,
+    "updatedAt" timestamp with time zone NOT NULL
+);
+
+
+ALTER TABLE public.snacks OWNER TO postgres;
+
+--
+-- Name: snacks_snack_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.snacks_snack_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.snacks_snack_id_seq OWNER TO postgres;
+
+--
+-- Name: snacks_snack_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.snacks_snack_id_seq OWNED BY public.snacks.snack_id;
 
 
 --
@@ -569,6 +721,27 @@ ALTER TABLE ONLY public.booking_seats ALTER COLUMN b_seat_id SET DEFAULT nextval
 
 
 --
+-- Name: booking_snacks b_snack_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks ALTER COLUMN b_snack_id SET DEFAULT nextval('public.booking_snacks_b_snack_id_seq'::regclass);
+
+
+--
+-- Name: brands brand_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.brands ALTER COLUMN brand_id SET DEFAULT nextval('public.brands_brand_id_seq'::regclass);
+
+
+--
+-- Name: categories category_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categories ALTER COLUMN category_id SET DEFAULT nextval('public.categories_category_id_seq'::regclass);
+
+
+--
 -- Name: event_bookings booking_id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -594,6 +767,13 @@ ALTER TABLE ONLY public.parking_disabled_spaces ALTER COLUMN p_space_id SET DEFA
 --
 
 ALTER TABLE ONLY public.parking_floors ALTER COLUMN p_floor_id SET DEFAULT nextval('public.parking_floors_p_floor_id_seq'::regclass);
+
+
+--
+-- Name: snacks snack_id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.snacks ALTER COLUMN snack_id SET DEFAULT nextval('public.snacks_snack_id_seq'::regclass);
 
 
 --
@@ -638,6 +818,7 @@ ALTER TABLE ONLY public.zones ALTER COLUMN zone_id SET DEFAULT nextval('public.z
 COPY public.booking_parking_spaces (b_p_space_id, space_number, space_row, p_floor_id, booking_id, "createdAt", "updatedAt") FROM stdin;
 1	5	B	3	4	2022-10-31 16:51:31.811+05	2022-10-31 16:51:31.811+05
 2	1	A	4	7	2022-12-12 17:19:27.602+05	2022-12-12 17:19:27.602+05
+3	5	B	3	8	2023-01-27 22:08:31.617+05	2023-01-27 22:08:31.617+05
 \.
 
 
@@ -655,6 +836,49 @@ COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_n
 7	Abdur Rafay Saleem	a1b2c3d4f5g6h7	5	C	6	2022-11-16 00:48:58.906+05	2022-11-16 00:48:58.906+05
 8	Rabbiya Tariq	a0b2c4d6f8g0h2	6	C	6	2022-11-16 00:48:58.906+05	2022-11-16 00:48:58.906+05
 9	Haleema Syed	a1b2c3d4f5g6h7	4	C	7	2022-12-12 17:19:27.601+05	2022-12-12 17:19:27.601+05
+10	Shahmeer Asif	123456789	3	A	8	2023-01-27 22:08:31.615+05	2023-01-27 22:08:31.615+05
+11	Zaim Moosani	123456777	4	A	8	2023-01-27 22:08:31.616+05	2023-01-27 22:08:31.616+05
+\.
+
+
+--
+-- Data for Name: booking_snacks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.booking_snacks (b_snack_id, snack_id, quantity, booking_id, "createdAt", "updatedAt") FROM stdin;
+1	6	2	8	2023-01-27 22:08:31.618+05	2023-01-27 22:08:31.618+05
+2	1	1	8	2023-01-27 22:08:31.618+05	2023-01-27 22:08:31.618+05
+3	2	3	8	2023-01-27 22:08:31.618+05	2023-01-27 22:08:31.618+05
+\.
+
+
+--
+-- Data for Name: brands; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.brands (brand_id, category_id, name, logo_url, "createdAt", "updatedAt") FROM stdin;
+1	1	Nestle	https://www.waleedshah.ae/wp-content/uploads/2018/04/Nestle-Logo.png	2023-01-27 20:54:53.891+05	2023-01-27 20:54:53.891+05
+2	3	Pizza Hut	https://www.freepnglogos.com/uploads/pizza-hut-png-logo/does-the-new-logo-flavors-pizza-hut-png-13.png	2023-01-27 20:59:46.543+05	2023-01-27 20:59:46.543+05
+4	6	KFC	https://cyntaria.blob.core.windows.net/images/brands/kfc.png	2023-01-27 21:02:05.663+05	2023-01-27 21:02:05.663+05
+5	4	Teriyaki	https://cyntaria.blob.core.windows.net/images/brands/teriyaki.png	2023-01-27 21:02:40.038+05	2023-01-27 21:02:40.038+05
+6	5	Taco Bell	https://cyntaria.blob.core.windows.net/images/brands/taco_bell.png	2023-01-27 21:03:17.468+05	2023-01-27 21:03:17.468+05
+7	3	Dominos	https://cyntaria.blob.core.windows.net/images/brands/dominos.png	2023-01-27 21:03:56.989+05	2023-01-27 21:03:56.989+05
+8	3	Papa Johns	https://cyntaria.blob.core.windows.net/images/brands/papa_johns.png	2023-01-27 21:04:15.056+05	2023-01-27 21:04:15.056+05
+9	2	Smash Burger	https://cyntaria.blob.core.windows.net/images/brands/smash_burger.png	2023-01-27 21:08:24.053+05	2023-01-27 21:08:24.053+05
+\.
+
+
+--
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.categories (category_id, name, "createdAt", "updatedAt") FROM stdin;
+1	Drinks	2023-01-27 20:42:55.979+05	2023-01-27 20:42:55.979+05
+2	Burgers	2023-01-27 20:43:16.045+05	2023-01-27 20:43:16.045+05
+3	Pizza	2023-01-27 20:43:28.199+05	2023-01-27 20:43:28.199+05
+4	Chinese	2023-01-27 20:43:47.759+05	2023-01-27 20:43:47.759+05
+5	Tacos	2023-01-27 20:43:55.386+05	2023-01-27 20:43:55.386+05
+6	Chicken	2023-01-27 20:44:29.486+05	2023-01-27 20:44:29.486+05
 \.
 
 
@@ -662,11 +886,12 @@ COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_n
 -- Data for Name: event_bookings; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, person_email, status, zone_id, event_id, "updatedAt") FROM stdin;
-5	1400	2022-10-31 16:57:30+05	Rafay Saleem	arafaysaleem@gmail.com	confirmed	4	1	2022-10-31 16:57:41.429+05
-6	2800	2022-11-16 00:44:00+05	Henry Ford	arafaysaleem@gmail.com	confirmed	6	1	2022-11-16 00:48:58.876+05
-7	1400	2022-12-12 16:51:30+05	Gary Shane	arafaysaleem@gmail.com	confirmed	4	1	2022-12-12 17:19:27.474+05
-4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	arafaysaleem@gmail.com	confirmed	4	1	2023-01-04 16:27:20.707+05
+COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, person_contact, person_email, status, zone_id, event_id, "updatedAt") FROM stdin;
+5	1400	2022-10-31 16:57:30+05	Rafay Saleem	+50640956712	arafaysaleem@gmail.com	confirmed	4	1	2022-10-31 16:57:41.429+05
+6	2800	2022-11-16 00:44:00+05	Henry Ford	+50640956712	arafaysaleem@gmail.com	confirmed	6	1	2022-11-16 00:48:58.876+05
+7	1400	2022-12-12 16:51:30+05	Gary Shane	+50640956712	arafaysaleem@gmail.com	confirmed	4	1	2022-12-12 17:19:27.474+05
+4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	+50682345678	arafaysaleem@gmail.com	confirmed	4	1	2023-01-27 21:37:53.748+05
+8	1400	2023-01-27 16:51:30+05	Farah Saleem	+50640956712	arafaysaleem@gmail.com	confirmed	4	2	2023-01-27 22:11:44.039+05
 \.
 
 
@@ -706,6 +931,26 @@ COPY public.parking_floors (p_floor_id, floor_number, spaces_per_row, num_of_row
 3	2	16	6	2022-10-23 15:24:22.792+05	2022-10-23 15:36:17.515+05
 4	3	12	10	2022-10-23 15:44:14.073+05	2023-01-11 15:07:19.904+05
 1	3	13	10	2022-10-23 15:17:57.506+05	2023-01-11 15:08:34.045+05
+\.
+
+
+--
+-- Data for Name: snacks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.snacks (snack_id, name, image_url, brand_id, price, "createdAt", "updatedAt") FROM stdin;
+1	Mineral Water	https://banner2.cleanpng.com/20171220/bqw/water-bottle-png-image-5a3ab38d99d457.62425636151379649363014217.jpg	1	5	2023-01-27 21:17:03.889+05	2023-01-27 21:17:03.889+05
+2	Orange Iced Tea	https://www.nestleprofessional.com.au/sites/default/files/styles/np_product_detail/public/2022-03/Nestea%20Lemon.png?itok=YSkH9R6o	1	8	2023-01-27 21:18:09.932+05	2023-01-27 21:18:09.932+05
+3	Cheese Burst	https://www.pngkey.com/png/full/123-1230165_singapore-pizza-hut-menu-pizza-hut-seafood-deluxe.png	2	20	2023-01-27 21:19:19.235+05	2023-01-27 21:19:19.235+05
+4	Veggie	https://www.nicepng.com/png/full/52-522964_singapore-pizza-hut-menu-food.png	2	20	2023-01-27 21:19:35.518+05	2023-01-27 21:19:35.518+05
+5	Peppy Paneer	https://www.nicepng.com/png/detail/811-8114767_welcome-to-pizza-hut-middle-east-pizza-hut.png	2	22	2023-01-27 21:19:57.315+05	2023-01-27 21:19:57.315+05
+6	Pepperoni	https://www.pngall.com/wp-content/uploads/4/Pepperoni-Dominos-Pizza-PNG-HD-Image.png	7	25	2023-01-27 21:21:48.472+05	2023-01-27 21:21:48.472+05
+7	Pepperoni	https://e7.pngegg.com/pngimages/523/79/png-clipart-papa-john-s-pizza-calzone-domino-s-pizza-pizza-hut-pizza-delivery.png	8	23	2023-01-27 21:22:47.115+05	2023-01-27 21:22:47.115+05
+8	Whopper	https://www.nicepng.com/png/detail/379-3799619_69kib-500x540-muttonwhopper-detail-0-burger-king-burger.png	9	18	2023-01-27 21:24:36.321+05	2023-01-27 21:24:36.321+05
+9	Chicken Royale	https://www.pngitem.com/pimgs/m/523-5236317_double-whopper-burger-king-hd-png-download.png	9	16	2023-01-27 21:25:00.02+05	2023-01-27 21:25:00.02+05
+10	Family Bucket	https://toppng.com/uploads/preview/kfc-bucket-kfc-bucket-chicken-philippines-115632629900ljez85rhg.png	4	40	2023-01-27 21:25:57.375+05	2023-01-27 21:25:57.375+05
+11	Chicken Taco	https://e7.pngegg.com/pngimages/247/952/png-clipart-taco-with-sauce-taco-bell-fast-food-junk-food-fast-food-food-recipe-thumbnail.png	6	15	2023-01-27 21:29:39.909+05	2023-01-27 21:29:39.909+05
+12	Salmon Sushi	https://w7.pngwing.com/pngs/588/319/png-transparent-sushi-doughnut-japanese-cuisine-sushi-food-recipe-green-tea-thumbnail.png	5	12	2023-01-27 21:32:03.242+05	2023-01-27 21:32:03.242+05
 \.
 
 
@@ -783,21 +1028,42 @@ COPY public.zones (zone_id, name, seats_per_row, number, num_of_rows, color_hex_
 -- Name: booking_parking_spaces_b_p_space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 2, true);
+SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 3, true);
 
 
 --
 -- Name: booking_seats_b_seat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 9, true);
+SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 11, true);
+
+
+--
+-- Name: booking_snacks_b_snack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.booking_snacks_b_snack_id_seq', 3, true);
+
+
+--
+-- Name: brands_brand_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.brands_brand_id_seq', 9, true);
+
+
+--
+-- Name: categories_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.categories_category_id_seq', 6, true);
 
 
 --
 -- Name: event_bookings_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 7, true);
+SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 8, true);
 
 
 --
@@ -819,6 +1085,13 @@ SELECT pg_catalog.setval('public.parking_disabled_spaces_p_space_id_seq', 10, tr
 --
 
 SELECT pg_catalog.setval('public.parking_floors_p_floor_id_seq', 4, true);
+
+
+--
+-- Name: snacks_snack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.snacks_snack_id_seq', 12, true);
 
 
 --
@@ -873,6 +1146,30 @@ ALTER TABLE ONLY public.booking_seats
 
 
 --
+-- Name: booking_snacks booking_snacks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks
+    ADD CONSTRAINT booking_snacks_pkey PRIMARY KEY (b_snack_id);
+
+
+--
+-- Name: brands brands_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.brands
+    ADD CONSTRAINT brands_pkey PRIMARY KEY (brand_id);
+
+
+--
+-- Name: categories categories_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.categories
+    ADD CONSTRAINT categories_pkey PRIMARY KEY (category_id);
+
+
+--
 -- Name: event_bookings event_bookings_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -902,6 +1199,14 @@ ALTER TABLE ONLY public.parking_disabled_spaces
 
 ALTER TABLE ONLY public.parking_floors
     ADD CONSTRAINT parking_floors_pkey PRIMARY KEY (p_floor_id);
+
+
+--
+-- Name: snacks snacks_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.snacks
+    ADD CONSTRAINT snacks_pkey PRIMARY KEY (snack_id);
 
 
 --
@@ -985,6 +1290,30 @@ ALTER TABLE ONLY public.booking_seats
 
 
 --
+-- Name: booking_snacks booking_snacks_booking_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks
+    ADD CONSTRAINT booking_snacks_booking_id_fkey FOREIGN KEY (booking_id) REFERENCES public.event_bookings(booking_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: booking_snacks booking_snacks_snack_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.booking_snacks
+    ADD CONSTRAINT booking_snacks_snack_id_fkey FOREIGN KEY (snack_id) REFERENCES public.snacks(snack_id) ON UPDATE CASCADE;
+
+
+--
+-- Name: brands brands_category_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.brands
+    ADD CONSTRAINT brands_category_id_fkey FOREIGN KEY (category_id) REFERENCES public.categories(category_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: event_bookings event_bookings_event_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1006,6 +1335,14 @@ ALTER TABLE ONLY public.event_bookings
 
 ALTER TABLE ONLY public.parking_disabled_spaces
     ADD CONSTRAINT parking_disabled_spaces_p_floor_id_fkey FOREIGN KEY (p_floor_id) REFERENCES public.parking_floors(p_floor_id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: snacks snacks_brand_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.snacks
+    ADD CONSTRAINT snacks_brand_id_fkey FOREIGN KEY (brand_id) REFERENCES public.brands(brand_id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
