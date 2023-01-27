@@ -59,6 +59,7 @@ COPY public.event_bookings (booking_id, amount_payable, datetime, person_name, p
 6	2800	2022-11-16 00:44:00+05	Henry Ford	+50640956712	arafaysaleem@gmail.com	confirmed	6	1	2022-11-16 00:48:58.876+05
 7	1400	2022-12-12 16:51:30+05	Gary Shane	+50640956712	arafaysaleem@gmail.com	confirmed	4	1	2022-12-12 17:19:27.474+05
 4	1400	2022-10-31 16:51:30+05	Shahmeer Asif	+50682345678	arafaysaleem@gmail.com	confirmed	4	1	2023-01-27 21:37:53.748+05
+8	1400	2023-01-27 16:51:30+05	Farah Saleem	+50640956712	arafaysaleem@gmail.com	confirmed	4	2	2023-01-27 22:11:44.039+05
 \.
 
 
@@ -80,6 +81,7 @@ COPY public.parking_floors (p_floor_id, floor_number, spaces_per_row, num_of_row
 COPY public.booking_parking_spaces (b_p_space_id, space_number, space_row, p_floor_id, booking_id, "createdAt", "updatedAt") FROM stdin;
 1	5	B	3	4	2022-10-31 16:51:31.811+05	2022-10-31 16:51:31.811+05
 2	1	A	4	7	2022-12-12 17:19:27.602+05	2022-12-12 17:19:27.602+05
+3	5	B	3	8	2023-01-27 22:08:31.617+05	2023-01-27 22:08:31.617+05
 \.
 
 
@@ -97,6 +99,8 @@ COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_n
 7	Abdur Rafay Saleem	a1b2c3d4f5g6h7	5	C	6	2022-11-16 00:48:58.906+05	2022-11-16 00:48:58.906+05
 8	Rabbiya Tariq	a0b2c4d6f8g0h2	6	C	6	2022-11-16 00:48:58.906+05	2022-11-16 00:48:58.906+05
 9	Haleema Syed	a1b2c3d4f5g6h7	4	C	7	2022-12-12 17:19:27.601+05	2022-12-12 17:19:27.601+05
+10	Shahmeer Asif	123456789	3	A	8	2023-01-27 22:08:31.615+05	2023-01-27 22:08:31.615+05
+11	Zaim Moosani	123456777	4	A	8	2023-01-27 22:08:31.616+05	2023-01-27 22:08:31.616+05
 \.
 
 
@@ -155,6 +159,9 @@ COPY public.snacks (snack_id, name, image_url, brand_id, price, "createdAt", "up
 --
 
 COPY public.booking_snacks (b_snack_id, snack_id, quantity, booking_id, "createdAt", "updatedAt") FROM stdin;
+1	6	2	8	2023-01-27 22:08:31.618+05	2023-01-27 22:08:31.618+05
+2	1	1	8	2023-01-27 22:08:31.618+05	2023-01-27 22:08:31.618+05
+3	2	3	8	2023-01-27 22:08:31.618+05	2023-01-27 22:08:31.618+05
 \.
 
 
@@ -226,21 +233,21 @@ COPY public.zone_resources (resource_id, resource_url, zone_id, type, "createdAt
 -- Name: booking_parking_spaces_b_p_space_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 2, true);
+SELECT pg_catalog.setval('public.booking_parking_spaces_b_p_space_id_seq', 3, true);
 
 
 --
 -- Name: booking_seats_b_seat_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 9, true);
+SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 11, true);
 
 
 --
 -- Name: booking_snacks_b_snack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.booking_snacks_b_snack_id_seq', 1, false);
+SELECT pg_catalog.setval('public.booking_snacks_b_snack_id_seq', 3, true);
 
 
 --
@@ -261,7 +268,7 @@ SELECT pg_catalog.setval('public.categories_category_id_seq', 6, true);
 -- Name: event_bookings_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 7, true);
+SELECT pg_catalog.setval('public.event_bookings_booking_id_seq', 8, true);
 
 
 --
