@@ -39,7 +39,7 @@ class BrandModel extends Model {
     }
 
     static findById(id, category_id){
-        return this.findOne({ where: { snack_id: id, category_id }, raw: true });
+        return this.findOne({ where: { brand_id: id, category_id }, raw: true });
     }
 
     static createNew(body){
@@ -47,11 +47,11 @@ class BrandModel extends Model {
     }
     
     static updateById(body, id, category_id){
-        return this.update(body, { where: { snack_id: id, category_id }, raw: true });
+        return this.update(body, { where: { brand_id: id, category_id }, raw: true });
     }
 
     static deleteById(id, category_id){
-        return this.destroy({ where: { snack_id: id, category_id }, raw: true });
+        return this.destroy({ where: { brand_id: id, category_id }, raw: true });
     }
 }
 

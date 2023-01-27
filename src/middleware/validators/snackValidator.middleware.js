@@ -16,11 +16,6 @@ exports.createSnackSchema = [
         .bail()
         .isURL()
         .withMessage('Invalid logo url found'),
-    body('brand_id')
-        .exists()
-        .withMessage('Brand ID is required for the snack')
-        .isInt({ min: 1 })
-        .withMessage('Invalid Brand ID found'),
     body('price')
         .trim()
         .exists()
@@ -47,10 +42,6 @@ exports.updateSnackSchema = [
         .withMessage('Length must be between 1 and 50')
         .isAlpha('en-US', { ignore: ' ' })
         .withMessage('Must be alphabetic'),
-    body('brand_id')
-        .optional()
-        .isInt({ min: 1 })
-        .withMessage('Invalid Brand ID found'),
     body()
         .custom(value => {
             return Object.keys(value).length !== 0;
@@ -58,7 +49,7 @@ exports.updateSnackSchema = [
         .withMessage('Please provide required fields to update')
         .custom(value => {
             const updates = Object.keys(value);
-            const allowUpdates = ['image_url', 'name', 'brand_id', 'price'];
+            const allowUpdates = ['image_url', 'name', 'price'];
             return updates.every(update => allowUpdates.includes(update));
         })
         .withMessage('Invalid updates!')

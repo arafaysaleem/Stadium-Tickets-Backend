@@ -10,11 +10,13 @@ const { createBrandSchema, updateBrandSchema, getBrandParamSchema } = require('.
 
 router.route('/categories/:category_id/brands')
     .get( // localhost:3000/api/API_VERSION/food/categories/1/brands
+        getBrandParamSchema,
         checkValidation,
         awaitHandlerFactory(brandController.getAllBrandsByCategoryId)
     )
     .post( // localhost:3000/api/API_VERSION/food/categories/1/brands
         jwtUserAuth(Role.Admin),
+        getBrandParamSchema,
         createBrandSchema,
         checkValidation,
         awaitHandlerFactory(brandController.createBrand)

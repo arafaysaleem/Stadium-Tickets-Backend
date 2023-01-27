@@ -10,11 +10,13 @@ const { createSnackSchema, updateSnackSchema, getSnackParamSchema } = require('.
 
 router.route('/categories/:category_id/brands/:brand_id/snacks')
     .get( // localhost:3000/api/API_VERSION/food/categories/1/brands/2/snacks
+        getSnackParamSchema,
         checkValidation,
         awaitHandlerFactory(snackController.getAllSnacksByBrandId)
     )
     .post( // localhost:3000/api/API_VERSION/food/categories/1/brands/2/snacks
         jwtUserAuth(Role.Admin),
+        getSnackParamSchema,
         createSnackSchema,
         checkValidation,
         awaitHandlerFactory(snackController.createSnack)
