@@ -9,6 +9,11 @@ class SnackModel extends Model {
                     autoIncrement: true,
                     primaryKey: true
                 },
+                name: {
+                    type: DataTypes.STRING,
+                    length: 50,
+                    allowNull: false
+                },
                 image_url: {
                     type: DataTypes.TEXT,
                     allowNull: false
