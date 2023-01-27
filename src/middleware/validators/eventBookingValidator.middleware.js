@@ -243,6 +243,14 @@ exports.processBookingPaymentSchema = [
         .isArray()
         .withMessage('Booking seats must be an array like [{seat_number: 1, seat_row: "A", person_name: "John Doe", identification_number: \'12345678912345\'},{...}]')
         .bail(),
+    body('snacks.*.name')
+        .trim()
+        .exists()
+        .withMessage('Snack name is required')
+        .isLength({ min: 1, max: 50 })
+        .withMessage('Length must be between 1 and 50')
+        .isAlphanumeric('en-US', { ignore: new RegExp(/[, -]/g) })
+        .withMessage("Can only be alphanumeric, spaces, or (, -)"),
     body('snacks.*.price')
         .exists()
         .withMessage('Snacks price is required')
