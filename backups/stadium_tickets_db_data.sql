@@ -101,6 +101,22 @@ COPY public.booking_seats (b_seat_id, person_name, identification_number, seat_n
 
 
 --
+-- Data for Name: categories; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.categories (category_id, name, "createdAt", "updatedAt") FROM stdin;
+\.
+
+
+--
+-- Data for Name: brands; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.brands (brand_id, category_id, name, logo_url, "createdAt", "updatedAt") FROM stdin;
+\.
+
+
+--
 -- Data for Name: parking_disabled_spaces; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
@@ -113,6 +129,14 @@ COPY public.parking_disabled_spaces (p_space_id, space_number, space_row, type, 
 6	5	C	missing	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
 7	1	B	blocked	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
 8	6	D	blocked	4	2022-10-23 15:44:14.097+05	2022-10-23 15:44:14.097+05
+\.
+
+
+--
+-- Data for Name: snacks; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.snacks (snack_id, name, image_url, brand_id, price, "createdAt", "updatedAt") FROM stdin;
 \.
 
 
@@ -179,6 +203,20 @@ SELECT pg_catalog.setval('public.booking_seats_b_seat_id_seq', 9, true);
 
 
 --
+-- Name: brands_brand_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.brands_brand_id_seq', 1, false);
+
+
+--
+-- Name: categories_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.categories_category_id_seq', 1, false);
+
+
+--
 -- Name: event_bookings_booking_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
@@ -204,6 +242,13 @@ SELECT pg_catalog.setval('public.parking_disabled_spaces_p_space_id_seq', 10, tr
 --
 
 SELECT pg_catalog.setval('public.parking_floors_p_floor_id_seq', 4, true);
+
+
+--
+-- Name: snacks_snack_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.snacks_snack_id_seq', 1, false);
 
 
 --
