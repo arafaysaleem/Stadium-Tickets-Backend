@@ -269,6 +269,14 @@ exports.processBookingPaymentSchema = [
         .withMessage('Length must be between 1 and 50')
         .isAlphanumeric('en-US', { ignore: new RegExp(/[, -]/g) })
         .withMessage("Can only be alphanumeric, spaces, or (, -)"),
+    body('snacks.*.brand')
+        .trim()
+        .exists()
+        .withMessage('Snack brand is required')
+        .isLength({ min: 1, max: 50 })
+        .withMessage('Length must be between 1 and 50')
+        .isAlphanumeric('en-US', { ignore: new RegExp(/[, -]/g) })
+        .withMessage("Can only be alphanumeric, spaces, or (, -)"),
     body('snacks.*.price')
         .exists()
         .withMessage('Snacks price is required')
