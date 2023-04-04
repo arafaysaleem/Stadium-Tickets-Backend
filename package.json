@@ -61,7 +61,7 @@
     "nodemon": "^2.0.21",
     "nyc": "^15.1.0",
     "sequelize-cli": "^6.6.0",
-    "sinon": "^15.0.1",
+    "sinon": "^15.0.3",
     "supertest": "^6.3.3"
   },
   "directories": {
