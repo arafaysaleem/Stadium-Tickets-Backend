@@ -46,7 +46,7 @@
     "express-validator": "^6.15.0",
     "jsonwebtoken": "^9.0.0",
     "otp-generator": "^4.0.1",
-    "pg": "^8.10.0",
+    "pg": "^8.11.0",
     "sequelize": "^6.32.0"
   },
   "devDependencies": {
