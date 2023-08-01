@@ -51,7 +51,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.22.5",
-    "@babel/eslint-parser": "^7.21.3",
+    "@babel/eslint-parser": "^7.22.9",
     "chai": "^4.3.7",
     "decache": "^4.6.1",
     "eslint": "^8.46.0",
